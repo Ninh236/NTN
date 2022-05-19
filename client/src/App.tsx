@@ -1,14 +1,31 @@
+import { createTheme, ThemeProvider } from "@mui/material";
 import { ReactElement } from "react";
 import {  Route, Routes } from "react-router-dom";
 import Login from "./components/LoginPage/Login";
 
+const theme = createTheme({
+	palette: {
+		primary: {
+			light: "#83cda3",
+			main: "#27ae60",
+			dark: "#1e8449",
+			contrastText: "#fff",
+		},
+		secondary: {
+			light: "#ff95ba",
+			main: "#FF7BA9",
+			dark: "#b25676",
+		}
+	}
+});
+
 function App(): ReactElement {
 	return (
-		<>
+		<ThemeProvider theme={theme}>
 			<Routes>
 				<Route path="/login" element={<Login />} />
 			</Routes>
-		</>
+		</ThemeProvider>
 	);
 }
 
