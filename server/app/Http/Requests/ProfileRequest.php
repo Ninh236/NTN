@@ -24,7 +24,10 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|unique:profiles,code',
+            'first_name' => 'string',
+            'surname' => 'string',
+            'last_name' => 'string',
+            'address' => 'string'
         ];
     }
 }

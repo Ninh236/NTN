@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,16 +14,24 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $user = User::create([
-            'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
 
         $token = $user->createToken('main')->plainTextToken;
 
+        $profile = Profile::create([
+            'user_id' => $user->id,
+            'first_name' => $request->first_name,
+            'surname' => $request->surname,
+            'last_name' => $request->last_name,
+            'address' => $request->address,
+        ]);
+
         return response([
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            $profile
         ]);
     }
 
