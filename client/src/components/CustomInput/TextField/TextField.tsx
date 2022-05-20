@@ -13,7 +13,7 @@ interface ICustomTFProps {
 	onChange: () => void;
 }
 
-function CustomTextField(props: any): ReactElement {
+export default function Textfield(props: any): ReactElement {
 	const { 
 		type = "text", 
 		required = false,  
@@ -41,5 +41,3 @@ function CustomTextField(props: any): ReactElement {
 		/>
 	);
 }
-
-export default CustomTextField;

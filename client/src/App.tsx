@@ -1,7 +1,8 @@
 import { createTheme, ThemeProvider } from "@mui/material";
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import {  Route, Routes } from "react-router-dom";
 import Login from "./components/LoginPage/Login";
+import Registration from "./components/RegistrationPage/Registration";
 
 const theme = createTheme({
 	palette: {
@@ -21,11 +22,14 @@ const theme = createTheme({
 
 function App(): ReactElement {
 	return (
-		<ThemeProvider theme={theme}>
-			<Routes>
-				<Route path="/login" element={<Login />} />
-			</Routes>
-		</ThemeProvider>
+		<React.Fragment>
+			<ThemeProvider theme={theme}>
+				<Routes>
+					<Route path="/login" element={<Login />} />
+					<Route path="/registration" element={<Registration />} />
+				</Routes>
+			</ThemeProvider>
+		</React.Fragment>
 	);
 }
 

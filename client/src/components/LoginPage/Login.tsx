@@ -2,7 +2,7 @@ import {
 	Box, 
 	Button, 
 	Grid, 
-	Link, 
+	Link as LinkMUI, 
 	Typography, 
 	FormControlLabel, 
 	Checkbox, 
@@ -10,7 +10,8 @@ import {
 	IconButton
 } from "@mui/material";
 import { ReactElement, useState } from "react";
-import CustomTextField from "../CustomInput/CustomTextField/CustomTextField";
+import { Link } from "react-router-dom";
+import CustomTextField from "../CustomInput/TextField/TextField";
 import { 
 	Lock,
 	Person,
@@ -20,6 +21,8 @@ import {
 import { useForm } from "../../hooks/useForm";
 import { Copyright } from "../Copyright";
 import { useStyle } from "./LoginStyle";
+import { CustomInput } from "../CustomInput/CustomInput";
+import Registration from "../RegistrationPage/Registration";
 
 function Login(): ReactElement {
 	const styles = useStyle();
@@ -61,6 +64,7 @@ function Login(): ReactElement {
 		event.preventDefault();
 		if (validate(values)) {
 			console.log(values);
+			resetForm();
 		}
 	};
 
@@ -81,7 +85,7 @@ function Login(): ReactElement {
 						Chào mừng đến với NTN
 					</Typography>
 					<div>
-						<CustomTextField 
+						<CustomInput.TextField 
 							required 
 							label="Tài khoản" 
 							name="username"
@@ -99,7 +103,7 @@ function Login(): ReactElement {
 						/>
 					</div>
 					<div>
-						<CustomTextField 
+						<CustomInput.TextField 
 							required 
 							type={showPassword ? "text" : "password"} 
 							label="Mật khẩu"
@@ -133,7 +137,7 @@ function Login(): ReactElement {
 							/>
 						</Grid>
 						<Grid item marginY="auto">
-							<Link variant="body1">Quên mật khẩu ?</Link>
+							<LinkMUI variant="body1">Quên mật khẩu ?</LinkMUI>
 						</Grid>
 					</Grid>
 					<Button 
@@ -156,7 +160,9 @@ function Login(): ReactElement {
 						variant="outlined" 
 						sx={{ my: 2, p: 1, fontWeight: "bold", borderWidth: "2px" }}
 						className={styles.loginBtn}
-					>Tạo tài khoản mới</Button>
+					>
+						<Link to="/registration" style={{ textDecoration: "none", color: "inherit" }}>Tạo tài khoản mới</Link>
+					</Button>
 					<Copyright sx={{ mt: 4, mb: 1 }} />
 				</Box>
 			</Box>
