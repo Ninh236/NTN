@@ -9,22 +9,27 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    public function show($user_id)
-    {
-        return Profile::where('user_id',  $user_id)->get();
+    public function getAll() {
+        return Profile::all();
+    }
+
+    public function index() {}
+
+    public function findByUsername($username) {
+        return User::where('username', $username)->with('profile')->get();
+    }
+
+    public function findById($id) {
+        return User::where('id', $id)->with('profile')->get();
+    }
+
+    public function search($username) {
+        return User::where('username', 'LIKE', '%' . $username . '%')->with('profile')->get();
     }
 
     public function update(ProfileRequest $request)
     {
-        $profile = auth()->user()->profile->update([
-            'first_name' => $request->first_name,
-            'surname' => $request->surname,
-            'last_name' => $request->last_name
-        ]);
+        $profile = auth()->user()->profile->update($request->all());
         return $profile;
-    }
-
-    public function search($user_id) {
-        return Profile::where('user_id', $user_id)->get();
     }
 }

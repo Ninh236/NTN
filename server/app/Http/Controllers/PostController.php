@@ -5,70 +5,57 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function me()
+    public function getMyPosts()
     {
         return auth()->user()->posts()->with('comments')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorePostRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StorePostRequest $request)
     {
         $files = $request->file('image');
         $path = $files->store('/images', 'public');
 
-        return auth()->user()->posts()->create([
+        auth()->user()->posts()->create([
             'image' => $path,
-            'caption' => $request->caption
+            'content' => $request->content
         ]);
+
+        return response([
+            'message' => 'Created new post success.'
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatePostRequest  $request
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdatePostRequest $request, $id)
     {
-        return auth()->user()->posts()->where('id', $id)->update([
-            'caption' => $request->caption
+        auth()->user()->posts()->where('id', $id)->update([
+            'content' => $request->content
         ]);
+
+        return response([
+            'message' => 'Post is edited.'
+        ], 201);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        return auth()->user()->posts()->where('id', $id)->delete();
+        $message = "Post is deleted success.";
+        $status = 200;
+        try {
+            auth()->user()->posts()->findOrFail($id);
+        } catch(ModelNotFoundException $e) {
+            $message = "Post is invalid.";
+            $status = 404;
+        }
+
+        auth()->user()->posts()->where('id', $id)->delete();
+
+        return response([
+            'message' => $message
+        ], $status);
     }
 }

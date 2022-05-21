@@ -27,7 +27,10 @@ class ProfileRequest extends FormRequest
             'first_name' => 'string',
             'surname' => 'string',
             'last_name' => 'string',
-            'address' => 'string'
+            'address' => 'string',
+            'gender' => 'string',
+            'job' => 'string',
+            'mobile' => 'string',
         ];
     }
 }

@@ -13,42 +13,43 @@ class AuthController extends Controller
 {
     public function register(RegisterRequest $request)
     {
-
         $user = User::create([
+            'username' => $request->username,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
 
         $token = $user->createToken('main')->plainTextToken;
 
-        $profile = Profile::create([
+        Profile::create([
             'user_id' => $user->id,
             'first_name' => $request->first_name,
             'surname' => $request->surname,
             'last_name' => $request->last_name,
             'address' => $request->address,
+            'gender' => $request->gender,
+            'job' => $request->job,
+            'birthday'=> $request->birthday
         ]);
 
         return response([
             'user' => $user,
             'token' => $token,
-            $profile
         ]);
     }
 
     public function login(LoginRequest $request)
     {
-        $credentials = $request->only('email', 'password');
-        $remember = !empty($request->remember);
-        if (!Auth::attempt($credentials, $remember)) {
+        $credentials = $request->only('username', 'password');
+
+        if (!Auth::attempt($credentials, false)) {
             return response([
-                'error' => 'Invalid'
+                'error' => 'Invalid.'
             ], 422);
         }
 
         $user = Auth::user();
-
-        $token = $user->createToken('aaa');
+        $token = $user->createToken('main')->plainTextToken;
 
         return response([
             'user' => $user,

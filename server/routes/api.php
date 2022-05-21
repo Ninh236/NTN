@@ -32,25 +32,32 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout']);
 
     //************ profile
-    // get by user_id
-    Route::get('/profile/{user_id}', [\App\Http\Controllers\ProfileController::class, 'index']);
-    // search by user_id
-    Route::get('/profile/search/{user_id}', [\App\Http\Controllers\ProfileController::class, 'search']);
+    // get all user's profile
+    Route::get('/profiles/all', [\App\Http\Controllers\ProfileController::class, 'getAll']);
+    // search by username
+    Route::get('/profile/search/{username}', [\App\Http\Controllers\ProfileController::class, 'search']);
+    // get by username
+    Route::get('/profile/get/{username}', [\App\Http\Controllers\ProfileController::class, 'findByUsername']);
+    // get by id
+    Route::get('/profile/getid/{id}', [\App\Http\Controllers\ProfileController::class, 'findById']);
     // update
     Route::put('/profile/update', [\App\Http\Controllers\ProfileController::class, 'update']);
 
     //************ post
     // create new post
-    Route::post('/post/new-post', [\App\Http\Controllers\PostController::class, 'store']);
+    Route::post('/post/create', [\App\Http\Controllers\PostController::class, 'store']);
     // edit caption
     Route::put('/post/edit/{post_id}', [\App\Http\Controllers\PostController::class, 'update']);
     // delete post
     Route::delete('/post/edit/{post_id}', [\App\Http\Controllers\PostController::class, 'destroy']);
     // get my posts
-    Route::get('/post/me', [\App\Http\Controllers\PostController::class, 'me']);
+    Route::get('/post/me', [\App\Http\Controllers\PostController::class, 'getMyPosts']);
 
     //************ comment
     Route::post('/comments/{post_id}', [\App\Http\Controllers\CommentController::class, 'store']);
     Route::put('/comment/edit/{post_id}/{comment_id}', [\App\Http\Controllers\CommentController::class, 'update']);
     Route::delete('/comment/edit/{post_id}/{comment_id}', [\App\Http\Controllers\CommentController::class, 'destroy']);
+
+    //************ like
+    Route::post('/like/{post_id}', [\App\Http\Controllers\LikeController::class, 'like']);
 });
