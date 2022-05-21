@@ -9,12 +9,6 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-
-    public function me($id)
-    {
-        return auth()->user()->profile;
-    }
-
     public function show($user_id)
     {
         return Profile::where('user_id',  $user_id)->get();
