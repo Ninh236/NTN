@@ -4,11 +4,10 @@ import bgImg from "../../assets/imgs/bg-01.webp";
 export const useStyle = makeStyles({
 	root: {
 		display: "flex",
-		alignItems: "center",
 		justifyContent: "center",
 		width: "100vw",
 		height: "100vh",
-		overflow: "hidden",
+		overflow: "auto",
 		backgroundImage: `url(${bgImg})`,
 		backgroundSize: "cover",
 		backgroundRepeat: "no-repeat",
@@ -19,6 +18,7 @@ export const useStyle = makeStyles({
 		flexDirection: "column",
 		maxWidth: "50rem",
 		width: "40rem",
+		height: "fit-content",
 		backgroundColor: "white",
 		borderRadius: "15px",
 		padding: "2rem",
@@ -36,5 +36,5 @@ export const useStyle = makeStyles({
 			transform: "translateY(2px)",
 			transitionDuration: ".35s !important",
 		}
-	}
+	},
 });

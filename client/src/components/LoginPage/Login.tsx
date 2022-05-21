@@ -7,7 +7,8 @@ import {
 	FormControlLabel, 
 	Checkbox, 
 	InputAdornment, 
-	IconButton
+	IconButton,
+	useMediaQuery
 } from "@mui/material";
 import { ReactElement, useState } from "react";
 import { Link } from "react-router-dom";
@@ -22,10 +23,10 @@ import { useForm } from "../../hooks/useForm";
 import { Copyright } from "../Copyright";
 import { useStyle } from "./LoginStyle";
 import { CustomInput } from "../CustomInput/CustomInput";
-import Registration from "../RegistrationPage/Registration";
 
 function Login(): ReactElement {
 	const styles = useStyle();
+	const matches = useMediaQuery("(min-height: 450px)");
 
 	const validate = (fieldValues = values) => {
 		const tmp = { ...errors };
@@ -160,8 +161,9 @@ function Login(): ReactElement {
 						variant="outlined" 
 						sx={{ my: 2, p: 1, fontWeight: "bold", borderWidth: "2px" }}
 						className={styles.loginBtn}
+						component={Link} to="/registration"
 					>
-						<Link to="/registration" style={{ textDecoration: "none", color: "inherit" }}>Tạo tài khoản mới</Link>
+						Tạo tài khoản mới
 					</Button>
 					<Copyright sx={{ mt: 4, mb: 1 }} />
 				</Box>
