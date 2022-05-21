@@ -25,7 +25,7 @@ class StorePostRequest extends FormRequest
     {
         return [
             'image' => 'mimes:jpg,png,jpeg',
-            'caption' => 'required|string'
+            'content' => 'required|string'
         ];
     }
 }
