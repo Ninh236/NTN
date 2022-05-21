@@ -2,10 +2,10 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import React, { ReactElement } from "react";
 import {  Route, Routes } from "react-router-dom";
 import Home from "./components/HomePage/Home";
+import MainPage from "./components/MainPage/MainPage";
 import Login from "./components/LoginPage/Login";
 import CreatPost from "./components/Post/CreatePost";
 import Registration from "./components/RegistrationPage/Registration";
-import ToolBar from "./components/ToolBar/ToolBar";
 
 const theme = createTheme({
 	palette: {
@@ -36,7 +36,9 @@ function App(): ReactElement {
 					}></Route>
 					<Route path="/login" element={<Login />} />
 					<Route path="/registration" element={<Registration />} />
-					<Route path="/home" element={<Home />} />
+					<Route path="/" element={<MainPage />}>
+						<Route path="/home" element={<Home />} />
+					</Route>
 				</Routes>
 			</ThemeProvider>
 		</React.Fragment>

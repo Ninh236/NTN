@@ -37,4 +37,10 @@ export const useStyle = makeStyles({
 			transitionDuration: ".35s !important",
 		}
 	},
+	"@media screen and (min-height: 680px)": {
+		root: {
+			alignItems: "center",
+			overflow: "hidden",
+		}
+	}
 });
