@@ -4,16 +4,23 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
 
 export default function DatePicker(props: any) {
-	const { label, value, onChange } = props;
+	const { label, value, error = null, onChange } = props;
     
 	return (
 		<LocalizationProvider dateAdapter={AdapterDateFns}>
 			<MuiDatePicker
 				label={label}
-				inputFormat="MM/dd/yyyy"
+				inputFormat="dd/MM/yyyy"
 				value={value}
 				onChange={onChange}
-				renderInput={(params) => <TextField {...params} />}
+				renderInput={
+					(params) => 
+						<TextField 
+							variant="standard" 
+							{...(error && { error: true, helperText: error })} 
+							{...params} 
+						/>
+				}
 			/>
 		</LocalizationProvider>
 	);
