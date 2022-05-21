@@ -14,19 +14,19 @@ interface ICustomTFProps {
 }
 
 function CustomTextField(props: any): ReactElement {
-	const { 
-		type = "text", 
-		required = false,  
-		name, 
-		label, 
-		value, 
-		error = null, 
+	const {
+		type = "text",
+		required = false,
+		name,
+		label,
+		value,
+		error = null,
 		onChange,
-		...others 
+		...others
 	} = props;
 
-	return (	
-		<TextField 
+	return (
+		<TextField
 			type={type}
 			variant="standard"
 			required={required}
