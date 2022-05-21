@@ -163,12 +163,15 @@ export default function ToolBar() {
 					</IconButton>
 					<Link to="/profile" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
 						<Chip
-							avatar={<Avatar></Avatar>}
+							sx={{ height: "38px", fontSize: "1rem", flexDirection: "row-reverse" }}
+							avatar={<Avatar
+								sx={{ width: "40px !important", height: "40px !important", marginLeft: "0 !important" }}>
+							</Avatar>}
 							label="Name"
 							onClick={handleClickAvt} />
 					</Link>
 				</Box>
-				<Box sx={{ display: { xs: "flex", md: "none" } }}>
+				<Box sx={{ height: "auto", display: { xs: "flex", md: "none" } }}>
 					<IconButton size="large" onClick={handleMobileMenuOpen}>
 						<MoreIcon />
 					</IconButton>

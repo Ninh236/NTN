@@ -1,12 +1,11 @@
 import React from "react";
 import {
 	styled,
-	Box,
 	Card,
 	CardContent,
 	Avatar,
-	ButtonBase,
 	Button,
+	ButtonBase,
 	Dialog,
 	DialogActions,
 	DialogContent,
@@ -15,6 +14,9 @@ import {
 	TextareaAutosize,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
+import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 
 const CreatePost = styled(Card)`
 	height: 125px;
@@ -31,7 +33,6 @@ const TextPostArea = styled(TextareaAutosize)`
 	outline: none;
 	font-family: inherit;
 	font-size: 1.25rem;
-	font-weight: 425;
 	letter-spacing: 0.25px;
 `;
 const useStyles = makeStyles({
@@ -52,6 +53,17 @@ const useStyles = makeStyles({
 			transitionDuration: "0.35s",
 		}
 	},
+
+	createOtherPost: {
+		height: "30px",
+		fontSize: "18px",
+		borderRadius: "18px	!important",
+		padding: "2px 6px !important",
+		"&:hover": {
+			backgroundColor: "#00000015 !important",
+			transitionDuration: "0.35s",
+		}
+	}
 });
 
 export default function CreatPost() {
@@ -101,7 +113,20 @@ export default function CreatPost() {
 				</Dialog>
 			</CardContent>
 			<Divider variant="middle" />
-			<Box></Box>
+			<CardContent sx={{ display: "flex", alignItems: "center", justifyContent: "space-around", padding: "10px" }}>
+				<ButtonBase className={styles.createOtherPost} >
+					<VideocamOutlinedIcon sx={{ marginRight: "5px" }} color="error" />
+					Đăng video
+				</ButtonBase>
+				<ButtonBase className={styles.createOtherPost}>
+					<PhotoLibraryOutlinedIcon sx={{ marginRight: "5px" }} color="success" />
+					Đăng ảnh
+				</ButtonBase>
+				<ButtonBase className={styles.createOtherPost}>
+					<FlagOutlinedIcon sx={{ marginRight: "5px" }} color="info" />
+					Sự kiện
+				</ButtonBase>
+			</CardContent>
 		</CreatePost >
 	);
 }
