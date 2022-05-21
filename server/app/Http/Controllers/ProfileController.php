@@ -19,6 +19,10 @@ class ProfileController extends Controller
         return User::where('username', $username)->with('profile')->get();
     }
 
+    public function findById($id) {
+        return User::where('id', $id)->with('profile')->get();
+    }
+
     public function search($username) {
         return User::where('username', 'LIKE', '%' . $username . '%')->with('profile')->get();
     }
