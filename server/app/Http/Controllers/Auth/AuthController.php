@@ -13,8 +13,8 @@ class AuthController extends Controller
 {
     public function register(RegisterRequest $request)
     {
-
         $user = User::create([
+            'username' => $request->username,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
@@ -27,6 +27,8 @@ class AuthController extends Controller
             'surname' => $request->surname,
             'last_name' => $request->last_name,
             'address' => $request->address,
+            'gender' => $request->gender,
+            'job' => $request->job
         ]);
 
         return response([
