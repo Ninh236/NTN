@@ -142,7 +142,6 @@ export default function ToolBar(): ReactElement {
 					width: "100%",
 					height: "64px",
 					display: { xs: "none", lg: "unset" },
-					position: "fixed"
 				}}>
 					<Tabs value={tab} onChange={handleChangeTab} centered>
 						<Tab className={styles.navTab} icon={<Home fontSize="large" />}

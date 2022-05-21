@@ -19,10 +19,11 @@ import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 
 const CreatePost = styled(Card)`
-	height: 125px;
-	width: 500px !important;
+	height: 150px;
+	width: 640px !important;
 	margin: auto;
-	margin-top: 16px;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
 `;
 
 const TextPostArea = styled(TextareaAutosize)`
@@ -39,13 +40,13 @@ const useStyles = makeStyles({
 	createTextPost: {
 		background: "#f5f5f5 !important",
 		color: "#65676b !important",
-		paddingLeft: "14px  !important",
-		borderRadius: "25px  !important",
-		margin: "auto !important",
+		paddingLeft: "1.5rem !important",
+		borderRadius: "25px !important",
+		margin: "0 20px !important",
 		fontSize: "1.0625rem",
 		fontWeight: "medium",
 		height: "40px",
-		minWidth: "400px",
+		minWidth: "500px",
 		justifyContent: "flex-start !important",
 		transitionDuration: "0.35s",
 		"&:hover": {
@@ -55,7 +56,7 @@ const useStyles = makeStyles({
 	},
 
 	createOtherPost: {
-		height: "30px",
+		height: "48px",
 		fontSize: "18px",
 		borderRadius: "18px	!important",
 		padding: "2px 6px !important",

@@ -1,6 +1,6 @@
 import { Box, Container, Grid, Paper, Stack, styled } from "@mui/material";
 import { ReactElement } from "react";
-import CreatePost from "../Post/CreatePost";
+import CreatePost from "../Post/PostAction/CreatePost";
 import UserPost from "../Post/UserPost/UserPost";
 import { useStyle } from "./HomeStyle";
 

@@ -4,6 +4,7 @@ import PostAction from "../PostAction/PostAction";
 import { useStyle } from "./UserPostStyle";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
+import CreateComment from "../PostAction/CreateComment";
 import Comment from "../Comment/Comment";
 
 interface UserPostProps {
@@ -19,7 +20,7 @@ export default function UserPost(props: any): ReactElement {
 		fullName: "",
 		username: "",
 	});
-	
+
 	const [showComment, setShowComment] = useState<boolean>(false);
 
 	const handleClickComments = () => {
@@ -69,6 +70,7 @@ export default function UserPost(props: any): ReactElement {
 					<Grid item xs={12} display={showComment ? "block" : "none"}>
 						<Comment />
 						<Comment />
+						<CreateComment />
 					</Grid>
 				</Grid>
 			</Container>
