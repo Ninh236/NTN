@@ -15,7 +15,15 @@ class Profile extends Model
         'surname',
         'username',
         'last_name',
-        'address'
+        'address',
+        'gender',
+        'job',
+        'birthday',
+        'mobile'
+    ];
+
+    protected $casts = [
+        'birthday' => 'datetime:d/m/Y'
     ];
 
     public function user() {
