@@ -1,5 +1,13 @@
-import { ErrorSharp, Person, Visibility, VisibilityOff } from "@mui/icons-material";
-import { Box, Typography, InputAdornment, IconButton, Grid, FormControlLabel, Checkbox, Button, Avatar } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { 
+	Box, 
+	Typography, 
+	InputAdornment, 
+	IconButton, 
+	Grid, 
+	Button, 
+	Avatar 
+} from "@mui/material";
 import { ReactElement, useState } from "react";
 import { Link } from "react-router-dom";
 import { useStyle } from "./RegistrationStyle";
