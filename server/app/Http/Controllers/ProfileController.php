@@ -23,10 +23,9 @@ class ProfileController extends Controller
         return User::where('username', 'LIKE', '%' . $username . '%')->with('profile')->get();
     }
 
-    public function update(Request $request)
+    public function update(ProfileRequest $request)
     {
-        return $request;
-        $profile = auth()->user()->profile->update();
+        $profile = auth()->user()->profile->update($request->all());
         return $profile;
     }
 }
