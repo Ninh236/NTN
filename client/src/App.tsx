@@ -1,8 +1,9 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import React, { ReactElement } from "react";
-import {  Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Login from "./components/LoginPage/Login";
 import Registration from "./components/RegistrationPage/Registration";
+import ToolBar from "./components/ToolBar/ToolBar";
 
 const theme = createTheme({
 	palette: {
@@ -24,6 +25,7 @@ function App(): ReactElement {
 	return (
 		<React.Fragment>
 			<ThemeProvider theme={theme}>
+				<ToolBar />
 				<Routes>
 					<Route path="/login" element={<Login />} />
 					<Route path="/registration" element={<Registration />} />
