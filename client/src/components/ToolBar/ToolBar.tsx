@@ -14,8 +14,9 @@ import {
 	Avatar
 } from "@mui/material";
 import SearchBar from "./SearchBar";
+import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
-import { Home, Group, Groups } from "@mui/icons-material";
+import { Home, Group, Groups, LiveTv } from "@mui/icons-material";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -30,16 +31,20 @@ const StyledAppBar = styled(AppBar)`
 	display: flex;
 `;
 
-const StyleTab = styled(Tab)`
-  	height: 64px;
-	width: 8vw;
-	margin: 0px 10px;
-  	color: #15bb66 !important;
-`;
+const useStyles = makeStyles({
+	navTab: {
+		height: "64px",
+		width: "8vw",
+		margin: "0px 10px",
+		color: "#15bb66",
+	},
+});
 
 export default function ToolBar(): ReactElement {
-
+	const styles = useStyles();
 	const [tab, setTab] = React.useState(0);
+	const routes = ["/home", "/friends"];
+
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -140,16 +145,18 @@ export default function ToolBar(): ReactElement {
 					position: "fixed"
 				}}>
 					<Tabs value={tab} onChange={handleChangeTab} centered>
-						<StyleTab icon={<Home fontSize="large" />} />
-						<StyleTab icon={<Group fontSize="large" />} />
-						<StyleTab icon={<Groups fontSize="large" />} />
-						<StyleTab label="Icon Four" />
+						<Tab className={styles.navTab} icon={<Home fontSize="large" />}
+							component={Link} to={routes[0]} />
+						<Tab className={styles.navTab} icon={<Group fontSize="large" />}
+							component={Link} to={routes[1]} />
+						<Tab className={styles.navTab} icon={<Groups fontSize="large" />} />
+						<Tab className={styles.navTab} icon={<LiveTv fontSize="large" />} />
 					</Tabs>
 				</Box>
 				<Box sx={{
 					display: { xs: "none", md: "flex" },
-					marginLeft: "auto",
-					marginRight: { md: "auto", lg: "0" },
+					ml: "auto",
+					mr: { md: "auto", lg: "0" },
 					justifyContent: "flex-end"
 				}}>
 					<IconButton size="large" color="inherit">
@@ -171,8 +178,9 @@ export default function ToolBar(): ReactElement {
 							sx={{
 								height: "38px",
 								borderRadius: "20px",
-								marginLeft: "12px",
+								ml: "12px",
 								fontSize: "1rem",
+								fontWeight: "bold",
 								flexDirection: "row-reverse"
 							}}
 							avatar={<Avatar

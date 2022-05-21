@@ -43,7 +43,7 @@ const useStyles = makeStyles({
 		borderRadius: "25px  !important",
 		margin: "auto !important",
 		fontSize: "1.0625rem",
-		fontWeight: 400,
+		fontWeight: "medium",
 		height: "40px",
 		minWidth: "400px",
 		justifyContent: "flex-start !important",
@@ -59,6 +59,7 @@ const useStyles = makeStyles({
 		fontSize: "18px",
 		borderRadius: "18px	!important",
 		padding: "2px 6px !important",
+		fontWeight: "bold",
 		"&:hover": {
 			backgroundColor: "#00000015 !important",
 			transitionDuration: "0.35s",
@@ -86,7 +87,7 @@ export default function CreatPost() {
 				<ButtonBase className={styles.createTextPost} onClick={handleOpenTextPost}>
 					Bạn muốn chia sẻ với mọi người gì thế?
 				</ButtonBase>
-				<Dialog
+				<Dialog disableAutoFocus={false}
 					open={showTextPost}
 					onClose={handleCloseTextPost}
 					PaperProps={{
@@ -96,16 +97,16 @@ export default function CreatPost() {
 							alignItems: "center",
 						},
 					}}>
-					<DialogTitle>
+					<DialogTitle fontWeight="bold">
 						{"Tạo bài viết"}
 					</DialogTitle>
-					<DialogContent sx={{ padding: 0 }}>
+					<DialogContent sx={{ p: 0 }}>
 						<Divider />
 						<TextPostArea minRows="6" maxRows="6" autoFocus
 							placeholder="Chia sẻ với mọi nguời nào!" />
 					</DialogContent>
 					<DialogActions sx={{ width: "100%" }}>
-						<Button sx={{ width: "100%" }}
+						<Button sx={{ width: "100%", fontWeight: "bold" }}
 							onClick={handleCloseTextPost}>
 							Đăng
 						</Button>
@@ -113,17 +114,17 @@ export default function CreatPost() {
 				</Dialog>
 			</CardContent>
 			<Divider variant="middle" />
-			<CardContent sx={{ display: "flex", alignItems: "center", justifyContent: "space-around", padding: "10px" }}>
+			<CardContent sx={{ display: "flex", alignItems: "center", justifyContent: "space-around", p: "10px" }}>
 				<ButtonBase className={styles.createOtherPost} >
-					<VideocamOutlinedIcon sx={{ marginRight: "5px" }} color="error" />
+					<VideocamOutlinedIcon sx={{ mr: "5px" }} color="error" />
 					Đăng video
 				</ButtonBase>
 				<ButtonBase className={styles.createOtherPost}>
-					<PhotoLibraryOutlinedIcon sx={{ marginRight: "5px" }} color="success" />
+					<PhotoLibraryOutlinedIcon sx={{ mr: "5px" }} color="success" />
 					Đăng ảnh
 				</ButtonBase>
 				<ButtonBase className={styles.createOtherPost}>
-					<FlagOutlinedIcon sx={{ marginRight: "5px" }} color="info" />
+					<FlagOutlinedIcon sx={{ mr: "5px" }} color="info" />
 					Sự kiện
 				</ButtonBase>
 			</CardContent>
