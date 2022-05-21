@@ -87,7 +87,7 @@ export default function CreatPost() {
 				<ButtonBase className={styles.createTextPost} onClick={handleOpenTextPost}>
 					Bạn muốn chia sẻ với mọi người gì thế?
 				</ButtonBase>
-				<Dialog disableAutoFocus={false}
+				<Dialog
 					open={showTextPost}
 					onClose={handleCloseTextPost}
 					PaperProps={{

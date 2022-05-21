@@ -8,6 +8,7 @@ import Registration from "./components/RegistrationPage/Registration";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import SearchBar from "./components/ToolBar/SearchBar";
 import { Box } from "@mui/system";
+import Profile from "./components/ProfilePage/Profile";
 
 const theme = createTheme({
 	palette: {
@@ -34,6 +35,7 @@ function App(): ReactElement {
 					<Route path="/registration" element={<Registration />} />
 					<Route path="/" element={<MainPage />}>
 						<Route path="/home" element={<Home />} />
+						<Route path="/profile" element={<Profile />} />
 					</Route>
 					<Route path="test" element={<Box><SearchBar /></Box>} />
 					<Route

@@ -9,7 +9,6 @@ export default function MainPage(): ReactElement {
 		<Box>
 			<ToolBar />
 			<Outlet />
-			<CreatePost />
 		</Box>
 	);
 }
