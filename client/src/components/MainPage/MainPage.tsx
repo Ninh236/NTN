@@ -3,9 +3,11 @@ import { ReactElement } from "react";
 import { Outlet } from "react-router-dom";
 import ToolBar from "../ToolBar/ToolBar";
 
-export default function Home(): ReactElement {
+export default function MainPage(): ReactElement {
 	return (
 		<Box>
+			<ToolBar />
+			<Outlet />
 		</Box>
 	);
 }
