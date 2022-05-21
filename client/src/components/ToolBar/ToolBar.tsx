@@ -21,23 +21,20 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuIcon from "@mui/icons-material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
 
-import "../../assets/style/ToolBar.css";
-
-
 const StyledAppBar = styled(AppBar)`
 	position: sticky;
 	top: 0;
 	maxHeight: 64px;
-  background-color: white;
-  color: #15bb66;
+  	background-color: white;
+  	color: #15bb66;
 	display: flex;
 `;
 
 const StyleTab = styled(Tab)`
-  height: 64px;
+  	height: 64px;
 	width: 8vw;
 	margin: 0px 10px;
-  color: #15bb66 !important;
+  	color: #15bb66 !important;
 `;
 
 export default function ToolBar() {

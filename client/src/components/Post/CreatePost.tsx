@@ -15,11 +15,11 @@ import {
 	TextareaAutosize,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import "../../assets/style/CreatePost.css";
 
 const CreatePost = styled(Card)`
 	height: 125px;
 	width: 500px !important;
+	margin: auto;
 	margin-top: 16px;
 `;
 
@@ -93,7 +93,7 @@ export default function CreatPost() {
 							placeholder="Chia sẻ với mọi nguời nào!" />
 					</DialogContent>
 					<DialogActions sx={{ width: "100%" }}>
-						<Button sx={{ width: "100%", color: "#48bf53" }}
+						<Button sx={{ width: "100%" }}
 							onClick={handleCloseTextPost}>
 							Đăng
 						</Button>
