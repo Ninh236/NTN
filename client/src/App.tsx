@@ -1,24 +1,35 @@
-import { ReactElement } from "react";
-import { Route, Routes } from "react-router-dom";
+import { createTheme, ThemeProvider } from "@mui/material";
+import React, { ReactElement } from "react";
+import {  Route, Routes } from "react-router-dom";
 import Login from "./components/LoginPage/Login";
-import ToolBar from "./components/ToolBar/ToolBar";
-import CreatePost from "./components/Post/CreatePost";
-import { Container } from "@mui/system";
+import Registration from "./components/RegistrationPage/Registration";
+
+const theme = createTheme({
+	palette: {
+		primary: {
+			light: "#83cda3",
+			main: "#27ae60",
+			dark: "#1e8449",
+			contrastText: "#fff",
+		},
+		secondary: {
+			light: "#ff95ba",
+			main: "#FF7BA9",
+			dark: "#b25676",
+		}
+	}
+});
 
 function App(): ReactElement {
 	return (
-		<>
-			<Routes>
-				<Route path="/" element={
-					<>
-						<ToolBar />
-						<Container sx={{ display: "flex", justifyContent: "center" }}>
-							<CreatePost />
-						</Container>
-					</>} />
-				<Route path="/login" element={<Login />} />
-			</Routes>
-		</>
+		<React.Fragment>
+			<ThemeProvider theme={theme}>
+				<Routes>
+					<Route path="/login" element={<Login />} />
+					<Route path="/registration" element={<Registration />} />
+				</Routes>
+			</ThemeProvider>
+		</React.Fragment>
 	);
 }
 

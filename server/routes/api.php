@@ -18,11 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index']);
-Route::get('/profile/{id}', [\App\Http\Controllers\ProfileController::class, 'show']);
-Route::post('/profile', [\App\Http\Controllers\ProfileController::class, 'store']);
-Route::put('/profile/{id}', [\App\Http\Controllers\ProfileController::class, 'update']);
-Route::delete('/profile/{id}', [\App\Http\Controllers\ProfileController::class, 'destroy']);
+
 
 Route::post('/register', [\App\Http\Controllers\Auth\AuthController::class, 'register']);
 Route::post('/login', [\App\Http\Controllers\Auth\AuthController::class, 'login']);
@@ -34,4 +30,27 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::post('/logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout']);
+
+    //************ profile
+    // get by user_id
+    Route::get('/profile/{user_id}', [\App\Http\Controllers\ProfileController::class, 'index']);
+    // search by user_id
+    Route::get('/profile/search/{user_id}', [\App\Http\Controllers\ProfileController::class, 'search']);
+    // update
+    Route::put('/profile/update', [\App\Http\Controllers\ProfileController::class, 'update']);
+
+    //************ post
+    // create new post
+    Route::post('/post/new-post', [\App\Http\Controllers\PostController::class, 'store']);
+    // edit caption
+    Route::put('/post/edit/{post_id}', [\App\Http\Controllers\PostController::class, 'update']);
+    // delete post
+    Route::delete('/post/edit/{post_id}', [\App\Http\Controllers\PostController::class, 'destroy']);
+    // get my posts
+    Route::get('/post/me', [\App\Http\Controllers\PostController::class, 'me']);
+
+    //************ comment
+    Route::post('/comments/{post_id}', [\App\Http\Controllers\CommentController::class, 'store']);
+    Route::put('/comment/edit/{post_id}/{comment_id}', [\App\Http\Controllers\CommentController::class, 'update']);
+    Route::delete('/comment/edit/{post_id}/{comment_id}', [\App\Http\Controllers\CommentController::class, 'destroy']);
 });
