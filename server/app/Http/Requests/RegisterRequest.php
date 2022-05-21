@@ -34,7 +34,10 @@ class RegisterRequest extends FormRequest
                 'required',
                 'confirmed',
                 Password::min(8)
-            ]
+            ],
+            'address' => 'string',
+            'gender' => 'required',
+            'birthday' => 'date'
         ];
     }
 }

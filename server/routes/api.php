@@ -38,6 +38,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile/search/{username}', [\App\Http\Controllers\ProfileController::class, 'search']);
     // get by username
     Route::get('/profile/get/{username}', [\App\Http\Controllers\ProfileController::class, 'findByUsername']);
+    // get by id
+    Route::get('/profile/getid/{id}', [\App\Http\Controllers\ProfileController::class, 'findById']);
     // update
     Route::put('/profile/update', [\App\Http\Controllers\ProfileController::class, 'update']);
 
@@ -55,4 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/comments/{post_id}', [\App\Http\Controllers\CommentController::class, 'store']);
     Route::put('/comment/edit/{post_id}/{comment_id}', [\App\Http\Controllers\CommentController::class, 'update']);
     Route::delete('/comment/edit/{post_id}/{comment_id}', [\App\Http\Controllers\CommentController::class, 'destroy']);
+
+    //************ like
+    Route::post('/like/{post_id}', [\App\Http\Controllers\LikeController::class, 'like']);
 });

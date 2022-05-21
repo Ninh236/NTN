@@ -28,7 +28,8 @@ class AuthController extends Controller
             'last_name' => $request->last_name,
             'address' => $request->address,
             'gender' => $request->gender,
-            'job' => $request->job
+            'job' => $request->job,
+            'birthday'=> $request->birthday
         ]);
 
         return response([
