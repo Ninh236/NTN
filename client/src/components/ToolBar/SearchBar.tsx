@@ -29,9 +29,7 @@ const Search = styled("div")(({ theme }) => ({
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
-	padding: theme.spacing(0, 2),
 	height: "100%",
-	position: "absolute",
 	pointerEvents: "none",
 	display: "flex",
 	alignItems: "center",
@@ -41,7 +39,6 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	"& .MuiInputBase-input": {
 		padding: theme.spacing(1, 1, 1, 0),
-		paddingLeft: `calc(1em + ${theme.spacing(4)})`,
 		transition: theme.transitions.create("width"),
 		width: "100%",
 		[theme.breakpoints.up("md")]: {
@@ -68,7 +65,7 @@ export default function CheckboxList() {
 
 	return (
 		<ClickAwayListener onClickAway={handleClickAway}>
-			<Search onClick={handleClick}>
+			<Search sx={{ display: "inline-flex" }} onClick={handleClick}>
 				<SearchIconWrapper sx={{ height: "39px", padding: "0px 12px" }}>
 					<SearchIcon />
 				</SearchIconWrapper>
@@ -77,7 +74,7 @@ export default function CheckboxList() {
 					<List onClick={handleClick}
 						dense
 						sx={{
-							width: "233.962px", bgcolor: "background.paper", position: "absolute",
+							width: "233.962px", bgcolor: "background.paper", position: "fixed", top: "64px",
 							boxShadow: "rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px"
 						}}>
 						{[0, 1, 2, 3].map((value) => {

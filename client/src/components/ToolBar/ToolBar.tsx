@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import {
 	styled,
 	AppBar,
@@ -37,7 +37,7 @@ const StyleTab = styled(Tab)`
   	color: #15bb66 !important;
 `;
 
-export default function ToolBar() {
+export default function ToolBar(): ReactElement {
 
 	const [tab, setTab] = React.useState(0);
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -134,23 +134,24 @@ export default function ToolBar() {
 				</IconButton>
 				<SearchBar></SearchBar>
 				<Box sx={{
-					display: { xs: "none", lg: "unset" }, width: "100%", height: "64px",
-					position: "absolute", padding: "0px 110px"
+					width: "100%",
+					height: "64px",
+					display: { xs: "none", lg: "unset" },
+					position: "fixed"
 				}}>
 					<Tabs value={tab} onChange={handleChangeTab} centered>
-						<StyleTab icon={
-							<Home fontSize="large" />}
-						/>
-						<StyleTab icon={
-							<Group fontSize="large" />}
-						/>
-						<StyleTab icon={
-							<Groups fontSize="large" />}
-						/>
+						<StyleTab icon={<Home fontSize="large" />} />
+						<StyleTab icon={<Group fontSize="large" />} />
+						<StyleTab icon={<Groups fontSize="large" />} />
 						<StyleTab label="Icon Four" />
 					</Tabs>
 				</Box>
-				<Box sx={{ display: { xs: "none", md: "flex" }, marginLeft: "auto", marginRight: { md: "auto", lg: "0" } }}>
+				<Box sx={{
+					display: { xs: "none", md: "flex" },
+					marginLeft: "auto",
+					marginRight: { md: "auto", lg: "0" },
+					justifyContent: "flex-end"
+				}}>
 					<IconButton size="large" color="inherit">
 						<Badge badgeContent={1} color="error">
 							<MailIcon />
@@ -161,13 +162,26 @@ export default function ToolBar() {
 							<NotificationsIcon />
 						</Badge>
 					</IconButton>
-					<Link to="/profile" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+					<Link to="/profile" style={{
+						display: "flex",
+						alignItems: "center",
+						textDecoration: "none"
+					}}>
 						<Chip
-							sx={{ height: "38px", fontSize: "1rem", flexDirection: "row-reverse" }}
+							sx={{
+								height: "38px",
+								borderRadius: "20px",
+								marginLeft: "12px",
+								fontSize: "1rem",
+								flexDirection: "row-reverse"
+							}}
 							avatar={<Avatar
-								sx={{ width: "40px !important", height: "40px !important", marginLeft: "0 !important" }}>
+								sx={{
+									width: "40px !important",
+									height: "40px !important",
+								}}>
 							</Avatar>}
-							label="Name"
+							label={"Name"}
 							onClick={handleClickAvt} />
 					</Link>
 				</Box>
