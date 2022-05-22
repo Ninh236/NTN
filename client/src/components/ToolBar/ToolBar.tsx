@@ -16,9 +16,10 @@ import {
 import SearchBar from "./SearchBar";
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
-import { Home, Group, Groups, LiveTv } from "@mui/icons-material";
+import { Home, Group, Groups, LiveTv, Settings, LogoutOutlined } from "@mui/icons-material";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
 
@@ -35,19 +36,18 @@ const useStyles = makeStyles({
 	navTab: {
 		height: "64px",
 		width: "8vw",
-		margin: "0px 10px",
-		color: "#15bb66",
+		margin: "0px 10px !important",
+		color: "#15bb66 !important",
 	},
 });
 
 export default function ToolBar(): ReactElement {
 	const styles = useStyles();
 	const [tab, setTab] = React.useState(0);
-	const routes = ["/home", "/friends"];
-
-	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [options, setOptions] = React.useState(false);
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+	const routes = ["/home", "/friends"];
 	const isMenuOpen = Boolean(anchorEl);
 	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -55,8 +55,8 @@ export default function ToolBar(): ReactElement {
 		setTab(newTab);
 	};
 
-	const handleClickAvt = () => {
-		console.log("Click avatar");
+	const handleOptions = (event: React.MouseEvent<HTMLElement>) => {
+		setAnchorEl(event.currentTarget);
 	};
 
 	const handleMobileMenuClose = () => {
@@ -72,8 +72,12 @@ export default function ToolBar(): ReactElement {
 		handleMobileMenuClose();
 	};
 
-	const menuId = "account-menu";
-	const renderMenu = (
+	const handleLogout = () => {
+		handleMenuClose;
+	};
+
+	const OptsId = "options-menu";
+	const renderOptions = (
 		<Menu
 			sx={{ top: "48px", right: 0 }}
 			anchorEl={anchorEl}
@@ -81,7 +85,7 @@ export default function ToolBar(): ReactElement {
 				vertical: "top",
 				horizontal: "right",
 			}}
-			id={menuId}
+			id={OptsId}
 			keepMounted
 			transformOrigin={{
 				vertical: "top",
@@ -90,12 +94,16 @@ export default function ToolBar(): ReactElement {
 			open={isMenuOpen}
 			onClose={handleMenuClose}
 		>
-			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
+			<MenuItem onClick={handleMenuClose}>
+				<Settings sx={{ mr: "0.5rem" }} /> Cài đặt
+			</MenuItem>
+			<MenuItem onClick={handleLogout}>
+				<LogoutOutlined sx={{ mr: "0.5rem" }} /> Đăng xuất
+			</MenuItem>
 		</Menu>
 	);
 
-	const mobileMenuId = "primary-search-account-menu-mobile";
+	const mobileMenuId = "mobile-menu";
 	const renderMobileMenu = (
 		<Menu
 			anchorEl={mobileMoreAnchorEl}
@@ -141,7 +149,7 @@ export default function ToolBar(): ReactElement {
 				<Box sx={{
 					width: "100%",
 					height: "64px",
-					display: { xs: "none", lg: "unset" },
+					display: { xs: "none", lg: "unset" }
 				}}>
 					<Tabs value={tab} onChange={handleChangeTab} centered>
 						<Tab className={styles.navTab} icon={<Home fontSize="large" />}
@@ -158,6 +166,28 @@ export default function ToolBar(): ReactElement {
 					mr: { md: "auto", lg: "0" },
 					justifyContent: "flex-end"
 				}}>
+					<Link to="/profile" style={{
+						display: "flex",
+						alignItems: "center",
+						textDecoration: "none"
+					}}>
+						<Chip
+							sx={{
+								height: "38px",
+								borderRadius: "20px",
+								mr: "1rem",
+								fontSize: "1rem",
+								fontWeight: "bold",
+							}}
+							avatar={<Avatar
+								sx={{
+									width: "40px !important",
+									height: "40px !important",
+									margin: "0 !important"
+								}}>
+							</Avatar>}
+							label={"Name"} />
+					</Link>
 					<IconButton size="large" color="inherit">
 						<Badge badgeContent={1} color="error">
 							<MailIcon />
@@ -168,29 +198,12 @@ export default function ToolBar(): ReactElement {
 							<NotificationsIcon />
 						</Badge>
 					</IconButton>
-					<Link to="/profile" style={{
-						display: "flex",
-						alignItems: "center",
-						textDecoration: "none"
-					}}>
-						<Chip
-							sx={{
-								height: "38px",
-								borderRadius: "20px",
-								ml: "12px",
-								fontSize: "1rem",
-								fontWeight: "bold",
-								flexDirection: "row-reverse"
-							}}
-							avatar={<Avatar
-								sx={{
-									width: "40px !important",
-									height: "40px !important",
-								}}>
-							</Avatar>}
-							label={"Name"}
-							onClick={handleClickAvt} />
-					</Link>
+					<IconButton
+						onClick={handleOptions}
+						size="large"
+						color="inherit">
+						<ArrowDropDownIcon />
+					</IconButton>
 				</Box>
 				<Box sx={{ height: "auto", display: { xs: "flex", md: "none" } }}>
 					<IconButton size="large" onClick={handleMobileMenuOpen}>
@@ -199,7 +212,7 @@ export default function ToolBar(): ReactElement {
 				</Box>
 			</Toolbar>
 			{renderMobileMenu}
-			{renderMenu}
+			{renderOptions}
 		</StyledAppBar >
 	);
 }
