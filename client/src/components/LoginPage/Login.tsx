@@ -8,10 +8,12 @@ import {
 	Checkbox,
 	InputAdornment,
 	IconButton,
-	useMediaQuery
+	useMediaQuery,
+	Alert,
+	Snackbar
 } from "@mui/material";
-import { ReactElement, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { ReactElement, useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import CustomTextField from "../CustomInput/TextField/TextField";
 import {
 	Lock,
@@ -23,10 +25,25 @@ import { useForm } from "../../hooks/useForm";
 import { Copyright } from "../Copyright";
 import { useStyle } from "./LoginStyle";
 import { CustomInput } from "../CustomInput/CustomInput";
+import { connect, ConnectedProps } from "react-redux";
+import { ApplicationState } from "../../store";
+import { changeOpenLostConnectAlert } from "../../store/actions/app/changeOpenLostConnetAlert";
 
-function Login(): ReactElement {
+
+const connector = connect(
+	(state: ApplicationState) => ({
+		
+	}),
+	{
+		changeOpenLostConnectAlert,
+	}
+);
+
+function Login({
+	changeOpenLostConnectAlert,
+}: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyle();
-	const matches = useMediaQuery("(min-height: 450px)");
+	const navigate = useNavigate();
 
 	const validate = (fieldValues = values) => {
 		const tmp = { ...errors };
@@ -56,16 +73,44 @@ function Login(): ReactElement {
 		);
 
 	const [showPassword, setShowPassword] = useState<boolean>(false);
+	const [showError, setShowError] = useState<boolean>(false);
 
 	const handleClickShowPassword = () => {
 		setShowPassword(!showPassword);
 	};
 
-	const handleClickSubmit = (event: any) => {
-		event.preventDefault();
+	const handleClickSubmit = () => {
 		if (validate(values)) {
 			console.log(values);
-			resetForm();
+			fetch("http://127.0.0.1:8000/api/login", {
+				method: "POST",
+				mode: "cors",
+				headers: {
+					"Authorization": "Bearer c1ed53c92a5be2cf2309f4c06b9a44bbf82e6c367d814c01442417ebb39a6321",
+					"Cache-Control": "no-cache",
+					"Content-Type": "application/json",
+					"Accept": "application/json",
+				},
+				body: JSON.stringify(values),
+			})
+				.then(res => {
+					console.log(res.status);
+					return res.json();
+				})
+				.then(data => {
+					console.log(data);
+					if ("error" in data) {
+						console.log(1);
+						return;
+					} else {
+						resetForm();
+						navigate("/home");
+					}
+				}).catch(errors => {
+					console.log(errors);
+					changeOpenLostConnectAlert(true);
+					setShowError(true);
+				});
 		}
 	};
 
@@ -75,6 +120,11 @@ function Login(): ReactElement {
 				<Box
 					className={styles.loginBox}
 					component="form"
+					onKeyDown={(event: React.KeyboardEvent) => {
+						if (event.code === "Enter") {
+							handleClickSubmit();
+						}
+					}}
 				>
 					<Typography
 						sx={{
@@ -172,4 +222,4 @@ function Login(): ReactElement {
 	);
 }
 
-export default Login;
+export default connector(Login);

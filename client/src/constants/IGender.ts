@@ -1,5 +1,5 @@
 export interface IGender {
     id: number;
     title: string;
-    value: string;
+    value: number;
 }
