@@ -3,7 +3,7 @@ import bgImg from "../../assets/imgs/bg-01.webp";
 
 export const useStyle = makeStyles({
 	root: {
-		backgroundColor: "grey",
+		backgroundColor: "#F0F2F5",
 		
 	}, 
 	loginBox: {
