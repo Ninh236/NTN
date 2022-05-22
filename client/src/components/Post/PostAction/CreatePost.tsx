@@ -1,12 +1,11 @@
 import React from "react";
 import {
 	styled,
-	Box,
 	Card,
 	CardContent,
 	Avatar,
-	ButtonBase,
 	Button,
+	ButtonBase,
 	Dialog,
 	DialogActions,
 	DialogContent,
@@ -15,12 +14,16 @@ import {
 	TextareaAutosize,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import "../../assets/style/CreatePost.css";
+import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
+import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 
 const CreatePost = styled(Card)`
-	height: 125px;
-	width: 500px !important;
-	margin-top: 16px;
+	height: 150px;
+	width: 640px !important;
+	margin: auto;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
 `;
 
 const TextPostArea = styled(TextareaAutosize)`
@@ -31,20 +34,19 @@ const TextPostArea = styled(TextareaAutosize)`
 	outline: none;
 	font-family: inherit;
 	font-size: 1.25rem;
-	font-weight: 425;
 	letter-spacing: 0.25px;
 `;
 const useStyles = makeStyles({
 	createTextPost: {
 		background: "#f5f5f5 !important",
 		color: "#65676b !important",
-		paddingLeft: "14px  !important",
-		borderRadius: "25px  !important",
-		margin: "auto !important",
+		paddingLeft: "1.5rem !important",
+		borderRadius: "25px !important",
+		margin: "0 20px !important",
 		fontSize: "1.0625rem",
-		fontWeight: 400,
+		fontWeight: "medium",
 		height: "40px",
-		minWidth: "400px",
+		minWidth: "500px",
 		justifyContent: "flex-start !important",
 		transitionDuration: "0.35s",
 		"&:hover": {
@@ -52,6 +54,18 @@ const useStyles = makeStyles({
 			transitionDuration: "0.35s",
 		}
 	},
+
+	createOtherPost: {
+		height: "48px",
+		fontSize: "18px",
+		borderRadius: "18px	!important",
+		padding: "2px 6px !important",
+		fontWeight: "bold",
+		"&:hover": {
+			backgroundColor: "#00000015 !important",
+			transitionDuration: "0.35s",
+		}
+	}
 });
 
 export default function CreatPost() {
@@ -84,16 +98,16 @@ export default function CreatPost() {
 							alignItems: "center",
 						},
 					}}>
-					<DialogTitle>
+					<DialogTitle fontWeight="bold">
 						{"Tạo bài viết"}
 					</DialogTitle>
-					<DialogContent sx={{ padding: 0 }}>
+					<DialogContent sx={{ p: 0 }}>
 						<Divider />
 						<TextPostArea minRows="6" maxRows="6" autoFocus
 							placeholder="Chia sẻ với mọi nguời nào!" />
 					</DialogContent>
 					<DialogActions sx={{ width: "100%" }}>
-						<Button sx={{ width: "100%", color: "#48bf53" }}
+						<Button sx={{ width: "100%", fontWeight: "bold" }}
 							onClick={handleCloseTextPost}>
 							Đăng
 						</Button>
@@ -101,7 +115,20 @@ export default function CreatPost() {
 				</Dialog>
 			</CardContent>
 			<Divider variant="middle" />
-			<Box></Box>
+			<CardContent sx={{ display: "flex", alignItems: "center", justifyContent: "space-around", p: "10px" }}>
+				<ButtonBase className={styles.createOtherPost} >
+					<VideocamOutlinedIcon sx={{ mr: "5px" }} color="error" />
+					Đăng video
+				</ButtonBase>
+				<ButtonBase className={styles.createOtherPost}>
+					<PhotoLibraryOutlinedIcon sx={{ mr: "5px" }} color="success" />
+					Đăng ảnh
+				</ButtonBase>
+				<ButtonBase className={styles.createOtherPost}>
+					<FlagOutlinedIcon sx={{ mr: "5px" }} color="info" />
+					Sự kiện
+				</ButtonBase>
+			</CardContent>
 		</CreatePost >
 	);
 }

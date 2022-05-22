@@ -1,10 +1,14 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import React, { ReactElement } from "react";
-import {  Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./components/HomePage/Home";
 import MainPage from "./components/MainPage/MainPage";
 import Login from "./components/LoginPage/Login";
 import Registration from "./components/RegistrationPage/Registration";
+import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
+import SearchBar from "./components/ToolBar/SearchBar";
+import { Box } from "@mui/system";
+import Profile from "./components/ProfilePage/Profile";
 
 const theme = createTheme({
 	palette: {
@@ -31,7 +35,14 @@ function App(): ReactElement {
 					<Route path="/registration" element={<Registration />} />
 					<Route path="/" element={<MainPage />}>
 						<Route path="/home" element={<Home />} />
+						<Route path="/profile" element={<Profile />} />
 					</Route>
+					<Route path="test" element={<Box><SearchBar /></Box>} />
+					<Route
+						path="*"
+						element={
+							<NotFoundPage />
+						} />
 				</Routes>
 			</ThemeProvider>
 		</React.Fragment>

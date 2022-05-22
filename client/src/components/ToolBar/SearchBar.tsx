@@ -7,7 +7,7 @@ import {
 	ListItemText,
 	ListItemAvatar,
 	Avatar,
-	ClickAwayListener
+	ClickAwayListener,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
@@ -29,9 +29,7 @@ const Search = styled("div")(({ theme }) => ({
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
-	padding: theme.spacing(0, 2),
 	height: "100%",
-	position: "absolute",
 	pointerEvents: "none",
 	display: "flex",
 	alignItems: "center",
@@ -41,7 +39,6 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	"& .MuiInputBase-input": {
 		padding: theme.spacing(1, 1, 1, 0),
-		paddingLeft: `calc(1em + ${theme.spacing(4)})`,
 		transition: theme.transitions.create("width"),
 		width: "100%",
 		[theme.breakpoints.up("md")]: {
@@ -52,36 +49,54 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function CheckboxList() {
 
-	const [showSuggest, setSuggest] = React.useState(false);
+	const [searchHistory, setSearchHistory] = React.useState([1, 2, 3, 4]);
+	const [suggestSearch, setSuggestSearch] = React.useState([0]);
+	const [searchContent, setSearchContent] = React.useState("");
+	const [showSuggest, setShowSuggest] = React.useState(false);
+
+	const handleSearching = (event: any) => {
+		setSearchContent(event.target.value);
+		setSuggestSearch(searchHistory);
+	};
 
 	const handleClick = () => {
-		setSuggest(true);
+		setShowSuggest(true);
 	};
 
 	const handleTyping = () => {
-		setSuggest(true);
+		setShowSuggest(true);
 	};
 
 	const handleClickAway = () => {
-		setSuggest(false);
+		setShowSuggest(false);
 	};
 
 	return (
 		<ClickAwayListener onClickAway={handleClickAway}>
-			<Search onClick={handleClick}>
+			<Search sx={{ display: "inline-flex" }} onClick={handleClick} onChange={handleSearching}>
 				<SearchIconWrapper sx={{ height: "39px", padding: "0px 12px" }}>
 					<SearchIcon />
 				</SearchIconWrapper>
-				<StyledInputBase placeholder="Search…" onChange={handleTyping} />
+				<StyledInputBase placeholder="Tìm kiếm…" onChange={handleTyping} />
 				{showSuggest ? (
 					<List onClick={handleClick}
 						dense
 						sx={{
-							width: "233.962px", bgcolor: "background.paper", position: "absolute",
-							boxShadow: "rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px"
+							width: "233.962px", bgcolor: "background.paper", position: "fixed", top: "64px",
+							boxShadow: 1
 						}}>
-						{[0, 1, 2, 3].map((value) => {
-							const labelId = `checkbox-list-secondary-label-${value}`;
+						{searchContent != "" ? (
+							<ListItem disablePadding>
+								<ListItemButton>
+									<ListItemAvatar>
+										<Avatar />
+									</ListItemAvatar>
+									<ListItemText primary={searchContent} />
+								</ListItemButton>
+							</ListItem>
+						) : null}
+						{suggestSearch.map((value) => {
+							const labelId = `${value}`;
 							return (
 								<ListItem
 									key={value}
@@ -90,13 +105,13 @@ export default function CheckboxList() {
 										<ListItemAvatar>
 											<Avatar />
 										</ListItemAvatar>
-										<ListItemText id={labelId} primary={`User ${value + 1}`} />
+										<ListItemText id={labelId} primary={`User ${value}`} />
 									</ListItemButton>
 								</ListItem>
 							);
 						})}
 					</List>) : null}
 			</Search>
-		</ClickAwayListener>
+		</ClickAwayListener >
 	);
 }

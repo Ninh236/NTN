@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import {
 	styled,
 	AppBar,
@@ -14,35 +14,37 @@ import {
 	Avatar
 } from "@mui/material";
 import SearchBar from "./SearchBar";
+import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
-import { Home, Group, Groups } from "@mui/icons-material";
+import { Home, Group, Groups, LiveTv } from "@mui/icons-material";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuIcon from "@mui/icons-material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
 
-import "../../assets/style/ToolBar.css";
-
-
 const StyledAppBar = styled(AppBar)`
 	position: sticky;
 	top: 0;
 	maxHeight: 64px;
-  background-color: white;
-  color: #15bb66;
+  	background-color: white;
+  	color: #15bb66;
 	display: flex;
 `;
 
-const StyleTab = styled(Tab)`
-  height: 64px;
-	width: 8vw;
-	margin: 0px 10px;
-  color: #15bb66 !important;
-`;
+const useStyles = makeStyles({
+	navTab: {
+		height: "64px",
+		width: "8vw",
+		margin: "0px 10px",
+		color: "#15bb66",
+	},
+});
 
-export default function ToolBar() {
-
+export default function ToolBar(): ReactElement {
+	const styles = useStyles();
 	const [tab, setTab] = React.useState(0);
+	const routes = ["/home", "/friends"];
+
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -137,23 +139,25 @@ export default function ToolBar() {
 				</IconButton>
 				<SearchBar></SearchBar>
 				<Box sx={{
-					display: { xs: "none", lg: "unset" }, width: "100%", height: "64px",
-					position: "absolute", padding: "0px 110px"
+					width: "100%",
+					height: "64px",
+					display: { xs: "none", lg: "unset" },
 				}}>
 					<Tabs value={tab} onChange={handleChangeTab} centered>
-						<StyleTab icon={
-							<Home fontSize="large" />}
-						/>
-						<StyleTab icon={
-							<Group fontSize="large" />}
-						/>
-						<StyleTab icon={
-							<Groups fontSize="large" />}
-						/>
-						<StyleTab label="Icon Four" />
+						<Tab className={styles.navTab} icon={<Home fontSize="large" />}
+							component={Link} to={routes[0]} />
+						<Tab className={styles.navTab} icon={<Group fontSize="large" />}
+							component={Link} to={routes[1]} />
+						<Tab className={styles.navTab} icon={<Groups fontSize="large" />} />
+						<Tab className={styles.navTab} icon={<LiveTv fontSize="large" />} />
 					</Tabs>
 				</Box>
-				<Box sx={{ display: { xs: "none", md: "flex" }, marginLeft: "auto", marginRight: { md: "auto", lg: "0" } }}>
+				<Box sx={{
+					display: { xs: "none", md: "flex" },
+					ml: "auto",
+					mr: { md: "auto", lg: "0" },
+					justifyContent: "flex-end"
+				}}>
 					<IconButton size="large" color="inherit">
 						<Badge badgeContent={1} color="error">
 							<MailIcon />
@@ -164,14 +168,31 @@ export default function ToolBar() {
 							<NotificationsIcon />
 						</Badge>
 					</IconButton>
-					<Link to="/profile" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+					<Link to="/profile" style={{
+						display: "flex",
+						alignItems: "center",
+						textDecoration: "none"
+					}}>
 						<Chip
-							avatar={<Avatar></Avatar>}
-							label="Name"
+							sx={{
+								height: "38px",
+								borderRadius: "20px",
+								ml: "12px",
+								fontSize: "1rem",
+								fontWeight: "bold",
+								flexDirection: "row-reverse"
+							}}
+							avatar={<Avatar
+								sx={{
+									width: "40px !important",
+									height: "40px !important",
+								}}>
+							</Avatar>}
+							label={"Name"}
 							onClick={handleClickAvt} />
 					</Link>
 				</Box>
-				<Box sx={{ display: { xs: "flex", md: "none" } }}>
+				<Box sx={{ height: "auto", display: { xs: "flex", md: "none" } }}>
 					<IconButton size="large" onClick={handleMobileMenuOpen}>
 						<MoreIcon />
 					</IconButton>
