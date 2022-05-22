@@ -3,8 +3,10 @@ import {
 	styled,
 	InputBase,
 	Avatar,
-	Box
+	Box,
+	Button
 } from "@mui/material";
+import ActionMessage from "../../ActionMessage/ActionMessage";
 
 const CommentBox = styled(InputBase)`
 	background: #f5f5f5 !important;
@@ -27,10 +29,15 @@ const CommentBox = styled(InputBase)`
 export default function CreatePost() {
 
 	const [commentContent, setCommentContent] = React.useState("");
+	const [openMessage, setOpenMessage] = React.useState(false);
 
 	const handlePostComment = (event: any) => {
 		setCommentContent(event.target.value);
 		event.target.value = "";
+	};
+
+	const handleCloseMessage = () => {
+		setOpenMessage(false);
 	};
 
 	return (
@@ -40,8 +47,10 @@ export default function CreatePost() {
 				onKeyPress={event => {
 					if (event.key === "Enter") {
 						handlePostComment(event);
+						setOpenMessage(true);
 					}
 				}} />
+			<ActionMessage success={true} message={"Gửi bình luận thành công!"} onClose={handleCloseMessage} open={openMessage} />
 		</Box>
 	);
 }
