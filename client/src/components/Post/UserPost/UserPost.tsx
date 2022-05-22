@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, ButtonGroup, Container, Grid, IconButton, Typography } from "@mui/material";
+import { Avatar, Box, Button, ButtonGroup, Card, Container, Divider, Grid, IconButton, Typography } from "@mui/material";
 import { ReactElement, useState } from "react";
 import PostAction from "../PostAction/PostAction";
 import { useStyle } from "./UserPostStyle";
@@ -28,52 +28,51 @@ export default function UserPost(props: any): ReactElement {
 	};
 
 	return (
-		<Box className={styles.root}>
-			<Container>
-				<Grid container>
-					<Grid item xs={1}><Avatar sx={{ width: 44, height: 44, mx: "auto" }} /></Grid>
-					<Grid item xs={10}>
-						<Typography variant="body1">
-							{userData.fullName} <Typography component="span" variant="caption">{`@${userData.username}`}</Typography>
-						</Typography>
-						<Typography variant="subtitle2"> 3 phút trước</Typography>
-					</Grid>
-					<Grid item xs={1}>
-						<PostAction />
-					</Grid>
-					<Grid item xs={12} my={2} px={2}>
+		<Card className={styles.root}>
+			<Grid container>
+				<Grid item xs={1}><Avatar sx={{ width: 44, height: 44, mx: "auto" }} /></Grid>
+				<Grid item xs={10}>
+					<Typography variant="body1">
+						{userData.fullName} <Typography component="span" variant="caption">{`@${userData.username}`}</Typography>
+					</Typography>
+					<Typography variant="subtitle2"> 3 phút trước</Typography>
+				</Grid>
+				<Grid item xs={1}>
+					<PostAction />
+				</Grid>
+				<Divider variant="middle" />
+				<Grid item xs={12} my={2} px={2}>
 						asdasdasddasd
 						asdasdasddasdadsa
 						sda
-						sdada
+						sdadagjgj
 						sd
 						adaasd
 						asdasdasddasdadsaasd
 						as
 						asdsssssssssssssssssssssssssssssssssssss
 						asd
-					</Grid>
-					<Grid item xs={12} justifyContent="space-between" display="flex">
-						<Typography component="span" variant="subtitle2">12 người thích</Typography>
-						<Typography component="span" variant="subtitle2">5 bình luận</Typography>
-					</Grid>
-					<Grid item xs={12} justifyContent="space-between">
-						<ButtonGroup variant="text" fullWidth>
-							<Button startIcon={<FavoriteBorderIcon />}>
-								Thích
-							</Button>
-							<Button startIcon={<CommentOutlinedIcon />} color="secondary" onClick={handleClickComments}>
-								Bình luận
-							</Button>
-						</ButtonGroup>
-					</Grid>
-					<Grid item xs={12} display={showComment ? "block" : "none"}>
-						<Comment />
-						<Comment />
-						<CreateComment />
-					</Grid>
 				</Grid>
-			</Container>
-		</Box>
+				<Grid item xs={12} justifyContent="space-between" display="flex">
+					<Typography component="span" variant="subtitle2">12 người thích</Typography>
+					<Typography component="span" variant="subtitle2">5 bình luận</Typography>
+				</Grid>
+				<Grid item xs={12} justifyContent="space-between">
+					<ButtonGroup variant="text" fullWidth>
+						<Button startIcon={<FavoriteBorderIcon />}>
+								Thích
+						</Button>
+						<Button startIcon={<CommentOutlinedIcon />} color="secondary" onClick={handleClickComments}>
+								Bình luận
+						</Button>
+					</ButtonGroup>
+				</Grid>
+				<Grid item xs={12} display={showComment ? "block" : "none"}>
+					<Comment />
+					<Comment />
+					<CreateComment />
+				</Grid>
+			</Grid>
+		</Card>
 	);
 }

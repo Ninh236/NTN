@@ -12,6 +12,8 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function Home(): ReactElement {
 	const styles = useStyle();
 
+	console.log(document.cookie);
+
 	return (
 		<Box>
 			<CreatePost />
