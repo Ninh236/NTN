@@ -25,6 +25,8 @@ function LostConnectAlert({
 		changeOpenLostConnectAlert(false);
 	};
 
+	console.log(open);
+
 	return (
 		<Snackbar 
 			anchorOrigin={{vertical: "top", horizontal: "center"}} 

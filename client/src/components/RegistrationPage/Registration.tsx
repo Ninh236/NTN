@@ -9,13 +9,16 @@ import {
 	Avatar 
 } from "@mui/material";
 import { ReactElement, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useStyle } from "./RegistrationStyle";
 import { CustomInput } from "../CustomInput/CustomInput";
 import { useForm } from "../../hooks/useForm";
 import { IGender } from "../../constants/IGender";
 import { Copyright } from "../Copyright";
 import { containAZ, containaz, containNum, containOther, containSpec, isValidEmail, isValidName } from "../../utils/validation";
+import { connect, ConnectedProps } from "react-redux";
+import { ApplicationState } from "../../store";
+import { saveUserDataInCookies } from "../../store/actions/app/saveUserDataInCookies";
 
 const genderItems: Array<IGender> = [
 	{ id: 0, title: "Nam", value: 0 },
@@ -23,8 +26,20 @@ const genderItems: Array<IGender> = [
 	{ id: 2, title: "Khác", value: 2 }
 ];
 
-export default function Registration(): ReactElement {
+const connector = connect(
+	(state: ApplicationState) => ({
+
+	}), 
+	{
+		saveUserDataInCookies,
+	}
+);
+
+function Registration({
+	saveUserDataInCookies,
+}: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyle();
+	const navigate = useNavigate();
 
 	const validate = (fieldValues = values) => {
 		const tmp = { ...errors };
@@ -148,6 +163,12 @@ export default function Registration(): ReactElement {
 				})
 				.then(data => {
 					console.log(data);
+					if ("errors" in data) {
+						console.log(1);
+					} else {
+						saveUserDataInCookies(data);
+						navigate("/home");
+					}
 				});
 		}
 	};
@@ -327,3 +348,5 @@ export default function Registration(): ReactElement {
 		</>
 	);
 }
+
+export default connector(Registration);

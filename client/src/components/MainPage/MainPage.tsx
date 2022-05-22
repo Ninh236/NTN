@@ -1,9 +1,32 @@
 import { Box } from "@mui/material";
-import { ReactElement } from "react";
-import { Outlet } from "react-router-dom";
+import { ReactElement, useEffect } from "react";
+import { connect, ConnectedProps } from "react-redux";
+import { Outlet, useNavigate } from "react-router-dom";
+import { ApplicationState } from "../../store";
 import ToolBar from "../ToolBar/ToolBar";
 
-export default function MainPage(): ReactElement {
+const connector = connect(
+	(state: ApplicationState) => ({
+		isLoggedIn: state.app.isLoggedIn,
+	}),
+	{
+
+	}
+);
+
+function MainPage({
+	isLoggedIn,
+}: ConnectedProps<typeof connector>): ReactElement {
+	const navigate = useNavigate();
+	
+	console.log(isLoggedIn);
+
+	useEffect(() => {
+		if (!isLoggedIn) {
+			navigate("/login");
+		}
+	}, [isLoggedIn]);
+
 	return (
 		<Box>
 			<ToolBar />
@@ -11,3 +34,5 @@ export default function MainPage(): ReactElement {
 		</Box>
 	);
 }
+
+export default connector(MainPage);
