@@ -12,7 +12,7 @@ import {
 	Alert,
 	Snackbar
 } from "@mui/material";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import CustomTextField from "../CustomInput/TextField/TextField";
 import {
@@ -28,22 +28,39 @@ import { CustomInput } from "../CustomInput/CustomInput";
 import { connect, ConnectedProps } from "react-redux";
 import { ApplicationState } from "../../store";
 import { changeOpenLostConnectAlert } from "../../store/actions/app/changeOpenLostConnetAlert";
+import { saveUserDataInCookies } from "../../store/actions/app/saveUserDataInCookies";
 
 
 const connector = connect(
 	(state: ApplicationState) => ({
-		
+		isLoggedIn: state.app.isLoggedIn,
 	}),
 	{
 		changeOpenLostConnectAlert,
+		saveUserDataInCookies,
 	}
 );
 
 function Login({
+	isLoggedIn,
 	changeOpenLostConnectAlert,
+	saveUserDataInCookies
 }: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyle();
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		console.log(1);
+		if (isLoggedIn) {
+			navigate("/home");
+		}
+	}, []);
+
+	setTimeout(() => {
+		if (isLoggedIn) {
+			navigate("/home");
+		}
+	}, 1000);
 
 	const validate = (fieldValues = values) => {
 		const tmp = { ...errors };
@@ -101,9 +118,9 @@ function Login({
 					console.log(data);
 					if ("error" in data) {
 						console.log(1);
-						return;
 					} else {
 						resetForm();
+						saveUserDataInCookies(data);
 						navigate("/home");
 					}
 				}).catch(errors => {

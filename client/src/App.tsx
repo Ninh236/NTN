@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider } from "@mui/material";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/HomePage/Home";
 import MainPage from "./components/MainPage/MainPage";
@@ -10,6 +10,9 @@ import SearchBar from "./components/ToolBar/SearchBar";
 import { Box } from "@mui/system";
 import Profile from "./components/ProfilePage/Profile";
 import LostConnectAlert from "./components/LostConnectAlert/LostConnectAlert";
+import { findUserDataInCookies } from "./store/actions/app/findUserDataInCookies";
+import { connect, ConnectedProps } from "react-redux";
+import { ApplicationState } from "./store";
 
 const theme = createTheme({
 	palette: {
@@ -27,7 +30,22 @@ const theme = createTheme({
 	}
 });
 
-function App(): ReactElement {
+const connector = connect(
+	(state: ApplicationState) => ({
+
+	}),
+	{
+		findUserDataInCookies,
+	}
+);
+
+function App({
+	findUserDataInCookies,
+}: ConnectedProps<typeof connector>): ReactElement {
+	useEffect(() => {
+		findUserDataInCookies();
+	}, []);
+
 	return (
 		<React.Fragment>
 			<ThemeProvider theme={theme}>
@@ -51,4 +69,4 @@ function App(): ReactElement {
 	);
 }
 
-export default App;
+export default connector(App);

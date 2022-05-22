@@ -3,7 +3,7 @@ import {
 	styled,
 	AppBar,
 	Box,
-	Toolbar,
+	Toolbar as MuiToolBar,
 	IconButton,
 	Badge,
 	Menu,
@@ -22,6 +22,9 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import { connect, ConnectedProps } from "react-redux";
+import { ApplicationState } from "../../store";
+import { logoutAndDeleteCookies } from "../../store/actions/app/logoutAndDeleteCookies";
 
 const StyledAppBar = styled(AppBar)`
 	position: sticky;
@@ -41,7 +44,18 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function ToolBar(): ReactElement {
+const connector = connect(
+	(state: ApplicationState) => ({
+		isLoggedIn: state.app.isLoggedIn,
+	}),
+	{
+		logoutAndDeleteCookies,
+	}
+);
+
+function ToolBar({
+	logoutAndDeleteCookies,
+}: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyles();
 	const [tab, setTab] = React.useState(0);
 	const [options, setOptions] = React.useState(false);
@@ -73,6 +87,8 @@ export default function ToolBar(): ReactElement {
 	};
 
 	const handleLogout = () => {
+		console.log(1);
+		logoutAndDeleteCookies();
 		handleMenuClose;
 	};
 
@@ -141,7 +157,7 @@ export default function ToolBar(): ReactElement {
 
 	return (
 		<StyledAppBar>
-			<Toolbar sx={{ width: "100vw" }}>
+			<MuiToolBar sx={{ width: "100vw" }}>
 				<IconButton size="large" edge="start" color="inherit">
 					<MenuIcon />
 				</IconButton>
@@ -210,9 +226,11 @@ export default function ToolBar(): ReactElement {
 						<MoreIcon />
 					</IconButton>
 				</Box>
-			</Toolbar>
+			</MuiToolBar>
 			{renderMobileMenu}
 			{renderOptions}
 		</StyledAppBar >
 	);
 }
+
+export default connector(ToolBar);
