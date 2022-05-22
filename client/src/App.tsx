@@ -9,6 +9,7 @@ import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import SearchBar from "./components/ToolBar/SearchBar";
 import { Box } from "@mui/system";
 import Profile from "./components/ProfilePage/Profile";
+import LostConnectAlert from "./components/LostConnectAlert/LostConnectAlert";
 
 const theme = createTheme({
 	palette: {
@@ -30,6 +31,7 @@ function App(): ReactElement {
 	return (
 		<React.Fragment>
 			<ThemeProvider theme={theme}>
+				<LostConnectAlert />
 				<Routes>
 					<Route path="/login" element={<Login />} />
 					<Route path="/registration" element={<Registration />} />

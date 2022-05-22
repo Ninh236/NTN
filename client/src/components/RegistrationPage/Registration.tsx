@@ -18,9 +18,9 @@ import { Copyright } from "../Copyright";
 import { containAZ, containaz, containNum, containOther, containSpec, isValidEmail, isValidName } from "../../utils/validation";
 
 const genderItems: Array<IGender> = [
-	{ id: 0, title: "Nam", value: "male" },
-	{ id: 1, title: "Nữ", value: "female" },
-	{ id: 2, title: "Khác", value: "other" }
+	{ id: 0, title: "Nam", value: 0 },
+	{ id: 1, title: "Nữ", value: 1 },
+	{ id: 2, title: "Khác", value: 2 }
 ];
 
 export default function Registration(): ReactElement {
@@ -101,7 +101,7 @@ export default function Registration(): ReactElement {
 				middleName: "",
 				lastName: "",
 				dob: null,
-				gender: "male",
+				gender: 0,
 				username: "",
 				email: "",
 				password: "",
@@ -120,6 +120,35 @@ export default function Registration(): ReactElement {
 	const handleClickSignUp = () => {
 		if (validate(values)) {
 			console.log(values);
+			const requestBody = {
+				"username": values.username,
+				"first_name": values.firstName,
+				"surname": values.middleName,
+				"last_name": values.lastName,
+				"birthday": values.dob.toISOString().slice(0, 10),
+				"gender": values.gender,
+				"email": values.email,
+				"password_confirmation": values.repassword,
+				"password": values.password,
+			};
+			console.log(requestBody);
+			fetch("http://127.0.0.1:8000/api/register", {
+				method: "POST",
+				mode: "cors",
+				headers: {
+					"Content-Type": "application/json",
+					"Cache-Control": "no-cache",
+					"Accept": "application/json", 
+				},
+				body: JSON.stringify(requestBody),
+			})
+				.then(res => {
+					console.log(res);
+					return res.json();
+				})
+				.then(data => {
+					console.log(data);
+				});
 		}
 	};
 
