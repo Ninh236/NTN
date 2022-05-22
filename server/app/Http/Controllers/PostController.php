@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,11 @@ class PostController extends Controller
 {
     public function getMyPosts()
     {
-        return auth()->user()->posts()->with('comments')->get();
+        return auth()->user()->posts()->with('comments')->with('tags')->get();
+    }
+
+    public function findPostById($id) {
+        return Post::where('id', $id)->with('comments')->with('tags')->first();
     }
 
     public function store(StorePostRequest $request)
@@ -20,10 +25,17 @@ class PostController extends Controller
         $files = $request->file('image');
         $path = $files->store('/images', 'public');
 
-        auth()->user()->posts()->create([
+        $post = auth()->user()->posts()->create([
             'image' => $path,
             'content' => $request->content
         ]);
+
+        foreach ($request->tags as $tag) {
+            $id = Tag::firstOrCreate([
+                'hashtag' => $tag
+            ]);
+            $post->tags()->attach($id);
+        }
 
         return response([
             'message' => 'Created new post success.'
