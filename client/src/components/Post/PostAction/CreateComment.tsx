@@ -4,7 +4,6 @@ import {
 	InputBase,
 	Avatar,
 	Box,
-	Button
 } from "@mui/material";
 import ActionMessage from "../../ActionMessage/ActionMessage";
 
@@ -50,7 +49,7 @@ export default function CreatePost() {
 						setOpenMessage(true);
 					}
 				}} />
-			<ActionMessage success={true} message={"Gửi bình luận thành công!"} onClose={handleCloseMessage} open={openMessage} />
+			<ActionMessage success message={"Gửi bình luận thành công!"} onClose={handleCloseMessage} open={openMessage} />
 		</Box>
 	);
 }
