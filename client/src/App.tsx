@@ -2,6 +2,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import React, { ReactElement } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/HomePage/Home";
+import FriendsPage from "./components/FriendsPage/FriendsPage";
 import MainPage from "./components/MainPage/MainPage";
 import Login from "./components/LoginPage/Login";
 import Registration from "./components/RegistrationPage/Registration";
@@ -38,6 +39,7 @@ function App(): ReactElement {
 					<Route path="/" element={<MainPage />}>
 						<Route path="/home" element={<Home />} />
 						<Route path="/profile" element={<Profile />} />
+						<Route path="/friends" element={<FriendsPage />} />
 					</Route>
 					<Route path="test" element={<Box><SearchBar /></Box>} />
 					<Route
