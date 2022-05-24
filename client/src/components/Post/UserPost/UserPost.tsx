@@ -2,6 +2,7 @@ import { Avatar, Box, Button, ButtonGroup, Card, Container, Divider, Grid, IconB
 import { ReactElement, useState } from "react";
 import PostAction from "../PostAction/PostAction";
 import { useStyle } from "./UserPostStyle";
+import { CommentOutlined, CommentRounded, FavoriteBorderRounded, FavoriteRounded } from "@mui/icons-material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import CreateComment from "../PostAction/CreateComment";
@@ -21,7 +22,12 @@ export default function UserPost(props: any): ReactElement {
 		username: "",
 	});
 
+	const [isLiked, setIsLiked] = useState<boolean>(false);
 	const [showComment, setShowComment] = useState<boolean>(false);
+
+	const handleClickLike = () => {
+		setIsLiked(!isLiked);
+	};
 
 	const handleClickComments = () => {
 		setShowComment(!showComment);
@@ -40,32 +46,32 @@ export default function UserPost(props: any): ReactElement {
 				<Grid item xs={1}>
 					<PostAction />
 				</Grid>
-				<Divider variant="middle" />
 				<Grid item xs={12} my={2} px={2}>
 						asdasdasddasd
 						asdasdasddasdadsa
 						sda
 						sdadagjgj
 						sd
-						adaasd
+						adaasdx
 						asdasdasddasdadsaasd
 						as
 						asdsssssssssssssssssssssssssssssssssssss
 						asd
 				</Grid>
-				<Grid item xs={12} justifyContent="space-between" display="flex">
-					<Typography component="span" variant="subtitle2">12 người thích</Typography>
-					<Typography component="span" variant="subtitle2">5 bình luận</Typography>
+				<Grid item xs={1} display="flex" justifyContent="center">
+					<IconButton onClick={handleClickLike}>
+						{isLiked ? <FavoriteRounded color="primary" /> : <FavoriteBorderRounded color="primary" />}
+					</IconButton>
 				</Grid>
-				<Grid item xs={12} justifyContent="space-between">
-					<ButtonGroup variant="text" fullWidth>
-						<Button startIcon={<FavoriteBorderIcon />}>
-								Thích
-						</Button>
-						<Button startIcon={<CommentOutlinedIcon />} color="secondary" onClick={handleClickComments}>
-								Bình luận
-						</Button>
-					</ButtonGroup>
+				<Grid item xs={1}  display="flex" justifyContent="center">
+					<IconButton onClick={handleClickComments} sx={{ mt: 0.35 }}>
+						{showComment ? <CommentRounded color="secondary" /> : <CommentOutlined color="secondary" />}
+					</IconButton>
+				</Grid>
+				<Grid item xs={6}></Grid>
+				<Grid item display="flex" xs={4} justifyContent="space-between">
+					<Typography display="inline-block" sx={{my: "auto"}} variant="subtitle2">12 người thích</Typography>
+					<Typography display="inline-block" sx={{my: "auto"}} variant="subtitle2">5 bình luận</Typography>
 				</Grid>
 				<Grid item xs={12} display={showComment ? "block" : "none"}>
 					<Comment />

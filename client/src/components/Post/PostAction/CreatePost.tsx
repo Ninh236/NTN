@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement, useState } from "react";
 import {
 	styled,
 	Card,
@@ -12,13 +12,17 @@ import {
 	DialogTitle,
 	Divider,
 	TextareaAutosize,
+	Chip,
+	Paper,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
+import { ApplicationState } from "../../../store";
+import { connect, ConnectedProps } from "react-redux";
 
-const CreatePost = styled(Card)`
+const CustomCard = styled(Card)`
 	height: 150px;
 	width: 640px !important;
 	margin: auto;
@@ -68,13 +72,60 @@ const useStyles = makeStyles({
 	}
 });
 
-export default function CreatPost() {
+const ListItem = styled("li")(({ theme }) => ({
+	margin: theme.spacing(0.5),
+}));
+
+interface Hashtag {
+	id: number;
+	label: string;
+}
+
+const mockHashtag: Hashtag[] = [
+	{ id: 0, label: "trip" },
+	{ id: 1, label: "hanoi" },
+	{ id: 2, label: "seagame2022" },
+];
+
+const connector = connect(
+	(state: ApplicationState) => ({
+		token: state.app.token,
+	})
+);
+
+function CreatePost({
+	token,
+}: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyles();
 
+	const [content, setContent] = useState<string>("");
+	const [hashtags, setHashtags] = useState<Hashtag[]>(mockHashtag);
 	const [showTextPost, setShowTextPost] = React.useState(false);
 
 	const handleOpenTextPost = () => {
 		setShowTextPost(true);
+	};
+
+	const handleChangeContent = (event: any) => {
+		setContent(event.target.value);
+	};
+
+	const handleClickCreatePost = () => {
+		const authToken = `Bearer ${token}`;
+
+		const formData = new FormData();
+
+
+		fetch("http://127.0.0.1:8000/api/post/create", {
+			method: "POST",
+			mode: "cors",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "application/json",
+				"Authorization": authToken,
+			},
+			body: JSON.stringify({ content: content }),
+		});
 	};
 
 	const handleCloseTextPost = () => {
@@ -82,7 +133,7 @@ export default function CreatPost() {
 	};
 
 	return (
-		<CreatePost>
+		<CustomCard>
 			<CardContent sx={{ display: "flex" }}>
 				<Avatar></Avatar>
 				<ButtonBase className={styles.createTextPost} onClick={handleOpenTextPost}>
@@ -93,22 +144,58 @@ export default function CreatPost() {
 					onClose={handleCloseTextPost}
 					PaperProps={{
 						style: {
-							height: "428px",
-							width: "500px",
+							height: "fit-content",
+							width: "45rem",
 							alignItems: "center",
 						},
-					}}>
+					}}
+				>
 					<DialogTitle fontWeight="bold">
 						{"Tạo bài viết"}
 					</DialogTitle>
-					<DialogContent sx={{ p: 0 }}>
+					<DialogContent sx={{ p: 0, width: "100%" }}>
 						<Divider />
-						<TextPostArea minRows="6" maxRows="6" autoFocus
-							placeholder="Chia sẻ với mọi nguời nào!" />
+						<TextPostArea 
+							minRows="10" 
+							maxRows="10" 
+							autoFocus
+							placeholder="Chia sẻ với mọi người nào!"
+							value={content}
+							onChange={handleChangeContent} 
+							sx={{
+								width: "calc(100% - 1rem)",
+								px: 0.5,
+								mx: 0,
+								ml: 1,
+							}}
+						/>
+						<Divider variant="middle"/>
+						<Paper
+							sx={{
+								display: "flex",
+								justifyContent: "center",
+								flexWrap: "wrap",
+								listStyle: "none",
+								p: 0.5,
+								m: 0,
+							}}
+							component="ul"
+						>
+							{hashtags.map((hashtag: Hashtag, index) => (
+								<ListItem key={index}>
+									<Chip
+										label={`#${hashtag.label}`}
+									/>
+								</ListItem>
+							))}
+						</Paper>
 					</DialogContent>
 					<DialogActions sx={{ width: "100%" }}>
-						<Button sx={{ width: "100%", fontWeight: "bold" }}
-							onClick={handleCloseTextPost}>
+						<Button 
+							sx={{ width: "100%", fontWeight: "bold" }}
+							onClick={handleClickCreatePost}
+							disabled={content.length === 0 || hashtags.length === 0}
+						>
 							Đăng
 						</Button>
 					</DialogActions>
@@ -129,6 +216,8 @@ export default function CreatPost() {
 					Sự kiện
 				</ButtonBase>
 			</CardContent>
-		</CreatePost >
+		</CustomCard >
 	);
 }
+
+export default connector(CreatePost);

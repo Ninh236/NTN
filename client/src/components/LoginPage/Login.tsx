@@ -54,13 +54,13 @@ function Login({
 		if (isLoggedIn) {
 			navigate("/home");
 		}
-	}, []);
+	}, [isLoggedIn]);
 
 	setTimeout(() => {
 		if (isLoggedIn) {
 			navigate("/home");
 		}
-	}, 1000);
+	}, 500);
 
 	const validate = (fieldValues = values) => {
 		const tmp = { ...errors };
