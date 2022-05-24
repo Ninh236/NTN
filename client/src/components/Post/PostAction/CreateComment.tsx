@@ -19,8 +19,8 @@ const CommentBox = styled(InputBase)`
 	justify-content: flex-start !important;
 	transition-duration: 0.35s;
 	"&:hover": {
-	background-color: #00000015 !important;
-	transition-duration: 0.35s;
+		background-color: #00000015 !important;
+		transition-duration: 0.35s;
 	}
 `;
 
