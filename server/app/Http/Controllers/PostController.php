@@ -23,8 +23,10 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $files = $request->file('image');
-        $path = $files->store('/images', 'public');
-
+        $path = null;
+        if ($files) {
+            $path = $files->store('/images', 'public');
+        }
         $post = auth()->user()->posts()->create([
             'image' => $path,
             'content' => $request->content
