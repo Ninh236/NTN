@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Paper, Stack, styled } from "@mui/material";
+import { Box, Paper, Stack, styled } from "@mui/material";
 import { ReactElement } from "react";
 import CreatePost from "../Post/PostAction/CreatePost";
 import UserPost from "../Post/UserPost/UserPost";
@@ -17,7 +17,7 @@ export default function Home(): ReactElement {
 	return (
 		<Box>
 			<CreatePost />
-			<Box className={styles.root}>
+			<Box>
 				<Stack spacing={2}>
 					<div><UserPost /></div>
 					<div><UserPost /></div>

@@ -18,7 +18,7 @@ function ProfilePage({
 	return (
 		<Box>
 			<ProfileHeader />
-			<Box bgcolor="#F0F2F5" display="flex" flexDirection="row" justifyContent="center">
+			<Box display="flex" flexDirection="row" justifyContent="center">
 				<ProfileInfo username={username} />
 				<ProfileMain />
 			</Box>
