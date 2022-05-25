@@ -4,6 +4,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { ApplicationState } from "../../store";
 import ToolBar from "../ToolBar/ToolBar";
+import { useStyle } from "./MainPageStyle";
 
 const connector = connect(
 	(state: ApplicationState) => ({
@@ -17,8 +18,11 @@ const connector = connect(
 function MainPage({
 	isLoggedIn,
 }: ConnectedProps<typeof connector>): ReactElement {
+
+	const styles = useStyle();
+
 	const navigate = useNavigate();
-	
+
 	console.log(isLoggedIn);
 
 	useEffect(() => {
@@ -28,7 +32,7 @@ function MainPage({
 	}, [isLoggedIn]);
 
 	return (
-		<Box>
+		<Box className={styles.root}>
 			<ToolBar />
 			<Outlet />
 		</Box>

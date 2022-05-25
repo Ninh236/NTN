@@ -7,6 +7,5 @@ export const useStyle = makeStyles({
 		margin: "auto",
 		padding: "1rem",
 		paddingBottom: 0,
-		backgroundColor: "white",
 	}
 });
