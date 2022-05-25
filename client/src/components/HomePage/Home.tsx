@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Paper, Stack, styled } from "@mui/material";
+import { Box, Paper, Stack, styled } from "@mui/material";
 import { ReactElement } from "react";
 import NewPostBar from "../Post/CreatePost/NewPostBar";
 import NewPostDialog from "../Post/CreatePost/NewPostDialog";
