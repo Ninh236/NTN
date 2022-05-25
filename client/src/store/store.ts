@@ -3,13 +3,19 @@ import thunk from "redux-thunk";
 import { ActionTypes } from "./ActionTypes";
 
 import { reduce as appReducer, inititalState as appIS } from "./reducers/app";
+import { reduce as createPostReducer, inititalState as createPostIS } from "./reducers/createPost"; 
+import { reduce as masterDialogReducer, inititalState as masterDialogIS} from "./reducers/masterDialog";
 
 const store = configureStore({
 	reducer: {
 		app: appReducer,
+		createPost: createPostReducer,
+		masterDialog: masterDialogReducer,
 	},
 	preloadedState: {
 		app: appIS,
+		createPost: createPostIS,
+		masterDialog: masterDialogIS,
 	},
 	middleware(getDefaultMiddleware) {
 		return [...getDefaultMiddleware(), thunk];

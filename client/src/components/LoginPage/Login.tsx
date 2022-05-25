@@ -29,7 +29,9 @@ import { connect, ConnectedProps } from "react-redux";
 import { ApplicationState } from "../../store";
 import { changeOpenLostConnectAlert } from "../../store/actions/app/changeOpenLostConnetAlert";
 import { saveUserDataInCookies } from "../../store/actions/app/saveUserDataInCookies";
-
+import { changeOpenState as changeDialogOpenState } from "../../store/actions/masterDialog/changeOpenState";
+import { setDialogContent } from "../../store/actions/masterDialog/setDialogContent";
+import { DialogContentType } from "../MasterDialog/DialogContent";
 
 const connector = connect(
 	(state: ApplicationState) => ({
@@ -38,13 +40,17 @@ const connector = connect(
 	{
 		changeOpenLostConnectAlert,
 		saveUserDataInCookies,
+		changeDialogOpenState,
+		setDialogContent,
 	}
 );
 
 function Login({
 	isLoggedIn,
 	changeOpenLostConnectAlert,
-	saveUserDataInCookies
+	saveUserDataInCookies,
+	changeDialogOpenState,
+	setDialogContent,
 }: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyle();
 	const navigate = useNavigate();
@@ -55,12 +61,6 @@ function Login({
 			navigate("/home");
 		}
 	}, [isLoggedIn]);
-
-	setTimeout(() => {
-		if (isLoggedIn) {
-			navigate("/home");
-		}
-	}, 500);
 
 	const validate = (fieldValues = values) => {
 		const tmp = { ...errors };
@@ -119,9 +119,18 @@ function Login({
 					if ("error" in data) {
 						console.log(1);
 					} else {
-						resetForm();
-						saveUserDataInCookies(data);
-						navigate("/home");
+						console.log(values.username);	
+						setDialogContent(
+							"Đăng nhập thành công",
+							`Chào mừng quay trở lại @${values.username}`
+						);
+						setTimeout(() => {
+							saveUserDataInCookies(data);
+							resetForm();
+							changeDialogOpenState(false);
+							navigate("/home");
+						}, 1500);
+						changeDialogOpenState(true, DialogContentType.NOTIFY_DIALOG);
 					}
 				}).catch(errors => {
 					console.log(errors);

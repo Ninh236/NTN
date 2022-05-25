@@ -14,6 +14,10 @@ import {
 	TextareaAutosize,
 	Chip,
 	Paper,
+	TextField,
+	IconButton,
+	InputAdornment,
+	Box,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
@@ -21,6 +25,7 @@ import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import { ApplicationState } from "../../../store";
 import { connect, ConnectedProps } from "react-redux";
+import { Visibility, VisibilityOff, AddCircleRounded, Label, CloseRounded } from "@mui/icons-material";
 
 const CustomCard = styled(Card)`
 	height: 150px;
@@ -69,6 +74,21 @@ const useStyles = makeStyles({
 			backgroundColor: "#00000015 !important",
 			transitionDuration: "0.35s",
 		}
+	},
+
+	roundedTextField: {
+		"& > div": {
+			height: "32px",
+			marginTop: "2px",
+			marginBottom: "0px",
+		},
+		"& fieldset": {
+			borderRadius: "50px !important",
+		},
+		"& input": {
+			paddingTop: "4px",
+			paddingBottom: "4px",
+		}
 	}
 });
 
@@ -77,15 +97,8 @@ const ListItem = styled("li")(({ theme }) => ({
 }));
 
 interface Hashtag {
-	id: number;
 	label: string;
 }
-
-const mockHashtag: Hashtag[] = [
-	{ id: 0, label: "trip" },
-	{ id: 1, label: "hanoi" },
-	{ id: 2, label: "seagame2022" },
-];
 
 const connector = connect(
 	(state: ApplicationState) => ({
@@ -99,7 +112,8 @@ function CreatePost({
 	const styles = useStyles();
 
 	const [content, setContent] = useState<string>("");
-	const [hashtags, setHashtags] = useState<Hashtag[]>(mockHashtag);
+	const [hashtags, setHashtags] = useState<Hashtag[]>([]);
+	const [newHashtag, setNewHashtag] = useState<Hashtag>({ label: "" });
 	const [showTextPost, setShowTextPost] = React.useState(false);
 
 	const handleOpenTextPost = () => {
@@ -110,21 +124,61 @@ function CreatePost({
 		setContent(event.target.value);
 	};
 
+	const handleChangeNewHashtag = (event: any) => {
+		setNewHashtag({ label: event.target.value.replace(" ", "")});
+	};
+
+	const handleClickAddHashtag = () => {
+		if (hashtags.find(el => el.label === newHashtag.label) === undefined) {
+			setHashtags([...hashtags, newHashtag]);	
+			setNewHashtag({ label: "" });
+		}
+	};
+
+	const handleDeleteHashtag = (deleteHashtag: Hashtag) => {
+		setHashtags((hashtags) => hashtags.filter((hashtag) => hashtag.label !== deleteHashtag.label));
+	};
+
 	const handleClickCreatePost = () => {
 		const authToken = `Bearer ${token}`;
 
-		const formData = new FormData();
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore: dfwfsdfsdf
+		console.log(document.getElementById("anh").files[0]);
 
+		const tmp = {
+			content: content,
+			tags: hashtags.map(hashtag => hashtag.label),
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
+			image: document.getElementById("anh").files[0],
+		};
+
+		console.log(tmp);
+
+		const formData = new FormData();
+		formData.append("content", content);
+		hashtags.map((hashtag, index) => {
+			formData.append(`tags[${index}]`, `${hashtag.label}`);
+		});
+		formData.append("image", tmp.image);
+
+		console.log(formData);
 
 		fetch("http://127.0.0.1:8000/api/post/create", {
 			method: "POST",
 			mode: "cors",
 			headers: {
-				"Content-Type": "application/json",
+				//"Content-Type": "multipart/form-data",
 				"Accept": "application/json",
 				"Authorization": authToken,
 			},
-			body: JSON.stringify({ content: content }),
+			body: formData,
+		}).then(res => {
+			console.log(res.status);
+			return res.json();
+		}).then(data => {
+			console.log(data);
 		});
 	};
 
@@ -164,13 +218,14 @@ function CreatePost({
 							onChange={handleChangeContent} 
 							sx={{
 								width: "calc(100% - 1rem)",
+								height: "fit-content",
 								px: 0.5,
 								mx: 0,
 								ml: 1,
 							}}
 						/>
 						<Divider variant="middle"/>
-						<Paper
+						<Box
 							sx={{
 								display: "flex",
 								justifyContent: "center",
@@ -178,17 +233,43 @@ function CreatePost({
 								listStyle: "none",
 								p: 0.5,
 								m: 0,
+								overflow: "hidden"
 							}}
 							component="ul"
 						>
 							{hashtags.map((hashtag: Hashtag, index) => (
 								<ListItem key={index}>
-									<Chip
+									<Chip color="primary"
 										label={`#${hashtag.label}`}
+										onDelete={() => handleDeleteHashtag(hashtag)}
 									/>
 								</ListItem>
 							))}
-						</Paper>
+							<li className={styles.roundedTextField}>
+								<TextField
+									placeholder="Thêm hashtag" 
+									variant="outlined" 
+									size="small" 
+									value={newHashtag.label}
+									onChange={handleChangeNewHashtag}
+									className={styles.roundedTextField}
+									sx={{ width: "12rem" }}
+									inputProps={{ maxLength: 64 }}
+									InputProps={{
+										endAdornment: (
+											<InputAdornment position="end"> 
+												<IconButton sx={{ px: 0 }} 
+													disabled={newHashtag.label.length === 0} 
+													onClick={handleClickAddHashtag}
+												>
+													<AddCircleRounded color="secondary" />
+												</IconButton>
+											</InputAdornment>
+										)
+									}}
+								/>
+							</li>
+						</Box>
 					</DialogContent>
 					<DialogActions sx={{ width: "100%" }}>
 						<Button 
