@@ -1,6 +1,6 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import React, { ReactElement, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./components/HomePage/Home";
 import FriendsPage from "./components/FriendsPage/FriendsPage";
 import MainPage from "./components/MainPage/MainPage";
@@ -9,7 +9,7 @@ import Registration from "./components/RegistrationPage/Registration";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import SearchBar from "./components/ToolBar/SearchBar";
 import { Box } from "@mui/system";
-import Profile from "./components/ProfilePage/Profile";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
 import LostConnectAlert from "./components/LostConnectAlert/LostConnectAlert";
 import { findUserDataInCookies } from "./store/actions/app/findUserDataInCookies";
 import { connect, ConnectedProps } from "react-redux";
@@ -33,7 +33,7 @@ const theme = createTheme({
 
 const connector = connect(
 	(state: ApplicationState) => ({
-
+		username: state.app.username,
 	}),
 	{
 		findUserDataInCookies,
@@ -41,6 +41,7 @@ const connector = connect(
 );
 
 function App({
+	username,
 	findUserDataInCookies,
 }: ConnectedProps<typeof connector>): ReactElement {
 	useEffect(() => {
@@ -56,7 +57,8 @@ function App({
 					<Route path="/registration" element={<Registration />} />
 					<Route path="/" element={<MainPage />}>
 						<Route path="/home" element={<Home />} />
-						<Route path="/profile" element={<Profile />} />
+						<Route path="/profile" element={<Navigate to={`/profile/${username}`} />} />
+						<Route path="/profile/:username" element={<ProfilePage />} />
 						<Route path="/friends" element={<FriendsPage />} />
 					</Route>
 					<Route path="test" element={<Box><SearchBar /></Box>} />
@@ -67,7 +69,7 @@ function App({
 						} />
 				</Routes>
 			</ThemeProvider>
-		</React.Fragment>
+		</React.Fragment >
 	);
 }
 

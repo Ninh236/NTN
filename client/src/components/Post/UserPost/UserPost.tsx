@@ -47,31 +47,31 @@ export default function UserPost(props: any): ReactElement {
 					<PostAction />
 				</Grid>
 				<Grid item xs={12} my={2} px={2}>
-						asdasdasddasd
-						asdasdasddasdadsa
-						sda
-						sdadagjgj
-						sd
-						adaasdx
-						asdasdasddasdadsaasd
-						as
-						asdsssssssssssssssssssssssssssssssssssss
-						asd
+					asdasdasddasd
+					asdasdasddasdadsa
+					sda
+					sdadagjgj
+					sd
+					adaasdx
+					asdasdasddasdadsaasd
+					as
+					asdsssssssssssssssssssssssssssssssssssss
+					asd
 				</Grid>
 				<Grid item xs={1} display="flex" justifyContent="center">
 					<IconButton onClick={handleClickLike}>
 						{isLiked ? <FavoriteRounded color="primary" /> : <FavoriteBorderRounded color="primary" />}
 					</IconButton>
 				</Grid>
-				<Grid item xs={1}  display="flex" justifyContent="center">
+				<Grid item xs={1} display="flex" justifyContent="center">
 					<IconButton onClick={handleClickComments} sx={{ mt: 0.35 }}>
 						{showComment ? <CommentRounded color="secondary" /> : <CommentOutlined color="secondary" />}
 					</IconButton>
 				</Grid>
 				<Grid item xs={6}></Grid>
 				<Grid item display="flex" xs={4} justifyContent="space-between">
-					<Typography display="inline-block" sx={{my: "auto"}} variant="subtitle2">12 người thích</Typography>
-					<Typography display="inline-block" sx={{my: "auto"}} variant="subtitle2">5 bình luận</Typography>
+					<Typography display="inline-block" sx={{ my: "auto" }} variant="subtitle2">12 người thích</Typography>
+					<Typography display="inline-block" sx={{ my: "auto" }} variant="subtitle2">5 bình luận</Typography>
 				</Grid>
 				<Grid item xs={12} display={showComment ? "block" : "none"}>
 					<Comment />
