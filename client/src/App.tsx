@@ -14,6 +14,7 @@ import LostConnectAlert from "./components/LostConnectAlert/LostConnectAlert";
 import { findUserDataInCookies } from "./store/actions/app/findUserDataInCookies";
 import { connect, ConnectedProps } from "react-redux";
 import { ApplicationState } from "./store";
+import MasterDialog from "./components/MasterDialog/MasterDialog";
 
 const theme = createTheme({
 	palette: {
@@ -51,6 +52,7 @@ function App({
 		<React.Fragment>
 			<ThemeProvider theme={theme}>
 				<LostConnectAlert />
+				<MasterDialog />
 				<Routes>
 					<Route path="/login" element={<Login />} />
 					<Route path="/registration" element={<Registration />} />

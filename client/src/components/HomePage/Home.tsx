@@ -1,5 +1,7 @@
 import { Box, Container, Grid, Paper, Stack, styled } from "@mui/material";
 import { ReactElement } from "react";
+import NewPostBar from "../Post/CreatePost/NewPostBar";
+import NewPostDialog from "../Post/CreatePost/NewPostDialog";
 import CreatePost from "../Post/PostAction/CreatePost";
 import UserPost from "../Post/UserPost/UserPost";
 import { useStyle } from "./HomeStyle";
@@ -16,14 +18,15 @@ export default function Home(): ReactElement {
 
 	return (
 		<Box>
-			<CreatePost />
 			<Box className={styles.root}>
 				<Stack spacing={2}>
+					<div><NewPostBar /></div>
 					<div><UserPost /></div>
 					<div><UserPost /></div>
 					<div><UserPost /></div>
 					<div><UserPost /></div>
 				</Stack>
+				<NewPostDialog />
 			</Box>
 		</Box>
 	);
