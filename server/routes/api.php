@@ -51,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // delete post
     Route::delete('/post/edit/{post_id}', [\App\Http\Controllers\PostController::class, 'destroy']);
     // get my posts
-    Route::get('/post/me', [\App\Http\Controllers\PostController::class, 'getMyPosts']);
+    Route::get('/post/{user_id}', [\App\Http\Controllers\PostController::class, 'getPosts']);
     // get by id
     Route::get('/post/find/{id}', [\App\Http\Controllers\PostController::class, 'findPostById']);
 

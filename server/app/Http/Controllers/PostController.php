@@ -11,13 +11,13 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function getMyPosts()
-    {
-        return auth()->user()->posts()->with('comments')->with('tags')->get();
-    }
 
     public function findPostById($id) {
         return Post::where('id', $id)->with('comments')->with('tags')->first();
+    }
+
+    public function getPosts($user_id) {
+        return Post::where('user_id', $user_id)->with('comments')->with('tags')->with('likes')->get();
     }
 
     public function store(StorePostRequest $request)
