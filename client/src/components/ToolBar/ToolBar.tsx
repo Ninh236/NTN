@@ -197,7 +197,7 @@ function ToolBar({
 						display: "flex",
 						alignItems: "center",
 						textDecoration: "none"
-					}} onClick={() => { setTab(-1); }}>
+					}} onClick={() => { setTab(2); }}>
 						<Chip
 							sx={{
 								height: "38px",

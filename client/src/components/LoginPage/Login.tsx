@@ -36,6 +36,7 @@ import { DialogContentType } from "../MasterDialog/DialogContent";
 const connector = connect(
 	(state: ApplicationState) => ({
 		isLoggedIn: state.app.isLoggedIn,
+		mainPagePath: state.app.mainPagePath,
 	}),
 	{
 		changeOpenLostConnectAlert,
@@ -47,6 +48,7 @@ const connector = connect(
 
 function Login({
 	isLoggedIn,
+	mainPagePath,
 	changeOpenLostConnectAlert,
 	saveUserDataInCookies,
 	changeDialogOpenState,
@@ -54,6 +56,8 @@ function Login({
 }: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyle();
 	const navigate = useNavigate();
+
+	console.log(`${mainPagePath}`);
 
 	useEffect(() => {
 		console.log(1);

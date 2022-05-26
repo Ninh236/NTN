@@ -21,10 +21,6 @@ export default function Home(): ReactElement {
 			<Box className={styles.root}>
 				<Stack spacing={2}>
 					<div><NewPostBar /></div>
-					<div><UserPost /></div>
-					<div><UserPost /></div>
-					<div><UserPost /></div>
-					<div><UserPost /></div>
 				</Stack>
 				<NewPostDialog />
 			</Box>
