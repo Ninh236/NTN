@@ -130,7 +130,15 @@ function Login({
 							changeDialogOpenState(false);
 							navigate("/home");
 						}, 1500);
-						changeDialogOpenState(true, DialogContentType.NOTIFY_DIALOG);
+						changeDialogOpenState(
+							true, 
+							DialogContentType.NOTIFY_DIALOG,
+							(reason) => {
+								if (reason === "backdropClick" || reason === "escapeKeyDown") {
+									return;
+								}
+							}
+						);
 					}
 				}).catch(errors => {
 					console.log(errors);

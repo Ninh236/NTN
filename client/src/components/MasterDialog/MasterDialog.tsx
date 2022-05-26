@@ -9,6 +9,7 @@ const connector = connect(
 	(state: ApplicationState) => ({
 		openState: state.masterDialog.openState,
 		contentType: state.masterDialog.contentType,
+		closeMethod: state.masterDialog.closeMethod,
 	}),
 	{
 		changeDialogOpenState,
@@ -18,12 +19,13 @@ const connector = connect(
 function MasterDialog({
 	openState,
 	contentType,
+	closeMethod,
 	changeDialogOpenState
 }: ConnectedProps<typeof connector>): ReactElement {
 	console.log(contentType);
 	return (
 		<Dialog open={openState} 
-			onClose={() => changeDialogOpenState(false, DialogContentType.NONE)}
+			onClose={(event, reason) => closeMethod(reason)}
 		>
 			{DialogContents[contentType]}
 		</Dialog>
