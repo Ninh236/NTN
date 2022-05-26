@@ -3,10 +3,12 @@ import { ActionTypes } from "./../ActionTypes";
 
 export type CreatePostState = {
 	openNewPostDialog: boolean;
+	sendStatus: number;
 };
 
 export const inititalState: CreatePostState = {
 	openNewPostDialog: false,
+	sendStatus: -1,
 };
 
 export function reduce(
@@ -18,7 +20,7 @@ export function reduce(
 		return { ...state, openNewPostDialog: action.payload };
 		
 	case ActionTypes.CREATE_POST__CREATE_NEW_POST:
-		return state;
+		return { ...state, sendStatus: action.payload };
 
 	default: 
 		return state;

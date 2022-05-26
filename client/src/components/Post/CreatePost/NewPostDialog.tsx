@@ -21,6 +21,11 @@ import { connect, ConnectedProps } from "react-redux";
 import { ApplicationState } from "../../../store";
 import { changeOpenState } from "../../../store/actions/createPost/changeOpenState";
 import { createNewPost } from "../../../store/actions/createPost/createNewPost";
+import { 
+	changeOpenState as changeMasterDialogOpenState 
+} from "../../../store/actions/masterDialog/changeOpenState";
+import { setDialogContent } from "../../../store/actions/masterDialog/setDialogContent";
+import { DialogContentType } from "../../MasterDialog/DialogContent";
 
 const TextPostArea = styled(TextareaAutosize)`
 	resize: none;
@@ -106,7 +111,8 @@ const connector = connect(
 	}),
 	{
 		changeOpenState,
-		createNewPost,
+		changeMasterDialogOpenState, 
+		setDialogContent,
 	}	
 );
 
@@ -118,7 +124,8 @@ function NewPostDialog({
 	token, 
 	open,
 	changeOpenState,
-	createNewPost,
+	changeMasterDialogOpenState,
+	setDialogContent,
 }: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyles();
 	const [content, setContent] = useState<string>("");
@@ -133,11 +140,19 @@ function NewPostDialog({
 	const onImageChange = (event: any) => {
 		if (event.target.files && event.target.files[0]) {
 			const img = event.target.files[0];
-			console.log(img);
-			setImage({
-				path: URL.createObjectURL(img),
-				file: img,
-			});
+			if (img.type === "image/jpeg" || img.type === "image/png" || img.type === "image/jpg") {
+				console.log(img);
+				setImage({
+					path: URL.createObjectURL(img),
+					file: img,
+				});
+			} else {
+				setDialogContent(
+					"Không thể tải ảnh",
+					"Bạn chỉ có thể đăng file ảnh có đuôi jpeg, jpg, png."
+				);
+				changeMasterDialogOpenState(true, DialogContentType.ERROR_DIALOG);
+			}
 		}
 	};
 
@@ -156,12 +171,34 @@ function NewPostDialog({
 		setHashtags((hashtags) => hashtags.filter((hashtag) => hashtag.label !== deleteHashtag.label));
 	};
 
+	const resetForm = () => {
+		setContent("");
+		setHashtags([]);
+		setImage({ path: "", file: null });
+	};
+
 	const handleClickCreatePost = () => {
 		createNewPost({
 			token: token,
 			content: content,
 			tags: hashtags,
 			image: image.file,
+		}, 
+		).then(data => {
+			changeMasterDialogOpenState(
+				true, 
+				DialogContentType.SUCCESS_DIALOG, 
+				(reason) => {
+					changeMasterDialogOpenState(false);
+				}
+			);
+			setDialogContent("Đăng bài thành công", "");
+			changeOpenState(false);
+			resetForm();
+			setTimeout(() => changeMasterDialogOpenState(false), 1500);
+		}).catch(err => {
+			changeMasterDialogOpenState(true, DialogContentType.ERROR_DIALOG);
+			setDialogContent("Đăng bài không thành công", "Lỗi kết nối với máy chủ.");
 		});
 	};
 
@@ -213,6 +250,7 @@ function NewPostDialog({
 				<Divider variant="middle"/>
 				<Box
 					sx={{
+						width: "100%",
 						display: "flex",
 						justifyContent: "center",
 						flexWrap: "wrap",
