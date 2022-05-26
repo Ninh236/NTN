@@ -3,11 +3,13 @@ import { ActionTypes } from "./../ActionTypes";
 
 export type CreatePostState = {
 	openNewPostDialog: boolean;
+	isNewPostUploaded: boolean;
 	sendStatus: number;
 };
 
 export const inititalState: CreatePostState = {
 	openNewPostDialog: false,
+	isNewPostUploaded: false,
 	sendStatus: -1,
 };
 
@@ -21,6 +23,9 @@ export function reduce(
 		
 	case ActionTypes.CREATE_POST__CREATE_NEW_POST:
 		return { ...state, sendStatus: action.payload };
+
+	case ActionTypes.CREATE_POST__CHANGE_IS_NEW_POST_UP:
+		return { ...state, isNewPostUploaded: action.payload };
 
 	default: 
 		return state;

@@ -19,6 +19,7 @@ import { makeStyles } from "@mui/styles";
 import { ReactElement, useRef, useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { ApplicationState } from "../../../store";
+import { changeIsNewPostUp } from "../../../store/actions/createPost/changeIsNewPostUp";
 import { changeOpenState } from "../../../store/actions/createPost/changeOpenState";
 import { createNewPost } from "../../../store/actions/createPost/createNewPost";
 import { 
@@ -113,6 +114,7 @@ const connector = connect(
 		changeOpenState,
 		changeMasterDialogOpenState, 
 		setDialogContent,
+		changeIsNewPostUp,
 	}	
 );
 
@@ -126,6 +128,7 @@ function NewPostDialog({
 	changeOpenState,
 	changeMasterDialogOpenState,
 	setDialogContent,
+	changeIsNewPostUp,
 }: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyles();
 	const [content, setContent] = useState<string>("");
@@ -194,6 +197,7 @@ function NewPostDialog({
 			);
 			setDialogContent("Đăng bài thành công", "");
 			changeOpenState(false);
+			changeIsNewPostUp(true);
 			resetForm();
 			setTimeout(() => changeMasterDialogOpenState(false), 1500);
 		}).catch(err => {
@@ -269,8 +273,6 @@ function NewPostDialog({
 							/>
 						</ListItem>
 					))}
-					<li className={styles.roundedTextField}>
-					</li>
 				</Box>
 			</DialogContent>
 			<DialogActions sx={{ width: "100%", justifyContent: "space-between" }}>

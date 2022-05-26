@@ -1,16 +1,45 @@
 import { Avatar, Box, Grid, Typography } from "@mui/material";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { ApplicationState } from "../../../store";
 import CommentActions from "./CommentActions/CommentActions";
 import { useStyles } from "./CommentStyle";
 
-export default function Comment(props: any): ReactElement {
+interface CommentProp {
+	postId: number,
+	userId: number,
+	content: string,
+	createAt: string,
+}
+
+const connector = connect((state: ApplicationState) => ({token: state.app.token}), {});
+
+function Comment(props: any): ReactElement {
+	const { token, ...others } = props;
+	const authToken = `Bearer ${token}`;
 	const styles = useStyles();
 
 	const [userData, setUserData] = useState({
-		id: 0,
-		fullName: "Đoàn Duy Tùng",
-		username: "tung.doan.3",
+		fullName: "",
+		username: "",
 	});
+
+	useEffect(() => {
+		fetch(`http://127.0.0.1:8000/api/profile/getid/${props.userId}`, {
+			method: "GET",
+			mode: "cors",
+			headers: {
+				"Authorization": authToken,
+			}
+		})
+			.then(res => res.json())
+			.then(data => {
+				setUserData({
+					fullName: `${data[0].profile.first_name} ${data[0].profile.surname} ${data[0].profile.last_name}`,
+					username: data[0].username,
+				});
+			});
+	}, []);
 
 	return (
 		<Box className={styles.root}>
@@ -22,22 +51,14 @@ export default function Comment(props: any): ReactElement {
 							{userData.fullName + " "} 
 							<Typography component="span" variant="caption">{`@${userData.username}`}</Typography>
 							{" - "} 
-							<Typography component="span" variant="subtitle2" > 3 phút trước</Typography>
+							<Typography component="span" variant="subtitle2">{new Date(props.createdAt).toLocaleString()}</Typography>
 						</Typography>
 					</Grid>
 					<Grid item xs={12} my={2} pr={1}>
-						<Typography variant="body2">
-							asdasdasddasd
-							asdasdasddasdadsa
-							sda
-							sdada
-							sd
-							adaasd
-							asdasdasddasdadsaasd
-							as
-							asdsssssssssssssssssssssssssssssssssssss
-							asd
-						</Typography>
+						{props.content.split("\n")
+							.map((text: string, index: number) => 
+								(<p style={{ marginTop: 0 }} key={index}>{text}</p>)
+							)}
 					</Grid>
 				</Grid>
 				<Grid item xs={1}>
@@ -47,3 +68,5 @@ export default function Comment(props: any): ReactElement {
 		</Box>
 	);
 }
+
+export default connector(Comment);
