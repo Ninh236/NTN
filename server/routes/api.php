@@ -54,6 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/post/{user_id}', [\App\Http\Controllers\PostController::class, 'getPosts']);
     // get by id
     Route::get('/post/find/{id}', [\App\Http\Controllers\PostController::class, 'findPostById']);
+    // paginating
+    Route::get('/post/get/all', [\App\Http\Controllers\PostController::class, 'getAll']);
 
     //************ comment
     Route::post('/comments/{post_id}', [\App\Http\Controllers\CommentController::class, 'store']);
