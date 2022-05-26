@@ -18,7 +18,12 @@ const store = configureStore({
 		masterDialog: masterDialogIS,
 	},
 	middleware(getDefaultMiddleware) {
-		return [...getDefaultMiddleware(), thunk];
+		return [
+			...getDefaultMiddleware({
+				serializableCheck: false,
+			}), 
+			thunk
+		];
 	},
 	devTools: process.env.NODE_ENV === "development",
 });

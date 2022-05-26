@@ -16,7 +16,7 @@ export const inititalState: MasterDialogState = {
 	title: "",
 	content: "",
 	openState: false,
-	closeMethod: () => changeOpenState(false),
+	closeMethod: (reason) => changeOpenState(false),
 };
 
 export function reduce(

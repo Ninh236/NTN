@@ -118,6 +118,11 @@ function Login({
 					console.log(data);
 					if ("error" in data) {
 						console.log(1);
+						setDialogContent(
+							"Đăng nhập không thành công",
+							"Tài khoản hoặc mật khẩu của bạn không đúng."
+						);
+						changeDialogOpenState(true, DialogContentType.ERROR_DIALOG);
 					} else {
 						console.log(values.username);	
 						setDialogContent(
@@ -132,7 +137,7 @@ function Login({
 						}, 1500);
 						changeDialogOpenState(
 							true, 
-							DialogContentType.NOTIFY_DIALOG,
+							DialogContentType.SUCCESS_DIALOG,
 							(reason) => {
 								if (reason === "backdropClick" || reason === "escapeKeyDown") {
 									return;
