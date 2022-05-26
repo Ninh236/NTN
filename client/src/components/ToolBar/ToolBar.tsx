@@ -16,7 +16,10 @@ import {
 import SearchBar from "./SearchBar";
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
-import { Home, Group, Groups, LiveTv, Settings, LogoutOutlined } from "@mui/icons-material";
+import {
+	Home, HomeOutlined, GroupOutlined, GroupsOutlined, Group, Groups, LiveTv,
+	Settings, LogoutOutlined
+} from "@mui/icons-material";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDownOutlined";
@@ -47,6 +50,7 @@ const useStyles = makeStyles({
 const connector = connect(
 	(state: ApplicationState) => ({
 		isLoggedIn: state.app.isLoggedIn,
+		username: state.app.username,
 	}),
 	{
 		logoutAndDeleteCookies,
@@ -54,10 +58,11 @@ const connector = connect(
 );
 
 function ToolBar({
+	username,
 	logoutAndDeleteCookies,
 }: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyles();
-	const [tab, setTab] = React.useState(0);
+	const [tab, setTab] = React.useState(-1);
 	const [options, setOptions] = React.useState(false);
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -168,11 +173,17 @@ function ToolBar({
 					display: { xs: "none", lg: "unset" }
 				}}>
 					<Tabs value={tab} onChange={handleChangeTab} centered>
-						<Tab className={styles.navTab} icon={<Home fontSize="large" />}
+						<Tab className={styles.navTab}
+							icon={tab == 0 ? (<Home fontSize="large" />)
+								: <HomeOutlined fontSize="large" />}
 							component={Link} to={routes[0]} />
-						<Tab className={styles.navTab} icon={<Group fontSize="large" />}
+						<Tab className={styles.navTab}
+							icon={tab == 1 ? (<Group fontSize="large" />)
+								: <GroupOutlined fontSize="large" />}
 							component={Link} to={routes[1]} />
-						<Tab className={styles.navTab} icon={<Groups fontSize="large" />} />
+						<Tab className={styles.navTab}
+							icon={tab == 2 ? (<Groups fontSize="large" />)
+								: <GroupsOutlined fontSize="large" />} />
 						<Tab className={styles.navTab} icon={<LiveTv fontSize="large" />} />
 					</Tabs>
 				</Box>
@@ -182,11 +193,11 @@ function ToolBar({
 					mr: { md: "auto", lg: "0" },
 					justifyContent: "flex-end"
 				}}>
-					<Link to="/profile" style={{
+					<Link to={`/profile/${username}`} style={{
 						display: "flex",
 						alignItems: "center",
 						textDecoration: "none"
-					}}>
+					}} onClick={() => { setTab(-1); }}>
 						<Chip
 							sx={{
 								height: "38px",
