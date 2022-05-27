@@ -51,7 +51,7 @@ function Comment(props: any): ReactElement {
 							{userData.fullName + " "} 
 							<Typography component="span" variant="caption">{`@${userData.username}`}</Typography>
 							{" - "} 
-							<Typography component="span" variant="subtitle2">{new Date(props.createdAt).toLocaleString()}</Typography>
+							<Typography component="span" variant="subtitle2">{new Date(props.createAt).toLocaleString()}</Typography>
 						</Typography>
 					</Grid>
 					<Grid item xs={12} my={2} pr={1}>
