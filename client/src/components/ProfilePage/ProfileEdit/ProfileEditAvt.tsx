@@ -61,7 +61,7 @@ export default function ProfileEditAvt(props: any) {
 		handleClose();
 	};
 	return (
-		<Dialog open={open}>
+		<Dialog open={open} onClose={handleClose}>
 			<Card sx={{ width: "25rem" }}>
 				<Box display="inline-flex" justifyContent="space-between" width="100%">
 					<CardHeader title={

@@ -60,7 +60,7 @@ function App({
 					<Route path="/registration" element={<Registration />} />
 					<Route path="/" element={<MainPage />}>
 						<Route path="/home" element={<Home />} />
-						{/* <Route path="/profile" element={<Navigate to={`/profile/${username}`} />} /> */}
+						<Route path="/profile" element={<Navigate to={`/profile/${username}`} />} />
 						<Route path="/profile/:username" element={<ProfilePage />} />
 						<Route path="/friends" element={<FriendsPage />} />
 					</Route>

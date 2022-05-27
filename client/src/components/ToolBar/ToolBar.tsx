@@ -57,10 +57,8 @@ const connector = connect(
 	}
 );
 
-function ToolBar({
-	username,
-	logoutAndDeleteCookies,
-}: ConnectedProps<typeof connector>): ReactElement {
+function ToolBar(props: any): ReactElement {
+	const { name, username, logoutAnDeleteCookies } = props;
 	const styles = useStyles();
 	const [tab, setTab] = React.useState(0);
 	const [options, setOptions] = React.useState(false);
@@ -170,7 +168,6 @@ function ToolBar({
 				<Box sx={{
 					width: "100%",
 					height: "64px",
-					display: { xs: "none", lg: "unset" }
 				}}>
 					<Tabs value={tab} onChange={handleChangeTab} centered>
 						<Tab className={styles.navTab}
@@ -197,7 +194,7 @@ function ToolBar({
 						display: "flex",
 						alignItems: "center",
 						textDecoration: "none"
-					}} onClick={() => { setTab(2); }}>
+					}} onClick={() => { setTab(4); }}>
 						<Chip
 							sx={{
 								height: "38px",
@@ -213,7 +210,7 @@ function ToolBar({
 									margin: "0 !important"
 								}}>
 							</Avatar>}
-							label={"Name"} />
+							label={name} />
 					</Link>
 					<IconButton size="large" color="inherit">
 						<Badge badgeContent={1} color="error">
