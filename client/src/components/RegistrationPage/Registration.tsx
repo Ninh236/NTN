@@ -1,12 +1,12 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { 
-	Box, 
-	Typography, 
-	InputAdornment, 
-	IconButton, 
-	Grid, 
-	Button, 
-	Avatar 
+import {
+	Box,
+	Typography,
+	InputAdornment,
+	IconButton,
+	Grid,
+	Button,
+	Avatar
 } from "@mui/material";
 import { ReactElement, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -29,7 +29,7 @@ const genderItems: Array<IGender> = [
 const connector = connect(
 	(state: ApplicationState) => ({
 
-	}), 
+	}),
 	{
 		saveUserDataInCookies,
 	}
@@ -43,7 +43,7 @@ function Registration({
 
 	const validate = (fieldValues = values) => {
 		const tmp = { ...errors };
-		
+
 		if ("firstName" in fieldValues) {
 			tmp.firstName = "";
 			if (fieldValues.firstName.length > 0) {
@@ -62,7 +62,7 @@ function Registration({
 			else if (!isValidName(fieldValues.lastName)) tmp.lastName = "Tên của bạn không hợp lệ";
 		}
 		if ("dob" in fieldValues) {
-			tmp.dob="";
+			tmp.dob = "";
 			const today = new Date();
 			if (fieldValues.dob > today) tmp.dob = "Bạn đến từ tương lai ????";
 			else if (fieldValues.dob == today) tmp.dob = "Bạn vừa mới chào đời ư !!!!";
@@ -91,7 +91,7 @@ function Registration({
 			const isContainNum = containNum(fieldValues.password);
 			const isContainSpec = containSpec(fieldValues.password);
 			if (fieldValues.password.length == 0) tmp.password = "Vui lòng điền mật khẩu của bản";
-			else if (fieldValues.password.length < 8)  tmp.password = "Mật khẩu phải có ít nhất 8 ký tự";
+			else if (fieldValues.password.length < 8) tmp.password = "Mật khẩu phải có ít nhất 8 ký tự";
 			else if ((!isContainaz) || (!isContainAZ)) tmp.password = "Mật khẩu của bạn phải chứa chữ cái viết hoa và viết thường";
 			else if ((!isContainNum) || (!isContainSpec)) tmp.password = "Mật khẩu của bạn phải chứa ít nhất 1 ký tự chữ số và 1 ký tự đặc biệt (_, !, @, #, $, ^, &, .)";
 			else if (containOther(fieldValues.password)) tmp.password = "Mật khẩu của bạn chứa ký tự không hợp lệ";
@@ -109,7 +109,7 @@ function Registration({
 		}
 	};
 
-	const { values, setValues, errors, setErrors, handleInputChange, resetForm } = 
+	const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
 		useForm(
 			{
 				firstName: "",
@@ -121,8 +121,8 @@ function Registration({
 				email: "",
 				password: "",
 				repassword: "",
-			}, 
-			true, 
+			},
+			true,
 			validate
 		);
 
@@ -153,7 +153,7 @@ function Registration({
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-cache",
-					"Accept": "application/json", 
+					"Accept": "application/json",
 				},
 				body: JSON.stringify(requestBody),
 			})
@@ -176,22 +176,22 @@ function Registration({
 	return (
 		<>
 			<Box className={styles.root}>
-				<Box 
-					className={styles.loginBox} 
+				<Box
+					className={styles.loginBox}
 					component="form"
 				>
-					<Typography 
+					<Typography
 						sx={{
 							textAlign: "center",
 							mb: 1,
-						}} 
+						}}
 						variant="h5"
 					>
 						Đăng ký
 					</Typography>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={4}>
-							<CustomInput.TextField 
+							<CustomInput.TextField
 								name="firstName"
 								label="Họ"
 								value={values.firstName}
@@ -201,7 +201,7 @@ function Registration({
 							/>
 						</Grid>
 						<Grid item xs={12} sm={4}>
-							<CustomInput.TextField 
+							<CustomInput.TextField
 								name="middleName"
 								label="Đệm"
 								value={values.middleName}
@@ -211,7 +211,7 @@ function Registration({
 							/>
 						</Grid>
 						<Grid item xs={12} sm={4}>
-							<CustomInput.TextField 
+							<CustomInput.TextField
 								required
 								name="lastName"
 								label="Tên"
@@ -222,7 +222,7 @@ function Registration({
 							/>
 						</Grid>
 						<Grid item xs={12} sm={6}>
-							<CustomInput.DatePicker 
+							<CustomInput.DatePicker
 								label="Ngày sinh"
 								value={values.dob}
 								error={errors.dob}
@@ -271,9 +271,9 @@ function Registration({
 								/>
 							</Grid>
 							<Grid item xs={12}>
-								<CustomInput.TextField 
-									required 
-									type={showPassword ? "text" : "password"} 
+								<CustomInput.TextField
+									required
+									type={showPassword ? "text" : "password"}
 									label="Mật khẩu"
 									name="password"
 									value={values.password}
@@ -309,33 +309,33 @@ function Registration({
 							</Grid>
 						</Grid>
 						<Grid item xs={12} sm={6}>
-							<Avatar 
-								src={require("../../assets/imgs/photo-1535713875002-d1d0cf377fde.jpeg")} 
-								sx={{ width: 180, height: 180, margin: "auto" }} 
+							<Avatar
+								src={require("../../assets/imgs/photo-1535713875002-d1d0cf377fde.jpeg")}
+								sx={{ width: 180, height: 180, margin: "auto" }}
 							/>
 							<div>
 								<Button variant="text" fullWidth sx={{ textTransform: "none", mt: 2 }}>Thay ảnh đại diện</Button>
 							</div>
 						</Grid>
 					</Grid>
-					<Button 
-						fullWidth 
-						variant="contained" 
+					<Button
+						fullWidth
+						variant="contained"
 						sx={{ my: 2, p: 1, fontWeight: "bold" }}
 						className={styles.loginBtn}
 						onClick={handleClickSignUp}
 					>Đăng ký</Button>
-					<Typography 
+					<Typography
 						sx={{
 							textAlign: "center",
-						}} 
+						}}
 						variant="body1"
 					>
 						Bạn đã có tài khoản ?
 					</Typography>
-					<Button 
-						fullWidth 
-						variant="outlined" 
+					<Button
+						fullWidth
+						variant="outlined"
 						sx={{ my: 2, p: 1, fontWeight: "bold", borderWidth: "2px" }}
 						className={styles.loginBtn}
 						component={Link} to="/login"
