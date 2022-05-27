@@ -43,10 +43,8 @@ function Home({
 			}
 		}).then(res => res.json())
 			.then(data => {
-				console.log(data);
 				setPosts(data.data.reverse());
 			});
-		changeIsNewPostUp(false);
 	}, [isNewPostUploaded]);
 
 	return (

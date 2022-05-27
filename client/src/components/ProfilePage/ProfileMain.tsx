@@ -44,7 +44,6 @@ function ProfileMain({
 				console.log(data);
 				setPosts(data.reverse());
 			});
-		changeIsNewPostUp(false);
 	}, [isNewPostUploaded]);
 
 	return (
