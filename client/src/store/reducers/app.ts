@@ -13,6 +13,7 @@ export type AppState = {
     token: string;
 	isLoggedIn: boolean;
 	openLostConnectAlert: boolean;
+	mainPagePath: string;
 };
 
 export const inititalState: AppState = {
@@ -21,6 +22,7 @@ export const inititalState: AppState = {
 	token: "",
 	isLoggedIn: false, 
 	openLostConnectAlert: false,
+	mainPagePath: "/home",
 };
 
 export function reduce(
@@ -80,6 +82,9 @@ export function reduce(
 			isLoggedIn: false,
 		};
 	}
+
+	case ActionTypes.APP__SAVE_URL_AFTER_RELOAD: 
+		return { ...state, mainPagePath: action.payload };
 
 	default: 
 		return state;

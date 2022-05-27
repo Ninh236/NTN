@@ -36,6 +36,7 @@ import { DialogContentType } from "../MasterDialog/DialogContent";
 const connector = connect(
 	(state: ApplicationState) => ({
 		isLoggedIn: state.app.isLoggedIn,
+		mainPagePath: state.app.mainPagePath,
 	}),
 	{
 		changeOpenLostConnectAlert,
@@ -47,6 +48,7 @@ const connector = connect(
 
 function Login({
 	isLoggedIn,
+	mainPagePath,
 	changeOpenLostConnectAlert,
 	saveUserDataInCookies,
 	changeDialogOpenState,
@@ -54,6 +56,8 @@ function Login({
 }: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyle();
 	const navigate = useNavigate();
+
+	console.log(`${mainPagePath}`);
 
 	useEffect(() => {
 		console.log(1);
@@ -118,6 +122,11 @@ function Login({
 					console.log(data);
 					if ("error" in data) {
 						console.log(1);
+						setDialogContent(
+							"Đăng nhập không thành công",
+							"Tài khoản hoặc mật khẩu của bạn không đúng."
+						);
+						changeDialogOpenState(true, DialogContentType.ERROR_DIALOG);
 					} else {
 						console.log(values.username);	
 						setDialogContent(
@@ -132,7 +141,7 @@ function Login({
 						}, 1500);
 						changeDialogOpenState(
 							true, 
-							DialogContentType.NOTIFY_DIALOG,
+							DialogContentType.SUCCESS_DIALOG,
 							(reason) => {
 								if (reason === "backdropClick" || reason === "escapeKeyDown") {
 									return;

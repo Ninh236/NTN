@@ -62,7 +62,7 @@ function ToolBar({
 	logoutAndDeleteCookies,
 }: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyles();
-	const [tab, setTab] = React.useState(-1);
+	const [tab, setTab] = React.useState(0);
 	const [options, setOptions] = React.useState(false);
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -197,7 +197,7 @@ function ToolBar({
 						display: "flex",
 						alignItems: "center",
 						textDecoration: "none"
-					}} onClick={() => { setTab(-1); }}>
+					}} onClick={() => { setTab(2); }}>
 						<Chip
 							sx={{
 								height: "38px",

@@ -1,26 +1,32 @@
 import { AddCircleRounded, AddPhotoAlternateOutlined, CloseOutlined, SendRounded } from "@mui/icons-material";
-import {
+import { 
 	styled,
-	Box,
-	Button,
-	Chip,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogTitle,
-	Divider,
-	IconButton,
+	Box, 
+	Button, 
+	Chip, 
+	Dialog, 
+	DialogActions, 
+	DialogContent, 
+	DialogTitle, 
+	Divider, 
+	IconButton, 
 	InputAdornment,
-	TextareaAutosize,
+	TextareaAutosize, 
 	TextField,
-	ButtonBase,
+	ButtonBase, 
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { ReactElement, useRef, useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { ApplicationState } from "../../../store";
+import { changeIsNewPostUp } from "../../../store/actions/createPost/changeIsNewPostUp";
 import { changeOpenState } from "../../../store/actions/createPost/changeOpenState";
 import { createNewPost } from "../../../store/actions/createPost/createNewPost";
+import { 
+	changeOpenState as changeMasterDialogOpenState 
+} from "../../../store/actions/masterDialog/changeOpenState";
+import { setDialogContent } from "../../../store/actions/masterDialog/setDialogContent";
+import { DialogContentType } from "../../MasterDialog/DialogContent";
 
 const TextPostArea = styled(TextareaAutosize)`
 	resize: none;
@@ -106,8 +112,10 @@ const connector = connect(
 	}),
 	{
 		changeOpenState,
-		createNewPost,
-	}
+		changeMasterDialogOpenState, 
+		setDialogContent,
+		changeIsNewPostUp,
+	}	
 );
 
 export interface Hashtag {
@@ -115,10 +123,12 @@ export interface Hashtag {
 }
 
 function NewPostDialog({
-	token,
+	token, 
 	open,
 	changeOpenState,
-	createNewPost,
+	changeMasterDialogOpenState,
+	setDialogContent,
+	changeIsNewPostUp,
 }: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyles();
 	const [content, setContent] = useState<string>("");
@@ -133,21 +143,29 @@ function NewPostDialog({
 	const onImageChange = (event: any) => {
 		if (event.target.files && event.target.files[0]) {
 			const img = event.target.files[0];
-			console.log(img);
-			setImage({
-				path: URL.createObjectURL(img),
-				file: img,
-			});
+			if (img.type === "image/jpeg" || img.type === "image/png" || img.type === "image/jpg") {
+				console.log(img);
+				setImage({
+					path: URL.createObjectURL(img),
+					file: img,
+				});
+			} else {
+				setDialogContent(
+					"Không thể tải ảnh",
+					"Bạn chỉ có thể đăng file ảnh có đuôi jpeg, jpg, png."
+				);
+				changeMasterDialogOpenState(true, DialogContentType.ERROR_DIALOG);
+			}
 		}
 	};
 
 	const handleChangeNewHashtag = (event: any) => {
-		setNewHashtag({ label: event.target.value.replace(" ", "") });
+		setNewHashtag({ label: event.target.value.replace(" ", "")});
 	};
 
 	const handleClickAddHashtag = () => {
 		if (hashtags.find(el => el.label === newHashtag.label) === undefined) {
-			setHashtags([...hashtags, newHashtag]);
+			setHashtags([...hashtags, newHashtag]);	
 			setNewHashtag({ label: "" });
 		}
 	};
@@ -156,12 +174,35 @@ function NewPostDialog({
 		setHashtags((hashtags) => hashtags.filter((hashtag) => hashtag.label !== deleteHashtag.label));
 	};
 
+	const resetForm = () => {
+		setContent("");
+		setHashtags([]);
+		setImage({ path: "", file: null });
+	};
+
 	const handleClickCreatePost = () => {
 		createNewPost({
 			token: token,
 			content: content,
 			tags: hashtags,
 			image: image.file,
+		}, 
+		).then(data => {
+			changeMasterDialogOpenState(
+				true, 
+				DialogContentType.SUCCESS_DIALOG, 
+				(reason) => {
+					changeMasterDialogOpenState(false);
+				}
+			);
+			setDialogContent("Đăng bài thành công", "");
+			changeOpenState(false);
+			changeIsNewPostUp(true);
+			resetForm();
+			setTimeout(() => changeMasterDialogOpenState(false), 1500);
+		}).catch(err => {
+			changeMasterDialogOpenState(true, DialogContentType.ERROR_DIALOG);
+			setDialogContent("Đăng bài không thành công", "Lỗi kết nối với máy chủ.");
 		});
 	};
 
@@ -182,13 +223,13 @@ function NewPostDialog({
 			</DialogTitle>
 			<DialogContent sx={{ p: 0, width: "100%" }} className={styles.customScrollBar}>
 				<Divider />
-				<TextPostArea
-					minRows="10"
-					maxRows="10"
+				<TextPostArea 
+					minRows="10" 
+					maxRows="10" 
 					autoFocus
 					placeholder="Chia sẻ với mọi người nào!"
 					value={content}
-					onChange={handleChangeContent}
+					onChange={handleChangeContent} 
 					sx={{
 						width: "calc(100% - 1rem)",
 						height: "fit-content",
@@ -200,19 +241,20 @@ function NewPostDialog({
 				<Box>
 					{image.path !== "" && (
 						<div className={styles.previewImage}>
-							<IconButton
-								className={styles.closeImageBut}
+							<IconButton 
+								className={styles.closeImageBut} 
 								sx={{ backgroundColor: "black", color: "white" }}
-								onClick={() => setImage({ path: "", file: null })}
+								onClick={() => setImage({path: "", file: null})} 
 							><CloseOutlined /></IconButton>
 							{/* <UilTimes onClick={()=>setImage(null)}/> */}
 							<img src={image.path} alt="" />
 						</div>
 					)}
 				</Box>
-				<Divider variant="middle" />
+				<Divider variant="middle"/>
 				<Box
 					sx={{
+						width: "100%",
 						display: "flex",
 						justifyContent: "center",
 						flexWrap: "wrap",
@@ -231,17 +273,15 @@ function NewPostDialog({
 							/>
 						</ListItem>
 					))}
-					<li className={styles.roundedTextField}>
-					</li>
 				</Box>
 			</DialogContent>
 			<DialogActions sx={{ width: "100%", justifyContent: "space-between" }}>
 				<div>
 					<label htmlFor="img-upload">
 						<Input accept="image/*" id="img-upload" multiple type="file" onChange={onImageChange} />
-						<Button
-							variant="text"
-							component="div"
+						<Button 
+							variant="text" 
+							component="div" 
 							startIcon={<AddPhotoAlternateOutlined color="secondary" />}
 							sx={{
 								textTransform: "none"
@@ -253,9 +293,9 @@ function NewPostDialog({
 				</div>
 				<div>
 					<TextField
-						placeholder="Thêm hashtag"
-						variant="outlined"
-						size="small"
+						placeholder="Thêm hashtag" 
+						variant="outlined" 
+						size="small" 
 						value={newHashtag.label}
 						onChange={handleChangeNewHashtag}
 						className={styles.roundedTextField}
@@ -263,9 +303,9 @@ function NewPostDialog({
 						inputProps={{ maxLength: 32 }}
 						InputProps={{
 							endAdornment: (
-								<InputAdornment position="end">
-									<IconButton sx={{ px: 0 }}
-										disabled={newHashtag.label.length === 0}
+								<InputAdornment position="end"> 
+									<IconButton sx={{ px: 0 }} 
+										disabled={newHashtag.label.length === 0} 
 										onClick={handleClickAddHashtag}
 									>
 										<AddCircleRounded color="secondary" />
@@ -276,7 +316,7 @@ function NewPostDialog({
 					/>
 				</div>
 				<div>
-					<Button
+					<Button 
 						sx={{ fontWeight: "bold", textTransform: "none", width: "106px" }}
 						onClick={handleClickCreatePost}
 						disabled={content.length === 0 || hashtags.length === 0}
