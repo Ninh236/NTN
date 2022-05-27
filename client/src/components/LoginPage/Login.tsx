@@ -57,8 +57,6 @@ function Login({
 	const styles = useStyle();
 	const navigate = useNavigate();
 
-	console.log(`${mainPagePath}`);
-
 	useEffect(() => {
 		console.log(1);
 		if (isLoggedIn) {
@@ -134,7 +132,11 @@ function Login({
 							`Chào mừng quay trở lại @${values.username}`
 						);
 						setTimeout(() => {
-							saveUserDataInCookies(data);
+							saveUserDataInCookies({
+								token: data.token,
+								userId: data.user.id,
+								username: data.user.username,
+							});
 							resetForm();
 							changeDialogOpenState(false);
 							navigate("/home");

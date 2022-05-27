@@ -8,22 +8,44 @@ enum Time {
 }
 
 export type AppState = {
+    token: string;
 	userId: number;
 	username: string;
-    token: string;
 	isLoggedIn: boolean;
 	openLostConnectAlert: boolean;
 	mainPagePath: string;
 };
 
 export const inititalState: AppState = {
+	token: "",
 	userId: 0,
 	username: "",
-	token: "",
 	isLoggedIn: false, 
 	openLostConnectAlert: false,
 	mainPagePath: "/home",
 };
+
+async function getUserData(token: string) {
+	const authToken = `Bearer ${token}`;
+	return await fetch("http://127.0.0.1:8000/api/user", {
+		method: "GET",
+		mode: "cors",
+		headers: {
+			"Authorization": authToken,
+		}
+	}).then(res => res.json());
+}
+
+async function getProfileData(token: string, userId: number) {
+	const authToken = `Bearer ${token}`;
+	return await fetch(`http://127.0.0.1:8000/api/profile/get/${userId}`, {
+		method: "GET",
+		mode: "cors",
+		headers: {
+			"Authorization": authToken,
+		}
+	}).then(res => res.json());
+}
 
 export function reduce(
 	state: AppState = inititalState,
@@ -35,20 +57,13 @@ export function reduce(
 	
 	case ActionTypes.APP__SAVE_USER_DATA_IN_COOKIES: {
 		const expireDate = new Date(new Date().getTime() + Time.ONE_HOUR).toUTCString();
-		document.cookie = `userId=${action.payload.user.id}; SameSite=Strict;  expires=${expireDate};`;
-		document.cookie = `username=${action.payload.user.username}; SameSite=Strict; expires=${expireDate};`;
-		document.cookie = `token=${action.payload.token}; SameSite=Strict; expires=${expireDate};`;
-		console.log({
-			...state,
-			userId: action.payload.user.id,
-			username: action.payload.user.username,
-			token: action.payload.token,
-			isLoggedIn: true,
-		});
+		if (document.cookie === "") 
+			document.cookie = `token=${action.payload.token}; SameSite=Strict; expires=${expireDate};`;
+			
 		return {
 			...state,
-			userId: action.payload.user.id,
-			username: action.payload.user.username,
+			userId: action.payload.userId,
+			username: action.payload.username,
 			token: action.payload.token,
 			isLoggedIn: true,
 		};
@@ -58,12 +73,24 @@ export function reduce(
 		if (document.cookie === "") 
 			return state;
 		else {
-			const userData = document.cookie.split(";").map(str => str.trim());
+			const tmpToken = document.cookie.replace("token=", "");
+			const authToken = `Bearer ${tmpToken}`;
+			let userData = { id: 0, username: "" };
+			fetch("http://127.0.0.1:8000/api/user", {
+				method: "GET",
+				mode: "cors",
+				headers: {
+					"Authorization": authToken,
+				}
+			}).then(res => res.json())
+				.then(data => {
+					userData = data;
+				});
 			return {
 				...state,
-				userId: +userData[0].replace("userId=", ""),
-				username: userData[1].replace("username=", ""),
-				token: userData[2].replace("token=", ""),
+				token: tmpToken,
+				userId: userData.id,
+				username: userData.username,
 				isLoggedIn: true,
 			};
 		}
@@ -71,14 +98,12 @@ export function reduce(
 
 	case ActionTypes.APP__LOGOUT_AND_DELETE_COOKIES: {
 		const expireDate = new Date(0).toUTCString();
-		document.cookie = `userId=${state.userId}; SameSite=Strict;  expires=${expireDate};`;
-		document.cookie = `username=${state.username}; SameSite=Strict; expires=${expireDate};`;
 		document.cookie = `token=${state.token}; SameSite=Strict; expires=${expireDate};`;
 		return {
 			...state,
+			token: "",
 			userId: 0,
 			username: "",
-			token: "",
 			isLoggedIn: false,
 		};
 	}
