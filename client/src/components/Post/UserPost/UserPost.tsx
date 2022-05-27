@@ -20,6 +20,7 @@ const ListItem = styled("li")(({ theme }) => ({
 }));
 
 interface PostComment {
+	id: number,
 	userId: number, 
 	content: string,
 	createdAt: string,
@@ -68,6 +69,7 @@ function UserPost(props: any): ReactElement {
 
 	const [likesCnt, setLikesCnt] = useState<number>(props.likes.length);
 	const [isLiked, setIsLiked] = useState<boolean>(tmpLike);
+	const [comments, setComments] = useState(props.comments);
 	const [showComment, setShowComment] = useState<boolean>(false);
 		
 	useEffect(() => {
@@ -162,12 +164,12 @@ function UserPost(props: any): ReactElement {
 						{`${likesCnt} người thích`}
 					</Typography>
 					<Typography display="inline-block" sx={{ my: "auto" }} variant="subtitle2">
-						{`${props.comments.length} bình luận`}
+						{`${comments.length} bình luận`}
 					</Typography>
 				</Grid>
 				<Grid item xs={12} display={showComment ? "block" : "none"}>
 					{
-						props.comments.map((comment: any, index: number) => {
+						comments.map((comment: any, index: number) => {
 							return (
 								<Comment key={index} 
 									userId={comment.user_id} 
@@ -179,7 +181,20 @@ function UserPost(props: any): ReactElement {
 							);
 						})
 					}
-					<CreateComment />
+					<CreateComment 
+						postId={props.postId} 
+						onNewCommentCreated={(data: any) => {
+							setComments([ 
+								...comments, 
+								{ 
+									user_id: data.user_id,
+									post_id: data.post_id,
+									content: data.content,
+									created_at: data.created_at,
+								} 
+							]);
+						}}
+					/>
 				</Grid>
 			</Grid>
 		</Card>

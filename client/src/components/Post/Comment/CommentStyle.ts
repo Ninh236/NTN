@@ -2,8 +2,10 @@ import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles({
 	root: {
-		backgroundColor: "rgba(0, 0, 0, 0.025)",
+		backgroundColor: "#f0f2f5",
 		paddingTop: "1rem",
-		borderBottom: "0.5px solid black",
+		borderRadius: "15px",
+		marginBottom: "1rem",
+		boxShadow: "0px 2px 4px rgb(0 0 0 / 20%)",
 	}
 });

@@ -162,7 +162,7 @@ function ToolBar({
 
 	return (
 		<StyledAppBar>
-			<MuiToolBar sx={{ width: "100vw" }}>
+			<MuiToolBar>
 				<IconButton size="large" edge="start" color="inherit">
 					<MenuIcon />
 				</IconButton>

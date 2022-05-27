@@ -1,11 +1,14 @@
-import React from "react";
+import { ReactElement, useState } from "react";
 import {
 	styled,
 	InputBase,
 	Avatar,
 	Box,
+	IconButton,
 } from "@mui/material";
-import ActionMessage from "../../ActionMessage/ActionMessage";
+import { SendRounded } from "@mui/icons-material";
+import { connect, ConnectedProps } from "react-redux";
+import { ApplicationState } from "../../../store";
 
 const CommentBox = styled(InputBase)`
 	background: #f5f5f5 !important;
@@ -24,32 +27,47 @@ const CommentBox = styled(InputBase)`
 	}
 `;
 
+const connector = connect(
+	(state: ApplicationState) => ({
+		token: state.app.token,
+	}), {}
+);
 
-export default function CreatePost() {
+function CreateComment(props: any): ReactElement {
+	const { token, ...others } = props;
+	const authToken = `Bearer ${token}`; 
+	const [content, setContent] = useState("");
 
-	const [commentContent, setCommentContent] = React.useState("");
-	const [openMessage, setOpenMessage] = React.useState(false);
-
-	const handlePostComment = (event: any) => {
-		setCommentContent(event.target.value);
-		event.target.value = "";
-	};
-
-	const handleCloseMessage = () => {
-		setOpenMessage(false);
+	const handleClickSend = () => {
+		fetch(`http://127.0.0.1:8000/api/comments/${props.postId}`, {
+			method: "POST",
+			mode: "cors",
+			headers: {
+				"Authorization": authToken,
+				"Content-Type": "application/json",
+				"Accept": "application/json",
+			},
+			body: JSON.stringify({ content: content })
+		}).then(res => res.json())
+			.then(data => {
+				console.log(data);
+				props.onNewCommentCreated(data);
+			});
 	};
 
 	return (
 		<Box sx={{ display: "flex", my: "0.5rem" }}>
 			<Avatar></Avatar>
-			<CommentBox placeholder="Viết bình luận..."
-				onKeyPress={event => {
-					if (event.key === "Enter") {
-						handlePostComment(event);
-						setOpenMessage(true);
-					}
-				}} />
-			<ActionMessage success message={"Gửi bình luận thành công!"} onClose={handleCloseMessage} open={openMessage} />
+			<CommentBox 
+				placeholder="Viết bình luận..."
+				value={content}
+				onChange={(event) => setContent(event.target.value)}
+			/>
+			<IconButton disabled={content === ""} onClick={handleClickSend}>
+				<SendRounded color={content !== "" ? "primary": "disabled"}/>
+			</IconButton>
 		</Box>
 	);
 }
+
+export default connector(CreateComment);

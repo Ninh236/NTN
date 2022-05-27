@@ -7,5 +7,7 @@ export const useStyle = makeStyles({
 		margin: "auto",
 		padding: "1rem",
 		paddingBottom: 0,
+		borderRadius: "15px !important",
+		boxShadow: "0px 4px 4px rgb(0 0 0 / 20%) !important",
 	}
 });
