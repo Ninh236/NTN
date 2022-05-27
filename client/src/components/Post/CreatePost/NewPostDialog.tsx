@@ -1,19 +1,19 @@
 import { AddCircleRounded, AddPhotoAlternateOutlined, CloseOutlined, SendRounded } from "@mui/icons-material";
-import { 
+import {
 	styled,
-	Box, 
-	Button, 
-	Chip, 
-	Dialog, 
-	DialogActions, 
-	DialogContent, 
-	DialogTitle, 
-	Divider, 
-	IconButton, 
+	Box,
+	Button,
+	Chip,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	Divider,
+	IconButton,
 	InputAdornment,
-	TextareaAutosize, 
+	TextareaAutosize,
 	TextField,
-	ButtonBase, 
+	ButtonBase,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { ReactElement, useRef, useState } from "react";
@@ -107,7 +107,7 @@ const connector = connect(
 	{
 		changeOpenState,
 		createNewPost,
-	}	
+	}
 );
 
 export interface Hashtag {
@@ -115,7 +115,7 @@ export interface Hashtag {
 }
 
 function NewPostDialog({
-	token, 
+	token,
 	open,
 	changeOpenState,
 	createNewPost,
@@ -142,12 +142,12 @@ function NewPostDialog({
 	};
 
 	const handleChangeNewHashtag = (event: any) => {
-		setNewHashtag({ label: event.target.value.replace(" ", "")});
+		setNewHashtag({ label: event.target.value.replace(" ", "") });
 	};
 
 	const handleClickAddHashtag = () => {
 		if (hashtags.find(el => el.label === newHashtag.label) === undefined) {
-			setHashtags([...hashtags, newHashtag]);	
+			setHashtags([...hashtags, newHashtag]);
 			setNewHashtag({ label: "" });
 		}
 	};
@@ -182,13 +182,13 @@ function NewPostDialog({
 			</DialogTitle>
 			<DialogContent sx={{ p: 0, width: "100%" }} className={styles.customScrollBar}>
 				<Divider />
-				<TextPostArea 
-					minRows="10" 
-					maxRows="10" 
+				<TextPostArea
+					minRows="10"
+					maxRows="10"
 					autoFocus
 					placeholder="Chia sẻ với mọi người nào!"
 					value={content}
-					onChange={handleChangeContent} 
+					onChange={handleChangeContent}
 					sx={{
 						width: "calc(100% - 1rem)",
 						height: "fit-content",
@@ -200,17 +200,17 @@ function NewPostDialog({
 				<Box>
 					{image.path !== "" && (
 						<div className={styles.previewImage}>
-							<IconButton 
-								className={styles.closeImageBut} 
+							<IconButton
+								className={styles.closeImageBut}
 								sx={{ backgroundColor: "black", color: "white" }}
-								onClick={() => setImage({path: "", file: null})} 
+								onClick={() => setImage({ path: "", file: null })}
 							><CloseOutlined /></IconButton>
 							{/* <UilTimes onClick={()=>setImage(null)}/> */}
 							<img src={image.path} alt="" />
 						</div>
 					)}
 				</Box>
-				<Divider variant="middle"/>
+				<Divider variant="middle" />
 				<Box
 					sx={{
 						display: "flex",
@@ -239,9 +239,9 @@ function NewPostDialog({
 				<div>
 					<label htmlFor="img-upload">
 						<Input accept="image/*" id="img-upload" multiple type="file" onChange={onImageChange} />
-						<Button 
-							variant="text" 
-							component="div" 
+						<Button
+							variant="text"
+							component="div"
 							startIcon={<AddPhotoAlternateOutlined color="secondary" />}
 							sx={{
 								textTransform: "none"
@@ -253,9 +253,9 @@ function NewPostDialog({
 				</div>
 				<div>
 					<TextField
-						placeholder="Thêm hashtag" 
-						variant="outlined" 
-						size="small" 
+						placeholder="Thêm hashtag"
+						variant="outlined"
+						size="small"
 						value={newHashtag.label}
 						onChange={handleChangeNewHashtag}
 						className={styles.roundedTextField}
@@ -263,9 +263,9 @@ function NewPostDialog({
 						inputProps={{ maxLength: 32 }}
 						InputProps={{
 							endAdornment: (
-								<InputAdornment position="end"> 
-									<IconButton sx={{ px: 0 }} 
-										disabled={newHashtag.label.length === 0} 
+								<InputAdornment position="end">
+									<IconButton sx={{ px: 0 }}
+										disabled={newHashtag.label.length === 0}
 										onClick={handleClickAddHashtag}
 									>
 										<AddCircleRounded color="secondary" />
@@ -276,7 +276,7 @@ function NewPostDialog({
 					/>
 				</div>
 				<div>
-					<Button 
+					<Button
 						sx={{ fontWeight: "bold", textTransform: "none", width: "106px" }}
 						onClick={handleClickCreatePost}
 						disabled={content.length === 0 || hashtags.length === 0}

@@ -18,7 +18,7 @@ export default function Home(): ReactElement {
 
 	return (
 		<Box>
-			<Box className={styles.root}>
+			<Box>
 				<Stack spacing={2}>
 					<div><NewPostBar /></div>
 					<div><UserPost /></div>
