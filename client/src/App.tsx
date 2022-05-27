@@ -15,6 +15,7 @@ import { findUserDataInCookies } from "./store/actions/app/findUserDataInCookies
 import { connect, ConnectedProps } from "react-redux";
 import { ApplicationState } from "./store";
 import MasterDialog from "./components/MasterDialog/MasterDialog";
+import { saveUserDataInCookies } from "./store/actions/app/saveUserDataInCookies";
 
 const theme = createTheme({
 	palette: {
@@ -38,16 +39,37 @@ const connector = connect(
 	}),
 	{
 		findUserDataInCookies,
+		saveUserDataInCookies,
 	}
 );
 
 function App({
 	username,
 	findUserDataInCookies,
+	saveUserDataInCookies,
 }: ConnectedProps<typeof connector>): ReactElement {
 	console.log("app");
 	useEffect(() => {
-		findUserDataInCookies();
+		if (document.cookie === "") return;
+		else {
+			const token = document.cookie.replace("token=", "");
+			const authToken = `Bearer ${token}`;
+			fetch("http://127.0.0.1:8000/api/user", {
+				method: "GET",
+				mode: "cors",
+				headers: {
+					"Authorization": authToken,
+				}
+			}).then(res => res.json())
+				.then(data => {
+					console.log(data);
+					saveUserDataInCookies({
+						token: token,
+						userId: data.id,
+						username: data.username,
+					});
+				});
+		}
 	}, []);
 
 	return (
