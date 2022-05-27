@@ -49,7 +49,7 @@ function Home({
 
 	return (
 		<Box>
-			<Box className={styles.root}>
+			<Box>
 				<Stack spacing={2}>
 					<div><NewPostBar /></div>
 					{
