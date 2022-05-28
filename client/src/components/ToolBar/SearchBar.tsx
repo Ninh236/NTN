@@ -8,10 +8,14 @@ import {
 	ListItemAvatar,
 	Avatar,
 	ClickAwayListener,
+	Typography,
+	ListItemSecondaryAction,
+	ListSubheader,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { ApplicationState } from "../../store";
 import { connect, ConnectedProps } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
 	zIndex: 1000,
@@ -57,7 +61,7 @@ function SearchBar({
 	token,
 }: ConnectedProps<typeof connector>): ReactElement {
 
-	const [suggestSearch, setSuggestSearch] = React.useState([{}]);
+	const [suggestSearch, setSuggestSearch] = React.useState<any>([]);
 	const [inputValue, setinputValue] = React.useState("");
 	const [showSuggest, setShowSuggest] = React.useState(false);
 
@@ -66,37 +70,58 @@ function SearchBar({
 		setinputValue(event.target.value);
 		const searchContent = event.target.value;
 		const hashtag = searchContent.substring(1, searchContent.length);
+		const userName = searchContent.substring(1, searchContent.length);
+		if (searchContent == "") {
+			setSuggestSearch([]);
+		}
 
-		console.log(hashtag);
-
+		const authToken = `Bearer ${token}`;
 		if (searchContent[0] == "#") {
-			const authToken = `Bearer ${token}`;
-			fetch(`http://127.0.0.1:8000/api/post/get/tags/${hashtag}`, {
-				method: "GET",
-				mode: "cors",
-				headers: {
-					"Accept": "application/json",
-					"Content-Type": "application/json",
-					"Authorization": authToken,
-				},
-			}).then(res => {
-				console.log(res);
-				return res.json();
-			}).then(data => {
-				console.log(data);
-				for (let i = 0; i < data.length; i++) {
-					console.log(data[i]);
-				}
-				setSuggestSearch((suggestSearch) => suggestSearch.concat(data));
-				console.log("Tag State:");
-				console.log(suggestSearch[0]);
-				console.log(suggestSearch[1]);
-				console.log(suggestSearch[2]);
-				console.log(suggestSearch[3]);
-			});
+			if (hashtag.length > 0) {
+				fetch(`http://127.0.0.1:8000/api/post/get/tags/${hashtag}`, {
+					method: "GET",
+					mode: "cors",
+					headers: {
+						"Accept": "application/json",
+						"Content-Type": "application/json",
+						"Authorization": authToken,
+					},
+				}).then(res => {
+					console.log(res);
+					return res.json();
+				}).then((data) => {
+					if (data.length > 0) {
+						setSuggestSearch(data.slice(0, 8));
+						console.log(data);
+					} else {
+						setSuggestSearch([]);
+					}
+				});
+			}
 		}
 		if (searchContent[0] == "@") {
-			setSuggestSearch(["User"]);
+			if (hashtag.length > 0) {
+				fetch(`http://127.0.0.1:8000/api/profile/get/${userName}`, {
+					method: "GET",
+					mode: "cors",
+					headers: {
+						"Accept": "application/json",
+						"Content-Type": "application/json",
+						"Authorization": authToken,
+					},
+				}).then(res => {
+					console.log(res);
+					return res.json();
+				}).then((data) => {
+					if (data.length > 0) {
+						setSuggestSearch(data.slice(0, 8));
+						console.log(data);
+					} else {
+						setSuggestSearch([]);
+					}
+				});
+			}
+
 		}
 	};
 
@@ -118,39 +143,44 @@ function SearchBar({
 				<SearchIconWrapper sx={{ height: "39px", padding: "0px 12px" }}>
 					<SearchIcon />
 				</SearchIconWrapper>
-				<StyledInputBase placeholder="Tìm kiếm…" value={inputValue} onChange={handleSearching} />
+				<StyledInputBase placeholder="Tìm kiếm…" value={inputValue}
+					onChange={handleSearching} onKeyDown={() => setShowSuggest(true)} />
 				{showSuggest ? (
 					<List onClick={handleClick}
 						dense
 						sx={{
-							width: "233.962px", bgcolor: "background.paper", position: "fixed", top: "64px",
+							width: "233.962px", bgcolor: "background.paper", position: "fixed", top: "48px",
 							boxShadow: 1
 						}}>
-						{inputValue != "" ? (
-							<ListItem disablePadding>
-								<ListItemButton>
-									<ListItemAvatar>
-										<Avatar />
-									</ListItemAvatar>
-									<ListItemText primary={inputValue} />
-								</ListItemButton>
-							</ListItem>
-						) : null}
-						{/*{suggestSearch.map((value) => {
+						<ListSubheader sx={{ fontSize: "1rem", lineHeight: "1.25rem", position: "relative" }}>
+							<strong>Kết quả tìm kiếm cho: </strong> {inputValue}
+						</ListSubheader>
+						{suggestSearch.map((value: any) => {
 							const labelId = `${value}`;
 							return (
 								<ListItem
-									key={value.tag}
+									key={value}
 									disablePadding >
 									<ListItemButton >
 										<ListItemAvatar>
 											<Avatar />
 										</ListItemAvatar>
-										<ListItemText id={labelId} primary={`User ${value}`} />
+										{inputValue[0] == "#" ?
+											(<ListItemText id={labelId}
+												secondaryTypographyProps={{ style: { overflow: "hidden" } }}
+												primary={`@${value.user.username}`}
+												secondary={`${value.content.substring(0, 50)}` + (value.content.length > 49 ? "..." : "")} />)
+											: (<Link style={{ textDecoration: "none" }} to={`/profile/${value.username}`}>
+												<ListItemText id={labelId}
+													secondaryTypographyProps={{ style: { overflow: "hidden" } }}
+													primary={`@${value.username}`}
+													secondary={`${value.profile.first_name} ${value.profile.surname} ${value.profile.last_name}`} />
+											</Link>)
+										}
 									</ListItemButton>
 								</ListItem>
 							);
-						})}*/}
+						})}
 					</List>) : null}
 			</Search>
 		</ClickAwayListener >
