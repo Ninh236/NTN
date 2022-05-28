@@ -61,12 +61,13 @@ function ProfileInfo(props: any): ReactElement {
 			.then(data => {
 				console.log("From InfoUser");
 				console.log(data);
-				const dataGender = data[0].profile.gender != "" ? data[0].profile.gender : "Chưa cập nhật";
+				const dataGender = data[0].profile.gender == 0 ? "Nam" : data[0].profile.gender == 1 ? "Nữ" :
+					data[0].profile.gender == 2 ? "Khác" : "Chưa cập nhật";
 				const dataDob = data[0].profile.birthday != "" ? data[0].profile.birthday : "Chưa cập nhật";
 				const dataMobile = data[0].profile.mobile != "" ? data[0].profile.mobile : "Chưa cập nhật";
 				const dataEmail = data[0].email != "" ? data[0].email : "Chưa cập nhật";
 				setUserInfo({
-					gender: dataGender.subString(0, 6),
+					gender: dataGender,
 					dob: dataDob,
 					email: dataEmail,
 					mobile: dataMobile,
@@ -84,10 +85,10 @@ function ProfileInfo(props: any): ReactElement {
 					</Typography>)} />
 				<CardContent>
 					<Typography variant="subtitle1" component="div">
-						<div>Sinh Nhật: {userInfo.dob} </div>
-						<div>Email: {userInfo.email}</div>
-						<div>Số điện thoại {userInfo.mobile}</div>
-						<div>Giới tính: {userInfo.gender}</div>
+						<div> <strong>Sinh Nhật:</strong> {userInfo.dob} </div>
+						<div><strong>Giới tính:</strong> {userInfo.gender}</div>
+						<div><strong>Email:</strong> {userInfo.email}</div>
+						<div><strong>Số điện thoại:</strong> {userInfo.mobile}</div>
 					</Typography>
 				</CardContent>
 			</Card>

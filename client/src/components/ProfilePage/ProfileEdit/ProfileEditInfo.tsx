@@ -18,7 +18,7 @@ import RadioGroup from "../../CustomInput/RadioGroup/RadioGroup";
 import { IGender } from "../../../constants/IGender";
 import { connect } from "react-redux";
 import { ApplicationState } from "../../../store";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const genderItems: Array<IGender> = [
 	{ id: 0, title: "Nam", value: 0 },
@@ -39,17 +39,19 @@ function ProfileEditInfo(props: any): ReactElement {
 		firstName: "",
 		middleName: "",
 		lastName: "",
-		dob: "",
-		gender: 0,
+		dob: new Date,
+		gender: "0",
 		email: "",
+		mobile: "",
 	});
 
 	const requestBody = {
 		"first_name": updatedInfo.firstName,
-		"middle": updatedInfo.middleName,
+		"surname": updatedInfo.middleName,
 		"last_name": updatedInfo.lastName,
-		"birthday": updatedInfo.dob,
+		"birthday": new Date(updatedInfo.dob.getTime() + (24 * 60 * 60 * 1000)).toISOString().slice(0, 10),
 		"gender": new String(updatedInfo.gender),
+		"mobile": updatedInfo.mobile,
 		"email": updatedInfo.email,
 	};
 
@@ -77,9 +79,10 @@ function ProfileEditInfo(props: any): ReactElement {
 				middleName: data[0].profile.surname,
 				lastName: data[0].profile.last_name,
 				gender: data[0].profile.gender,
-				dob: data[0].profile.birthday.substring(3, 5)
+				dob: new Date(data[0].profile.birthday.substring(3., 5)
 					+ "/" + data[0].profile.birthday.substring(0, 2)
-					+ "/" + data[0].profile.birthday.substring(6, 10),
+					+ "/" + data[0].profile.birthday.substring(6, 10)),
+				mobile: data[0].profile.mobile,
 				email: data[0].email,
 			});
 		});
@@ -101,9 +104,9 @@ function ProfileEditInfo(props: any): ReactElement {
 			console.log(res);
 			return res.json();
 		}).then(data => {
+			console.log("UP DATE USER DATA");
 			console.log(data);
 			handleClose();
-			window.location.href = `/profile/${username}`;
 		});
 	};
 
@@ -129,9 +132,10 @@ function ProfileEditInfo(props: any): ReactElement {
 					middleName: data[0].profile.surname,
 					lastName: data[0].profile.last_name,
 					gender: data[0].profile.gender,
-					dob: data[0].profile.birthday.substring(3, 5)
+					dob: new Date(data[0].profile.birthday.substring(3., 5)
 						+ "/" + data[0].profile.birthday.substring(0, 2)
-						+ "/" + data[0].profile.birthday.substring(6, 10),
+						+ "/" + data[0].profile.birthday.substring(6, 10)),
+					mobile: data[0].profile.mobile,
 					email: data[0].email,
 				});
 			});
@@ -226,8 +230,9 @@ function ProfileEditInfo(props: any): ReactElement {
 								name="email"
 								label="Email"
 								variant="standard"
-								inputProps={{ maxLength: "32" }}
+								inputProps={{ maxLength: "50" }}
 								value={updatedInfo.email}
+								InputProps={{ style: { width: "180%" } }}
 								onChange={(event) => {
 									setUpdatedInfo({
 										...updatedInfo,
@@ -235,15 +240,31 @@ function ProfileEditInfo(props: any): ReactElement {
 									});
 								}} />
 						</Grid>
+						<Grid item xs={4}>
+							<TextField
+								name="mobile"
+								label="Số điện thoại"
+								variant="standard"
+								inputProps={{ maxLength: "15" }}
+								value={updatedInfo.mobile}
+								onChange={(event) => {
+									setUpdatedInfo({
+										...updatedInfo,
+										mobile: event.target.value,
+									});
+								}} />
+						</Grid>
 					</Grid>
 				</CardContent>
 				<CardActions sx={{ justifyContent: "end" }}>
-					<Button onClick={handleAcceptChange}>
-						Thay đổi
-					</Button>
+					<Link to="/profile">
+						<Button onClick={handleAcceptChange}>
+							Thay đổi
+						</Button>
+					</Link>
 				</CardActions>
 			</Card>
-		</Dialog>
+		</Dialog >
 	);
 }
 export default connector(ProfileEditInfo);
