@@ -81,7 +81,7 @@ function ProfileHeader(props: any): ReactElement {
 					<Typography color="#65676B" fontWeight="bold">
 						{"51"} bạn bè
 					</Typography>
-					{curUsername === userData.username && 
+					{curUsername === userData.username &&
 						(<>
 							<Button sx={{
 								bgcolor: "#00000014 !important", width: "11rem",
@@ -90,7 +90,7 @@ function ProfileHeader(props: any): ReactElement {
 								<Edit sx={{ ml: 1 }} />
 								Chỉnh sửa thông tin
 							</Button>
-							<ProfileEditInfo open={openEditInfo} close={handleCloseEditInfo} />)
+							<ProfileEditInfo open={openEditInfo} close={handleCloseEditInfo} />
 						</>)
 					}
 				</Box>
