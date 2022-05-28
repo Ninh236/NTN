@@ -10,6 +10,11 @@ import FileCopyIcon from "@mui/icons-material/FileCopy";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IconButton } from "@mui/material";
+import { DeleteRounded } from "@mui/icons-material";
+import { connect, ConnectedProps } from "react-redux";
+import { ApplicationState } from "../../../store";
+import { changeOpenState as changeOpenUpdatePostState } from "../../../store/actions/updatePost/changeOpenState";
+import { setData } from "../../../store/actions/updatePost/setData";
 
 const StyledMenu = styled((props: MenuProps) => (
 	<Menu
@@ -52,7 +57,16 @@ const StyledMenu = styled((props: MenuProps) => (
 	},
 }));
 
-export default function CustomizedMenus() {
+const connector = connect(
+	(state: ApplicationState) => ({}), 
+	{ 
+		changeOpenUpdatePostState,
+		setData,
+	}
+);
+
+function PostAction(props: any) {
+	const { changeOpenUpdatePostState, setData, content } = props;
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -61,6 +75,7 @@ export default function CustomizedMenus() {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
+	console.log(props);
 
 	return (
 		<div>
@@ -71,6 +86,7 @@ export default function CustomizedMenus() {
 				aria-expanded={open ? "true" : undefined}
 				aria-haspopup="true"
 				onClick={handleClick}
+				disabled={props.disabled}
 			>
 				<MoreVertIcon />
 			</IconButton>
@@ -83,24 +99,24 @@ export default function CustomizedMenus() {
 				open={open}
 				onClose={handleClose}
 			>
-				<MenuItem onClick={handleClose} disableRipple>
+				<MenuItem 
+					onClick={() => {
+						setData(content, props.postId);
+						changeOpenUpdatePostState(true);
+					}
+					}	 
+					disableRipple
+				>
 					<EditIcon />
-					Edit
+					Chỉnh sửa
 				</MenuItem>
 				<MenuItem onClick={handleClose} disableRipple>
-					<FileCopyIcon />
-					Duplicate
-				</MenuItem>
-				<Divider sx={{ my: 0.5 }} />
-				<MenuItem onClick={handleClose} disableRipple>
-					<ArchiveIcon />
-					Archive
-				</MenuItem>
-				<MenuItem onClick={handleClose} disableRipple>
-					<MoreHorizIcon />
-					More
+					<DeleteRounded />
+					Xoá
 				</MenuItem>
 			</StyledMenu>
 		</div>
 	);
 }
+
+export default connector(PostAction);
