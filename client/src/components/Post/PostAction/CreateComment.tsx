@@ -50,7 +50,7 @@ function CreateComment(props: any): ReactElement {
 			body: JSON.stringify({ content: content })
 		}).then(res => res.json())
 			.then(data => {
-				console.log(data);
+				setContent("");
 				props.onNewCommentCreated(data);
 			});
 	};

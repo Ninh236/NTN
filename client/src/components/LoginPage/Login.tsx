@@ -58,7 +58,6 @@ function Login({
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log(1);
 		if (isLoggedIn) {
 			navigate("/home");
 		}
