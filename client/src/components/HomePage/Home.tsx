@@ -61,6 +61,8 @@ function Home({
 										content={post.content} 
 										image={post.image} 
 										postId={post.id} 
+										user={post.user}
+										profile={post.profile}
 										comments={post.comments} 
 										tags={post.tags} 
 										likes={post.likes} 

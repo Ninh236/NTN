@@ -13,7 +13,7 @@ import UserPost from "../Post/UserPost/UserPost";
 const connector = connect(
 	(state: ApplicationState) => ({
 		token: state.app.token,
-		userId: state.app.userId,
+		curUserId: state.app.userId,
 		isNewPostUploaded: state.createPost.isNewPostUploaded,
 	}), 
 	{
@@ -21,13 +21,11 @@ const connector = connect(
 	}
 );
 
-function ProfileMain({
-	token,
-	userId,
-	isNewPostUploaded,
-	changeIsNewPostUp,
-}: ConnectedProps<typeof connector>) {
+function ProfileMain(props: any) {
+	const { token, curUserId, userId, username, isNewPostUploaded } = props;
 	const [posts, setPosts] = useState([]);
+
+	console.log(props);
 
 	useEffect(() => {
 		const authToken = `Bearer ${token}`;
@@ -44,12 +42,12 @@ function ProfileMain({
 				console.log(data);
 				setPosts(data.reverse());
 			});
-	}, [isNewPostUploaded]);
+	}, [isNewPostUploaded, userId]);
 
 	return (
-		<Box ml="0.5rem">
+		<Box ml="0.5rem" mt="1rem">
 			<Stack spacing={2}>
-				<div><NewPostBar /></div>
+				{curUserId === userId && (<div><NewPostBar /></div>)}
 				{
 					posts.map((post: any, index) => {
 						return (
@@ -58,7 +56,9 @@ function ProfileMain({
 									userId={post.user_id} 
 									content={post.content} 
 									image={post.image} 
-									postId={post.id} 
+									postId={post.id}
+									user={post.user} 
+									profile={post.profile}
 									comments={post.comments} 
 									tags={post.tags} 
 									likes={post.likes} 
@@ -69,7 +69,7 @@ function ProfileMain({
 					})
 				}
 			</Stack>
-			<NewPostDialog />
+			{curUserId === userId && <NewPostDialog />}
 		</Box>
 		
 	);
