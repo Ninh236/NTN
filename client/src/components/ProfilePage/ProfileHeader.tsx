@@ -44,10 +44,6 @@ function ProfileHeader(props: any): ReactElement {
 		});
 	}, []);
 
-
-	const [user, setUser] = useState({
-		fullName: "",
-	});
 	const [tab, setTab] = useState(0);
 	const [openEditInfo, setOpenEditInfo] = useState(false);
 	const [openEditAvt, setOpenEditAvt] = useState(false);
@@ -95,7 +91,7 @@ function ProfileHeader(props: any): ReactElement {
 				<ProfileEditAvt open={openEditAvt} close={handleCloseEditAvt} />
 				<Box sx={{ display: "flex", flexDirection: "column", alignSelf: "baseline", ml: "1rem" }}>
 					<Typography variant="h4" component="div" fontWeight="bold">
-						{user.fullName}
+						{userData.firstName + " " + userData.middleName + " " + userData.lastName}
 					</Typography>
 					<Typography color="#65676B" fontWeight="bold">
 						{"51"} bạn bè
@@ -126,4 +122,4 @@ function ProfileHeader(props: any): ReactElement {
 		</Card >
 	);
 }
-export default connector(ProfileHeader);
+export default ProfileHeader;

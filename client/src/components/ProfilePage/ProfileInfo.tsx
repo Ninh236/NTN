@@ -1,3 +1,4 @@
+import { ReactElement, useEffect, useState } from "react";
 import {
 	Card,
 	CardHeader,
@@ -9,16 +10,21 @@ import {
 	Avatar,
 	CardActions
 } from "@mui/material";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { ApplicationState } from "../../store";
 
-export default function ProfileInfo(props: any) {
+const connector = connect((state: ApplicationState) => ({
+	token: state.app.token,
+	username: state.app.username,
 
-	const { username } = props;
+}), {});
 
+function ProfileInfo(props: any): ReactElement {
+
+	const { username, token } = props;
 	const friends = [
-		{
-			name: "Tùng"
-		},
+		{ name: "Tùng" },
 		{
 			name: "Nhật"
 		},
@@ -30,6 +36,45 @@ export default function ProfileInfo(props: any) {
 		},
 	];
 
+	const [userInfo, setUserInfo] = useState({
+		gender: "",
+		dob: "",
+		email: "",
+		mobile: "",
+	});
+
+	useEffect(() => {
+		const authToken = `Bearer ${token}`;
+		fetch(`http://127.0.0.1:8000/api/profile/get/${username}`, {
+			method: "GET",
+			mode: "cors",
+			headers: {
+				"Accept": "application/json",
+				"Content-Type": "application/json",
+				"Authorization": authToken,
+			},
+		})
+			.then(res => {
+				console.log(res);
+				return res.json();
+			})
+			.then(data => {
+				console.log("From InfoUser");
+				console.log(data);
+				const dataGender = data[0].profile.gender == 0 ? "Nam" : data[0].profile.gender == 1 ? "Nữ" :
+					data[0].profile.gender == 2 ? "Khác" : "Chưa cập nhật";
+				const dataDob = data[0].profile.birthday != "" ? data[0].profile.birthday : "Chưa cập nhật";
+				const dataMobile = data[0].profile.mobile != "" ? data[0].profile.mobile : "Chưa cập nhật";
+				const dataEmail = data[0].email != "" ? data[0].email : "Chưa cập nhật";
+				setUserInfo({
+					gender: dataGender,
+					dob: dataDob,
+					email: dataEmail,
+					mobile: dataMobile,
+				});
+			});
+	}, []);
+
 	return (
 		<Stack mt="1rem" mr="0.5rem" spacing={2}>
 			<Card sx={{ width: "400px" }}>
@@ -40,12 +85,10 @@ export default function ProfileInfo(props: any) {
 					</Typography>)} />
 				<CardContent>
 					<Typography variant="subtitle1" component="div">
-						<div>1</div>
-						<div>2</div>
-						<div>3</div>
-						<div>4</div>
-						<div>5</div>
-						<div>6</div>
+						<div> <strong>Sinh Nhật:</strong> {userInfo.dob} </div>
+						<div><strong>Giới tính:</strong> {userInfo.gender}</div>
+						<div><strong>Email:</strong> {userInfo.email}</div>
+						<div><strong>Số điện thoại:</strong> {userInfo.mobile}</div>
 					</Typography>
 				</CardContent>
 			</Card>
@@ -72,4 +115,4 @@ export default function ProfileInfo(props: any) {
 			</Card>
 		</Stack >
 	);
-}
+} export default connector(ProfileInfo);

@@ -58,7 +58,7 @@ const connector = connect(
 );
 
 function ToolBar(props: any): ReactElement {
-	const { name, username, logoutAnDeleteCookies } = props;
+	const { name, username, logoutAndDeleteCookies } = props;
 	const styles = useStyles();
 	const [tab, setTab] = React.useState(0);
 	const [options, setOptions] = React.useState(false);
@@ -90,7 +90,7 @@ function ToolBar(props: any): ReactElement {
 	};
 
 	const handleLogout = () => {
-		console.log(1);
+		console.log("Clicked Log out");
 		logoutAndDeleteCookies();
 		handleMenuClose;
 	};
