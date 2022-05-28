@@ -43,10 +43,8 @@ function Home({
 			}
 		}).then(res => res.json())
 			.then(data => {
-				console.log(data);
 				setPosts(data.data.reverse());
 			});
-		changeIsNewPostUp(false);
 	}, [isNewPostUploaded]);
 
 	return (
@@ -63,6 +61,8 @@ function Home({
 										content={post.content} 
 										image={post.image} 
 										postId={post.id} 
+										user={post.user}
+										profile={post.profile}
 										comments={post.comments} 
 										tags={post.tags} 
 										likes={post.likes} 

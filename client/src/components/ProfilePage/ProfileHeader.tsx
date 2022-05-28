@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement, useState, useEffect } from "react";
 import {
 	Avatar,
 	Badge,
@@ -19,16 +19,12 @@ import ProfileEditInfo from "./ProfileEdit/ProfileEditInfo";
 
 const connector = connect((state: ApplicationState) => ({
 	token: state.app.token,
-	username: state.app.username,
 }), {});
 
-function ProfileHeader({
-	token,
-	username
-}: ConnectedProps<typeof connector>): ReactElement {
+function ProfileHeader(props: any): ReactElement {
+	const {token, username} = props;
 
-
-	React.useEffect(() => {
+	useEffect(() => {
 		const authToken = `Bearer ${token}`;
 		fetch(`http://127.0.0.1:8000/api/profile/get/${username}`, {
 			method: "GET",
@@ -48,12 +44,12 @@ function ProfileHeader({
 	}, []);
 
 
-	const [user, setUser] = React.useState({
+	const [user, setUser] = useState({
 		fullName: "",
 	});
-	const [tab, setTab] = React.useState(0);
-	const [openEditInfo, setOpenEditInfo] = React.useState(false);
-	const [openEditAvt, setOpenEditAvt] = React.useState(false);
+	const [tab, setTab] = useState(0);
+	const [openEditInfo, setOpenEditInfo] = useState(false);
+	const [openEditAvt, setOpenEditAvt] = useState(false);
 
 	const handleChangeTab = (event: any, newTab: any) => {
 		setTab(newTab);
