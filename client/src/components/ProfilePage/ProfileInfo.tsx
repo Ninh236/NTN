@@ -20,6 +20,7 @@ const connector = connect((state: ApplicationState) => ({
 
 function ProfileInfo(props: any): ReactElement {
 
+	console.log(props);
 	const { username, token } = props;
 	const friends = [
 		{ name: "Tùng" },
@@ -71,7 +72,7 @@ function ProfileInfo(props: any): ReactElement {
 					mobile: dataMobile,
 				});
 			});
-	}, []);
+	}, [username]);
 
 	return (
 		<Stack mt="1rem" mr="0.5rem" spacing={2}>
