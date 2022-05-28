@@ -23,26 +23,7 @@ const connector = connect((state: ApplicationState) => ({
 }), {});
 
 function ProfileHeader(props: any): ReactElement {
-	const {token, username, curUsername} = props;
-
-	useEffect(() => {
-		const authToken = `Bearer ${token}`;
-		fetch(`http://127.0.0.1:8000/api/profile/get/${username}`, {
-			method: "GET",
-			mode: "cors",
-			headers: {
-				"Accept": "application/json",
-				"Authorization": authToken,
-			},
-		}).then(res => {
-			console.log(res.status);
-			return res.json();
-		}).then(data => {
-			setUser({
-				fullName: `${data[0].profile.first_name} ${data[0].profile.surname} ${data[0].profile.last_name}`,
-			});
-		});
-	}, []);
+	const { userData, curUsername } = props;
 
 	const [tab, setTab] = useState(0);
 	const [openEditInfo, setOpenEditInfo] = useState(false);
@@ -96,7 +77,7 @@ function ProfileHeader(props: any): ReactElement {
 					<Typography color="#65676B" fontWeight="bold">
 						{"51"} bạn bè
 					</Typography>
-					{curUsername === username && 
+					{curUsername === userData.username && 
 						(<>
 							<Button sx={{
 								bgcolor: "#00000014 !important", width: "11rem",
@@ -122,4 +103,4 @@ function ProfileHeader(props: any): ReactElement {
 		</Card >
 	);
 }
-export default ProfileHeader;
+export default connector(ProfileHeader);
