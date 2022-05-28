@@ -58,11 +58,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/post/get/all', [\App\Http\Controllers\PostController::class, 'getAll']);
     // find by hashtag
     Route::get('post/get/tags/{hashtag}', [\App\Http\Controllers\PostController::class, 'findPostByTag']);
+    // get cmt's post
+    Route::get('post/get/comments/{id}', [\App\Http\Controllers\PostController::class, 'getCommentsOfPost']);
 
     //************ comment
     Route::post('/comments/{post_id}', [\App\Http\Controllers\CommentController::class, 'store']);
     Route::put('/comment/edit/{post_id}/{comment_id}', [\App\Http\Controllers\CommentController::class, 'update']);
     Route::delete('/comment/edit/{post_id}/{comment_id}', [\App\Http\Controllers\CommentController::class, 'destroy']);
+
 
     //************ like
     Route::post('/like/{post_id}', [\App\Http\Controllers\LikeController::class, 'like']);
