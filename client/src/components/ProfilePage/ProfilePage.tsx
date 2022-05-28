@@ -21,13 +21,11 @@ interface ProfileData {
 const connector = connect(
 	(state: ApplicationState) => ({
 		token: state.app.token,
-		username1: state.app.username,
 	})
 );
 
 function ProfilePage({
 	token,
-	username1,
 }: ConnectedProps<typeof connector>): ReactElement {
 	const { username } = useParams();
 	const [userData, setUserData] = useState<ProfileData>({
@@ -67,7 +65,7 @@ function ProfilePage({
 
 	return (
 		<Box>
-			<ProfileHeader username={username} />
+			<ProfileHeader userData={userData} />
 			<Box display="flex" flexDirection="row" justifyContent="center">
 				<ProfileInfo />
 				<ProfileMain userId={userData.userId} />

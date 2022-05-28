@@ -16,7 +16,7 @@ const connector = connect(
 		token: state.app.token,
 		curUserId: state.app.userId,
 		isNewPostUploaded: state.createPost.isNewPostUploaded,
-	}), 
+	}),
 	{
 		changeIsNewPostUp,
 	}
@@ -46,24 +46,24 @@ function ProfileMain(props: any) {
 	}, [isNewPostUploaded, userId]);
 
 	return (
-		<Box ml="0.5rem" mt="1rem">
+		<Box ml="0.5rem">
 			<Stack spacing={2}>
 				{curUserId === userId && (<div><NewPostBar /></div>)}
 				{
 					posts.map((post: any, index) => {
 						return (
 							<div key={index}>
-								<UserPost 
-									userId={post.user_id} 
-									content={post.content} 
-									image={post.image} 
+								<UserPost
+									userId={post.user_id}
+									content={post.content}
+									image={post.image}
 									postId={post.id}
-									user={post.user} 
+									user={post.user}
 									profile={post.profile}
-									comments={post.comments} 
-									tags={post.tags} 
-									likes={post.likes} 
-									createdAt={post.created_at}								
+									comments={post.comments}
+									tags={post.tags}
+									likes={post.likes}
+									createdAt={post.created_at}
 								/>
 							</div>
 						);
@@ -73,7 +73,7 @@ function ProfileMain(props: any) {
 			{curUserId === userId && <NewPostDialog />}
 			<UpdatePost />
 		</Box>
-		
+
 	);
 }
 
