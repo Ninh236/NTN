@@ -29,7 +29,7 @@ class PostController extends Controller
     }
 
     public function getAll() {
-        return Post::with('comments')->with('user')->with('profile')->with('tags')->with('likes')->paginate(10);
+        return Post::orderBy('created_at', 'desc')->with('comments')->with('user')->with('profile')->with('tags')->with('likes')->paginate(10);
     }
 
     public function store(StorePostRequest $request)
