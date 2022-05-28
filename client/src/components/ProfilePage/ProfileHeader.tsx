@@ -19,10 +19,11 @@ import ProfileEditInfo from "./ProfileEdit/ProfileEditInfo";
 
 const connector = connect((state: ApplicationState) => ({
 	token: state.app.token,
+	curUsername: state.app.username
 }), {});
 
 function ProfileHeader(props: any): ReactElement {
-	const {token, username} = props;
+	const {token, username, curUsername} = props;
 
 	useEffect(() => {
 		const authToken = `Bearer ${token}`;
@@ -99,14 +100,18 @@ function ProfileHeader(props: any): ReactElement {
 					<Typography color="#65676B" fontWeight="bold">
 						{"51"} bạn bè
 					</Typography>
-					<Button sx={{
-						bgcolor: "#00000014 !important", width: "11rem",
-						textTransform: "none", justifyContent: "start", p: 0.2, mt: 2
-					}} onClick={handleEditInfo}>
-						<Edit sx={{ ml: 1 }} />
-						Chỉnh sửa thông tin
-					</Button>
-					<ProfileEditInfo open={openEditInfo} close={handleCloseEditInfo} />
+					{curUsername === username && 
+						(<>
+							<Button sx={{
+								bgcolor: "#00000014 !important", width: "11rem",
+								textTransform: "none", justifyContent: "start", p: 0.2, mt: 2
+							}} onClick={handleEditInfo}>
+								<Edit sx={{ ml: 1 }} />
+								Chỉnh sửa thông tin
+							</Button>
+							<ProfileEditInfo open={openEditInfo} close={handleCloseEditInfo} />)
+						</>)
+					}
 				</Box>
 			</Box >
 			<Divider sx={{ width: "70%" }} variant="middle" />
