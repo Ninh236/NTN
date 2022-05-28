@@ -124,7 +124,7 @@ function UserPost(props: any): ReactElement {
 			<Grid container>
 				<Grid item xs={1}><Avatar sx={{ width: 44, height: 44, mx: "auto" }} /></Grid>
 				<Grid item xs={10} sx={{ pl: 1 }}>
-					<Link to={`/profile/${props.user.username}`} style={{ textDecoration: "none" }}>
+					<Link to={`/profile/${props.user.username}`} style={{ textDecoration: "none", color: "black" }}>
 						<Typography variant="body1">{fullName}</Typography>
 					</Link>
 					<Typography variant="subtitle2">{new Date(props.createdAt).toLocaleString()}</Typography>

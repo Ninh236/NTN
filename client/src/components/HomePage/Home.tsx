@@ -50,6 +50,7 @@ function Home({
 			.then(data => {
 				console.log(data);
 				setPosts(data.data);
+				setScrollPos(0);
 				if (data.next_page_url != null) {
 					setNextPageURL(data.next_page_url);
 				}
