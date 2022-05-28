@@ -257,7 +257,7 @@ function ProfileEditInfo(props: any): ReactElement {
 					</Grid>
 				</CardContent>
 				<CardActions sx={{ justifyContent: "end" }}>
-					<Link to="/profile">
+					<Link to="/profile/usernam1">
 						<Button onClick={handleAcceptChange}>
 							Thay đổi
 						</Button>

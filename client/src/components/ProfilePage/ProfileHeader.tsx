@@ -9,7 +9,8 @@ import {
 	Button,
 	Tab,
 	Tabs,
-	Typography
+	Typography,
+	Skeleton
 } from "@mui/material";
 import { CameraAltOutlined, Edit } from "@mui/icons-material";
 import ProfileEditAvt from "./ProfileEdit/ProfileEditAvt";
@@ -67,7 +68,10 @@ function ProfileHeader(props: any): ReactElement {
 				<ProfileEditAvt open={openEditAvt} close={handleCloseEditAvt} />
 				<Box sx={{ display: "flex", flexDirection: "column", alignSelf: "baseline", ml: "1rem" }}>
 					<Typography variant="h4" component="div" fontWeight="bold">
-						{userData.firstName + " " + userData.middleName + " " + userData.lastName}
+						{userData.firstName + " " + userData.middleName + " " + userData.lastName == "  " ? (
+							<Skeleton >
+							</Skeleton>) : (
+							userData.firstName + " " + userData.middleName + " " + userData.lastName)}
 					</Typography>
 					<Typography color="#65676B" fontWeight="bold">
 						{"51"} bạn bè
