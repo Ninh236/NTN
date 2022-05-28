@@ -104,7 +104,7 @@ function ProfileHeader({
 						{"51"} bạn bè
 					</Typography>
 					<Button sx={{
-						bgcolor: "#00000014 !important", width: "11rem",
+						bgcolor: "#00000014 !important", width: "11.5rem", fontWeight: "bold",
 						textTransform: "none", justifyContent: "start", p: 0.2, mt: 2
 					}} onClick={handleEditInfo}>
 						<Edit sx={{ ml: 1 }} />

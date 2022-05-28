@@ -1,3 +1,4 @@
+import React, { ReactElement, useEffect } from "react";
 import {
 	Box,
 	Button,
@@ -12,12 +13,12 @@ import {
 	Typography
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
-import React, { ReactElement, useEffect } from "react";
 import DatePicker from "../../CustomInput/DatePicker/DatePicker";
 import RadioGroup from "../../CustomInput/RadioGroup/RadioGroup";
 import { IGender } from "../../../constants/IGender";
-import { connect, ConnectedProps } from "react-redux";
+import { connect } from "react-redux";
 import { ApplicationState } from "../../../store";
+import { useNavigate } from "react-router-dom";
 
 const genderItems: Array<IGender> = [
 	{ id: 0, title: "Nam", value: 0 },
@@ -31,24 +32,25 @@ const connector = connect((state: ApplicationState) => ({
 }), {});
 
 function ProfileEditInfo(props: any): ReactElement {
+
 	const { open, close, token, username } = props;
+	const navigate = useNavigate;
 	const [updatedInfo, setUpdatedInfo] = React.useState({
 		firstName: "",
 		middleName: "",
 		lastName: "",
-		dob: null,
+		dob: "",
 		gender: 0,
 		email: "",
 	});
 
 	const requestBody = {
-		//"username": updatedInfo.username,
-		//"first_name": updatedInfo.firstName,
-		//"surname": updatedInfo.middleName,
-		//"last_name": updatedInfo.lastName,
-		//"birthday": updatedInfo.dob.toISOString().slice(0, 10),
-		//"gender": updatedInfo.gender,
-		//"email": updatedInfo.email,
+		"first_name": updatedInfo.firstName,
+		"middle": updatedInfo.middleName,
+		"last_name": updatedInfo.lastName,
+		"birthday": updatedInfo.dob,
+		"gender": new String(updatedInfo.gender),
+		"email": updatedInfo.email,
 	};
 
 	const handleInputChange = () => {
@@ -56,19 +58,53 @@ function ProfileEditInfo(props: any): ReactElement {
 	};
 
 	const handleClose = () => {
-		setUpdatedInfo({
-			firstName: "",
-			middleName: "",
-			lastName: "",
-			dob: null,
-			gender: 0,
-			email: "",
+		const authToken = `Bearer ${token}`;
+		fetch(`http://127.0.0.1:8000/api/profile/get/${username}`, {
+			method: "GET",
+			mode: "cors",
+			headers: {
+				"Accept": "application/json",
+				"Content-Type": "application/json",
+				"Authorization": authToken,
+			},
+		}).then(res => {
+			console.log(res);
+			return res.json();
+		}).then(data => {
+			console.log(data);
+			setUpdatedInfo({
+				firstName: data[0].profile.first_name,
+				middleName: data[0].profile.surname,
+				lastName: data[0].profile.last_name,
+				gender: data[0].profile.gender,
+				dob: data[0].profile.birthday.substring(3, 5)
+					+ "/" + data[0].profile.birthday.substring(0, 2)
+					+ "/" + data[0].profile.birthday.substring(6, 10),
+				email: data[0].email,
+			});
 		});
 		close();
 	};
 
 	const handleAcceptChange = () => {
-		handleClose();
+		const authToken = `Bearer ${token}`;
+		fetch("http://127.0.0.1:8000/api/profile/update", {
+			method: "PUT",
+			mode: "cors",
+			headers: {
+				"Accept": "application/json",
+				"Content-Type": "application/json",
+				"Authorization": authToken,
+			},
+			body: JSON.stringify(requestBody)
+		}).then(res => {
+			console.log(res);
+			return res.json();
+		}).then(data => {
+			console.log(data);
+			handleClose();
+			window.location.href = `/profile/${username}`;
+		});
 	};
 
 	useEffect(() => {
@@ -87,8 +123,16 @@ function ProfileEditInfo(props: any): ReactElement {
 				return res.json();
 			})
 			.then(data => {
+				console.log(data);
 				setUpdatedInfo({
-					...updatedInfo,
+					firstName: data[0].profile.first_name,
+					middleName: data[0].profile.surname,
+					lastName: data[0].profile.last_name,
+					gender: data[0].profile.gender,
+					dob: data[0].profile.birthday.substring(3, 5)
+						+ "/" + data[0].profile.birthday.substring(0, 2)
+						+ "/" + data[0].profile.birthday.substring(6, 10),
+					email: data[0].email,
 				});
 			});
 	}, []);
@@ -177,7 +221,7 @@ function ProfileEditInfo(props: any): ReactElement {
 								}}
 								items={genderItems} />
 						</Grid>
-						<Grid item xs={4}>
+						<Grid item xs={8}>
 							<TextField
 								name="email"
 								label="Email"
