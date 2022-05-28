@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
@@ -17,6 +18,10 @@ class PostController extends Controller
 
     public function findPostById($id) {
         return Post::where('id', $id)->with('profile')->with('user')->with('comments')->with('tags')->with('likes')->first();
+    }
+
+    public function getCommentsOfPost($id) {
+        return Comment::where('post_id', $id)->get();
     }
 
     public function getPosts($user_id) {
