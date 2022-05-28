@@ -16,8 +16,6 @@ import { ApplicationState } from "../../store";
 
 const connector = connect((state: ApplicationState) => ({
 	token: state.app.token,
-	username: state.app.username,
-
 }), {});
 
 function ProfileInfo(props: any): ReactElement {

@@ -61,13 +61,13 @@ function ProfilePage({
 					dob: data[0].profile.birthday
 				});
 			});
-	}, []);
+	}, [username]);
 
 	return (
 		<Box>
 			<ProfileHeader userData={userData} />
 			<Box display="flex" flexDirection="row" justifyContent="center">
-				<ProfileInfo />
+				<ProfileInfo username={username} />
 				<ProfileMain userId={userData.userId} />
 			</Box>
 		</Box >

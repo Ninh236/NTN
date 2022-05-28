@@ -6,6 +6,7 @@ import { changeIsNewPostUp } from "../../store/actions/createPost/changeIsNewPos
 import NewPostBar from "../Post/CreatePost/NewPostBar";
 import NewPostDialog from "../Post/CreatePost/NewPostDialog";
 import CreatePost from "../Post/PostAction/CreatePost";
+import UpdatePost from "../Post/UpdatePost/UpdatePost";
 import UserPost from "../Post/UserPost/UserPost";
 import { useStyle } from "./HomeStyle";
 
@@ -74,6 +75,7 @@ function Home({
 					}
 				</Stack>
 				<NewPostDialog />
+				<UpdatePost />
 			</Box>
 		</Box>
 	);

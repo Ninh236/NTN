@@ -5,17 +5,20 @@ import { ActionTypes } from "./ActionTypes";
 import { reduce as appReducer, inititalState as appIS } from "./reducers/app";
 import { reduce as createPostReducer, inititalState as createPostIS } from "./reducers/createPost"; 
 import { reduce as masterDialogReducer, inititalState as masterDialogIS} from "./reducers/masterDialog";
+import { reduce as updatePostReducer, inititalState as updatePostIS } from "./reducers/updatePost";
 
 const store = configureStore({
 	reducer: {
 		app: appReducer,
 		createPost: createPostReducer,
 		masterDialog: masterDialogReducer,
+		updatePost: updatePostReducer,
 	},
 	preloadedState: {
 		app: appIS,
 		createPost: createPostIS,
 		masterDialog: masterDialogIS,
+		updatePost: updatePostIS,
 	},
 	middleware(getDefaultMiddleware) {
 		return [
