@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement, useEffect } from "react";
 import {
 	styled,
 	InputBase,
@@ -8,8 +8,14 @@ import {
 	ListItemAvatar,
 	Avatar,
 	ClickAwayListener,
+	Typography,
+	ListItemSecondaryAction,
+	ListSubheader,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { ApplicationState } from "../../store";
+import { connect, ConnectedProps } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
 	zIndex: 1000,
@@ -47,16 +53,76 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	},
 }));
 
-export default function CheckboxList() {
+const connector = connect((state: ApplicationState) => ({
+	token: state.app.token,
+}), {});
 
-	const [searchHistory, setSearchHistory] = React.useState([1, 2, 3, 4]);
-	const [suggestSearch, setSuggestSearch] = React.useState([0]);
-	const [searchContent, setSearchContent] = React.useState("");
+function SearchBar({
+	token,
+}: ConnectedProps<typeof connector>): ReactElement {
+
+	const [suggestSearch, setSuggestSearch] = React.useState<any>([]);
+	const [inputValue, setinputValue] = React.useState("");
 	const [showSuggest, setShowSuggest] = React.useState(false);
 
 	const handleSearching = (event: any) => {
-		setSearchContent(event.target.value);
-		setSuggestSearch(searchHistory);
+		handleTyping;
+		setinputValue(event.target.value);
+		const searchContent = event.target.value;
+		const hashtag = searchContent.substring(1, searchContent.length);
+		const userName = searchContent.substring(1, searchContent.length);
+		if (searchContent == "") {
+			setSuggestSearch([]);
+		}
+
+		const authToken = `Bearer ${token}`;
+		if (searchContent[0] == "#") {
+			if (hashtag.length > 0) {
+				fetch(`http://127.0.0.1:8000/api/post/get/tags/${hashtag}`, {
+					method: "GET",
+					mode: "cors",
+					headers: {
+						"Accept": "application/json",
+						"Content-Type": "application/json",
+						"Authorization": authToken,
+					},
+				}).then(res => {
+					console.log(res);
+					return res.json();
+				}).then((data) => {
+					if (data.length > 0) {
+						setSuggestSearch(data.slice(0, 8));
+						console.log(data);
+					} else {
+						setSuggestSearch([]);
+					}
+				});
+			}
+		}
+		if (searchContent[0] == "@") {
+			if (hashtag.length > 0) {
+				fetch(`http://127.0.0.1:8000/api/profile/get/${userName}`, {
+					method: "GET",
+					mode: "cors",
+					headers: {
+						"Accept": "application/json",
+						"Content-Type": "application/json",
+						"Authorization": authToken,
+					},
+				}).then(res => {
+					console.log(res);
+					return res.json();
+				}).then((data) => {
+					if (data.length > 0) {
+						setSuggestSearch(data.slice(0, 8));
+						console.log(data);
+					} else {
+						setSuggestSearch([]);
+					}
+				});
+			}
+
+		}
 	};
 
 	const handleClick = () => {
@@ -73,29 +139,23 @@ export default function CheckboxList() {
 
 	return (
 		<ClickAwayListener onClickAway={handleClickAway}>
-			<Search sx={{ display: "inline-flex" }} onClick={handleClick} onChange={handleSearching}>
+			<Search sx={{ display: "inline-flex" }} onClick={handleClick}>
 				<SearchIconWrapper sx={{ height: "39px", padding: "0px 12px" }}>
 					<SearchIcon />
 				</SearchIconWrapper>
-				<StyledInputBase placeholder="Tìm kiếm…" onChange={handleTyping} />
+				<StyledInputBase placeholder="Tìm kiếm…" value={inputValue}
+					onChange={handleSearching} onKeyDown={() => setShowSuggest(true)} />
 				{showSuggest ? (
 					<List onClick={handleClick}
 						dense
 						sx={{
-							width: "233.962px", bgcolor: "background.paper", position: "fixed", top: "64px",
+							width: "233.962px", bgcolor: "background.paper", position: "fixed", top: "48px",
 							boxShadow: 1
 						}}>
-						{searchContent != "" ? (
-							<ListItem disablePadding>
-								<ListItemButton>
-									<ListItemAvatar>
-										<Avatar />
-									</ListItemAvatar>
-									<ListItemText primary={searchContent} />
-								</ListItemButton>
-							</ListItem>
-						) : null}
-						{suggestSearch.map((value) => {
+						<ListSubheader sx={{ fontSize: "1rem", lineHeight: "1.25rem", position: "relative" }}>
+							<strong>Kết quả tìm kiếm cho: </strong> {inputValue}
+						</ListSubheader>
+						{suggestSearch.map((value: any) => {
 							const labelId = `${value}`;
 							return (
 								<ListItem
@@ -105,7 +165,18 @@ export default function CheckboxList() {
 										<ListItemAvatar>
 											<Avatar />
 										</ListItemAvatar>
-										<ListItemText id={labelId} primary={`User ${value}`} />
+										{inputValue[0] == "#" ?
+											(<ListItemText id={labelId}
+												secondaryTypographyProps={{ style: { overflow: "hidden" } }}
+												primary={`@${value.user.username}`}
+												secondary={`${value.content.substring(0, 50)}` + (value.content.length > 49 ? "..." : "")} />)
+											: (<Link style={{ textDecoration: "none" }} to={`/profile/${value.username}`}>
+												<ListItemText id={labelId}
+													secondaryTypographyProps={{ style: { overflow: "hidden" } }}
+													primary={`@${value.username}`}
+													secondary={`${value.profile.first_name} ${value.profile.surname} ${value.profile.last_name}`} />
+											</Link>)
+										}
 									</ListItemButton>
 								</ListItem>
 							);
@@ -114,4 +185,4 @@ export default function CheckboxList() {
 			</Search>
 		</ClickAwayListener >
 	);
-}
+} export default connector(SearchBar);
