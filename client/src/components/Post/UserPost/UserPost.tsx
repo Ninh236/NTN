@@ -10,6 +10,7 @@ import Comment from "../Comment/Comment";
 import { ApplicationState } from "../../../store";
 import { connect, ConnectedProps } from "react-redux";
 import { Hashtag } from "../CreatePost/NewPostDialog";
+import { Link } from "react-router-dom";
 
 const Input = styled("input")({
 	display: "none",
@@ -31,37 +32,30 @@ interface PostProp {
 	userId: number;
 	content: string;
 	image: string | null;
+	profile: object;
 	comments: PostComment[];
 	tags: [];
 	likes: [];
 	createdAt: string,
 }
 
-const initialProp: PostProp = {
-	postId: 0,
-	userId: 0,
-	content: "",
-	image: null,
-	comments: [],
-	tags: [],
-	likes: [],
-	createdAt: "",
-};
-
-const connector = connect((state: ApplicationState) => ({token: state.app.token}), {});
+const connector = connect(
+	(state: ApplicationState) => ({
+		token: state.app.token,
+		userId: state.app.userId,
+	}), {}
+);
 
 function UserPost(props: any): ReactElement {
-	const { token, ...others } = props;
+	const { token, userId, ...others } = props;
 	const authToken = `Bearer ${token}`;
 	const styles = useStyle();
-	const [userData, setUserData] = useState({
-		fullName: "",
-		username: "",
-	});
+	console.log(props.profile);
+	const fullName = `${props.profile.first_name} ${props.profile.surname} ${props.profile.last_name}`;
 
 	let tmpLike = false;
 	for (let i = 0; i < props.likes.length; i++) {
-		if (props.likes[i].user_id === props.userId) {
+		if (props.likes[i].user_id === userId) {
 			tmpLike = true;
 			break;
 		}
@@ -71,23 +65,6 @@ function UserPost(props: any): ReactElement {
 	const [isLiked, setIsLiked] = useState<boolean>(tmpLike);
 	const [comments, setComments] = useState(props.comments);
 	const [showComment, setShowComment] = useState<boolean>(false);
-		
-	useEffect(() => {
-		fetch(`http://127.0.0.1:8000/api/profile/getid/${props.userId}`, {
-			method: "GET",
-			mode: "cors",
-			headers: {
-				"Authorization": authToken,
-			}
-		})
-			.then(res => res.json())
-			.then(data => {
-				setUserData({
-					fullName: `${data[0].profile.first_name} ${data[0].profile.surname} ${data[0].profile.last_name}`,
-					username: data[0].username,
-				});
-			});
-	}, []);
 
 	const handleClickLike = () => {
 		fetch(`http://127.0.0.1:8000/api/like/${props.postId}`, {
@@ -110,10 +87,10 @@ function UserPost(props: any): ReactElement {
 		<Card className={styles.root}>
 			<Grid container>
 				<Grid item xs={1}><Avatar sx={{ width: 44, height: 44, mx: "auto" }} /></Grid>
-				<Grid item xs={10}>
-					<Typography variant="body1">
-						{userData.fullName} <Typography component="span" variant="caption">{`@${userData.username}`}</Typography>
-					</Typography>
+				<Grid item xs={10} sx={{ pl: 1 }}>
+					<Link to={`/profile/${props.user.username}`} style={{ textDecoration: "none" }}>
+						<Typography variant="body1">{fullName}</Typography>
+					</Link>
 					<Typography variant="subtitle2">{new Date(props.createdAt).toLocaleString()}</Typography>
 				</Grid>
 				<Grid item xs={1}>

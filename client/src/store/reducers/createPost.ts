@@ -25,7 +25,7 @@ export function reduce(
 		return { ...state, sendStatus: action.payload };
 
 	case ActionTypes.CREATE_POST__CHANGE_IS_NEW_POST_UP:
-		return { ...state, isNewPostUploaded: action.payload };
+		return { ...state, isNewPostUploaded: !state.isNewPostUploaded };
 
 	default: 
 		return state;

@@ -34,7 +34,7 @@ const StyledAppBar = styled(AppBar)`
 	top: 0;
 	maxHeight: 64px;
   	background-color: white;
-  	color: #15bb66;
+  	color: #15bb66;	
 	display: flex;
 `;
 
