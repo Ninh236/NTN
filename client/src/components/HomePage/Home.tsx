@@ -32,7 +32,11 @@ function Home({
 	changeIsNewPostUp,
 }: ConnectedProps<typeof connector>): ReactElement {
 	const styles = useStyle();
-	const [posts, setPosts] = useState([]);
+	const [posts, setPosts] = useState<any>([]);
+	const [scrollPos, setScrollPos] = useState(0);
+	const [nextPageURL, setNextPageURL] = useState<string | null>("http://127.0.0.1:8000/api/post/get/all?page=1");
+
+	console.log(posts);
 
 	useEffect(() => {
 		const authToken = `Bearer ${token}`;
@@ -44,9 +48,45 @@ function Home({
 			}
 		}).then(res => res.json())
 			.then(data => {
-				setPosts(data.data.reverse());
+				console.log(data);
+				setPosts(data.data);
+				if (data.next_page_url != null) {
+					setNextPageURL(data.next_page_url);
+				}
 			});
 	}, [isNewPostUploaded]);
+
+	useEffect(() => {
+		const authToken = `Bearer ${token}`;
+		if (scrollPos !== 0 && nextPageURL !== null) {
+			fetch(`${nextPageURL}`, {
+				method: "GET",
+				mode: "cors",
+				headers: {
+					"Authorization": authToken,
+				}
+			}).then(res => res.json())
+				.then(data => {
+					setScrollPos(0);
+					setPosts([ ...posts, ...data.data]);
+					setNextPageURL(data.next_page_url);
+				});
+		}
+	}, [scrollPos]);
+
+	useEffect(() => {
+		window.addEventListener("scroll", listenToScroll);
+	}, []);
+
+	const listenToScroll = () => {
+		const scroll = document.body.scrollTop || document.documentElement.scrollTop;
+		const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+		const scrolled = scroll / height;
+
+		if (scrolled > 0.9 && scrolled < 1 && Math.trunc(scrolled * 10) !== scrollPos) {
+			setScrollPos(Math.trunc(scrolled * 10));
+		}
+	};
 
 	return (
 		<Box>
@@ -54,7 +94,7 @@ function Home({
 				<Stack spacing={2} sx={{ mt: 2 }}>
 					<div><NewPostBar /></div>
 					{
-						posts.map((post: any, index) => {
+						posts.map((post: any, index: number) => {
 							return (
 								<div key={index}>
 									<UserPost 
