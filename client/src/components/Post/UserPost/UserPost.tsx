@@ -11,6 +11,8 @@ import { ApplicationState } from "../../../store";
 import { connect, ConnectedProps } from "react-redux";
 import { Hashtag } from "../CreatePost/NewPostDialog";
 import { Link } from "react-router-dom";
+import { setData } from "../../../store/actions/updatePost/setData";
+import { changeOpenState } from "../../../store/actions/updatePost/changeOpenState";
 
 const Input = styled("input")({
 	display: "none",
@@ -42,15 +44,29 @@ interface PostProp {
 const connector = connect(
 	(state: ApplicationState) => ({
 		token: state.app.token,
-		userId: state.app.userId,
-	}), {}
+		curUserId: state.app.userId,
+		updatedPostId: state.updatePost.postId,
+		updatedContent: state.updatePost.content,
+	}), 
+	{
+		setData,
+		changeOpenState,
+	}
 );
 
 function UserPost(props: any): ReactElement {
-	const { token, userId, ...others } = props;
+	const { 
+		token, 
+		userId, 
+		curUserId, 
+		updatedPostId, 
+		updatedContent, 
+		setData, 
+		changeOpenState 
+	} = props;
 	const authToken = `Bearer ${token}`;
 	const styles = useStyle();
-	console.log(props.profile);
+	console.log(props);
 	const fullName = `${props.profile.first_name} ${props.profile.surname} ${props.profile.last_name}`;
 
 	let tmpLike = false;
@@ -65,6 +81,13 @@ function UserPost(props: any): ReactElement {
 	const [isLiked, setIsLiked] = useState<boolean>(tmpLike);
 	const [comments, setComments] = useState(props.comments);
 	const [showComment, setShowComment] = useState<boolean>(false);
+
+	// useEffect(() => {
+	// 	if (updatedPostId !== 0 && updatedPostId == props.postId) {
+	// 		setContent(updatedContent);
+	// 		setData("", 0);
+	// 	}
+	// }, [updatedPostId]);
 
 	const handleClickLike = () => {
 		fetch(`http://127.0.0.1:8000/api/like/${props.postId}`, {
@@ -107,7 +130,11 @@ function UserPost(props: any): ReactElement {
 					<Typography variant="subtitle2">{new Date(props.createdAt).toLocaleString()}</Typography>
 				</Grid>
 				<Grid item xs={1}>
-					<PostAction />
+					<PostAction 
+						disabled={props.userId !== curUserId} 
+						content={props.content} 
+						postId={props.postId}
+					/>
 				</Grid>
 				<Grid item xs={12} my={2} px={2}>
 					{props.content.split("\n").map((text: string, index: number) => (<p style={{ marginTop: 0 }} key={index}>{text}</p>))}
@@ -166,7 +193,6 @@ function UserPost(props: any): ReactElement {
 									postId={comment.post_id} 
 									content={comment.content} 
 									createAt={comment.created_at} 
-
 								/>
 							);
 						})

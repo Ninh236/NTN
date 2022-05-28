@@ -8,6 +8,7 @@ import { ApplicationState } from "../../store";
 import { changeIsNewPostUp } from "../../store/actions/createPost/changeIsNewPostUp";
 import NewPostBar from "../Post/CreatePost/NewPostBar";
 import NewPostDialog from "../Post/CreatePost/NewPostDialog";
+import UpdatePost from "../Post/UpdatePost/UpdatePost";
 import UserPost from "../Post/UserPost/UserPost";
 
 const connector = connect(
@@ -70,6 +71,7 @@ function ProfileMain(props: any) {
 				}
 			</Stack>
 			{curUserId === userId && <NewPostDialog />}
+			<UpdatePost />
 		</Box>
 
 	);
