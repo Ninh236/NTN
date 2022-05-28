@@ -18,7 +18,6 @@ import RadioGroup from "../../CustomInput/RadioGroup/RadioGroup";
 import { IGender } from "../../../constants/IGender";
 import { connect, ConnectedProps } from "react-redux";
 import { ApplicationState } from "../../../store";
-import { Token } from "typescript";
 
 const genderItems: Array<IGender> = [
 	{ id: 0, title: "Nam", value: 0 },
@@ -88,9 +87,11 @@ function ProfileEditInfo(props: any): ReactElement {
 				return res.json();
 			})
 			.then(data => {
-				console.log(data);
+				setUpdatedInfo({
+					...updatedInfo,
+				});
 			});
-	});
+	}, []);
 
 	return (
 		<Dialog open={open} onClose={handleClose}>
