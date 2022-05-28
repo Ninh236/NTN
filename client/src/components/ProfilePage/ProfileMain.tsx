@@ -47,7 +47,7 @@ function ProfileMain(props: any) {
 
 	return (
 		<Box ml="0.5rem">
-			<Stack spacing={2}>
+			<Stack spacing={2} sx={{ mt: 2 }}>
 				{curUserId === userId && (<div><NewPostBar /></div>)}
 				{
 					posts.map((post: any, index) => {

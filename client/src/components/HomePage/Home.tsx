@@ -51,7 +51,7 @@ function Home({
 	return (
 		<Box>
 			<Box>
-				<Stack spacing={2}>
+				<Stack spacing={2} sx={{ mt: 2 }}>
 					<div><NewPostBar /></div>
 					{
 						posts.map((post: any, index) => {
