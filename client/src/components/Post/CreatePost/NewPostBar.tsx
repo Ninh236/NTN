@@ -18,8 +18,6 @@ const CustomCard = styled(Card)`
 	height: 150px;
 	width: 640px !important;
 	margin: auto;
-	margin-top: 1rem;
-	margin-bottom: 1rem;
 `;
 
 const TextPostArea = styled(TextareaAutosize)`

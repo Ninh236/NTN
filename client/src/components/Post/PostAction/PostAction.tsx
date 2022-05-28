@@ -15,6 +15,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { ApplicationState } from "../../../store";
 import { changeOpenState as changeOpenUpdatePostState } from "../../../store/actions/updatePost/changeOpenState";
 import { setData } from "../../../store/actions/updatePost/setData";
+import { changeIsNewPostUp } from "../../../store/actions/createPost/changeIsNewPostUp";
 
 const StyledMenu = styled((props: MenuProps) => (
 	<Menu
@@ -58,15 +59,18 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 const connector = connect(
-	(state: ApplicationState) => ({}), 
+	(state: ApplicationState) => ({
+		token: state.app.token,
+	}), 
 	{ 
+		changeIsNewPostUp,
 		changeOpenUpdatePostState,
 		setData,
 	}
 );
 
 function PostAction(props: any) {
-	const { changeOpenUpdatePostState, setData, content } = props;
+	const { changeIsNewPostUp, changeOpenUpdatePostState, setData, content, token } = props;
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -76,6 +80,21 @@ function PostAction(props: any) {
 		setAnchorEl(null);
 	};
 	console.log(props);
+
+	const handleClickDeletePost = () => {
+		const authToken = `Bearer ${token}`;
+		fetch(`http://127.0.0.1:8000/api/post/edit/${props.postId}`, {
+			method: "DELETE",
+			mode: "cors",
+			headers: {
+				"Authorization": authToken,
+			}
+		}).then(res => res.json())
+			.then(data => {
+				handleClose();
+				changeIsNewPostUp(true);
+			});
+	};
 
 	return (
 		<div>
@@ -103,6 +122,7 @@ function PostAction(props: any) {
 					onClick={() => {
 						setData(content, props.postId);
 						changeOpenUpdatePostState(true);
+						handleClose();
 					}
 					}	 
 					disableRipple
@@ -110,7 +130,7 @@ function PostAction(props: any) {
 					<EditIcon />
 					Chỉnh sửa
 				</MenuItem>
-				<MenuItem onClick={handleClose} disableRipple>
+				<MenuItem onClick={handleClickDeletePost} disableRipple>
 					<DeleteRounded />
 					Xoá
 				</MenuItem>
