@@ -18,8 +18,32 @@ import { connect, ConnectedProps } from "react-redux";
 import { ApplicationState } from "../../store";
 import ProfileEditInfo from "./ProfileEdit/ProfileEditInfo";
 
+const connector = connect((state: ApplicationState) => ({
+	token: state.app.token,
+	curUsername: state.app.username
+}), {});
+
 function ProfileHeader(props: any): ReactElement {
-	const { userData } = props;
+	const {token, username, curUsername} = props;
+
+	useEffect(() => {
+		const authToken = `Bearer ${token}`;
+		fetch(`http://127.0.0.1:8000/api/profile/get/${username}`, {
+			method: "GET",
+			mode: "cors",
+			headers: {
+				"Accept": "application/json",
+				"Authorization": authToken,
+			},
+		}).then(res => {
+			console.log(res.status);
+			return res.json();
+		}).then(data => {
+			setUser({
+				fullName: `${data[0].profile.first_name} ${data[0].profile.surname} ${data[0].profile.last_name}`,
+			});
+		});
+	}, []);
 
 	const [tab, setTab] = useState(0);
 	const [openEditInfo, setOpenEditInfo] = useState(false);
@@ -76,14 +100,18 @@ function ProfileHeader(props: any): ReactElement {
 					<Typography color="#65676B" fontWeight="bold">
 						{"51"} bạn bè
 					</Typography>
-					<Button sx={{
-						bgcolor: "#00000014 !important", width: "11.5rem", fontWeight: "bold",
-						textTransform: "none", justifyContent: "start", p: 0.2, mt: 2
-					}} onClick={handleEditInfo}>
-						<Edit sx={{ ml: 1 }} />
-						Chỉnh sửa thông tin
-					</Button>
-					<ProfileEditInfo open={openEditInfo} close={handleCloseEditInfo} />
+					{curUsername === username && 
+						(<>
+							<Button sx={{
+								bgcolor: "#00000014 !important", width: "11rem",
+								textTransform: "none", justifyContent: "start", p: 0.2, mt: 2
+							}} onClick={handleEditInfo}>
+								<Edit sx={{ ml: 1 }} />
+								Chỉnh sửa thông tin
+							</Button>
+							<ProfileEditInfo open={openEditInfo} close={handleCloseEditInfo} />)
+						</>)
+					}
 				</Box>
 			</Box >
 			<Divider sx={{ width: "70%" }} variant="middle" />

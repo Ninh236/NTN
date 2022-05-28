@@ -83,6 +83,19 @@ function UserPost(props: any): ReactElement {
 		setShowComment(!showComment);
 	};
 
+	const reloadComment = () => {
+		fetch(`http://127.0.0.1:8000/api/post/get/comments/${props.postId}`, {
+			method: "GET",
+			mode: "cors",
+			headers: {
+				"Authorization": authToken,
+			}
+		}).then(res => res.json())
+			.then(data => {
+				setComments(data);
+			});
+	};
+
 	return (
 		<Card className={styles.root}>
 			<Grid container>
@@ -158,6 +171,13 @@ function UserPost(props: any): ReactElement {
 							);
 						})
 					}
+					<div>
+						<Button 
+							color="primary" 
+							sx={{ mx: "auto", display: "block", textTransform: "none" }}
+							onClick={reloadComment}
+						>Tải lại bình luận</Button>
+					</div>
 					<CreateComment 
 						postId={props.postId} 
 						onNewCommentCreated={(data: any) => {
