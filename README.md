@@ -71,7 +71,9 @@
 *Chú ý:* Ngoài ra, có thể build qua lệnh 
 
 >`D:\NTN\client> npm build` 
+
 >`D:\NTN\client> npm install -g serve`
+
 >`D:\NTN\client> serve -s build`
 
 *Cửa sổ terminal sẽ hiển thị:*
@@ -95,4 +97,4 @@ Sau khi làm một trong hai cách trên ta có thể truy cập vào trang web 
 
 *Cần cài đặt sẵn Composer*
 
-##### **Cài đặt và chạy Backtend**
+#### Cài đặt và chạy Backtend
