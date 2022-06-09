@@ -45,13 +45,13 @@
 
 #### Cài đặt và chạy Frontend:
 
-> `D:\NTN\client> npm i`
+    > `D:\NTN\client> npm i`
 
 *Nếu có lỗi, hãy thử:*
-> `D:\NTN\client> npm i --force`
+    > `D:\NTN\client> npm i --force`
 
 *Sau đó chạy lệnh:*
-> `D:\NTN\client> npm run start`
+    > `D:\NTN\client> npm run start`
 
 *Cửa sổ terminal sẽ hiển thị:*
 
@@ -70,13 +70,13 @@
     
 *Chú ý:* Ngoài ra, có thể build qua lệnh 
 
->`D:\NTN\client> npm build` 
+    >`D:\NTN\client> npm build` 
 
 *Rồi chạy lệnh:*
 
->`D:\NTN\client> npm install -g serve`
+    >`D:\NTN\client> npm install -g serve`
 
->`D:\NTN\client> serve -s build`
+    >`D:\NTN\client> serve -s build`
 
 *Cửa sổ terminal sẽ hiển thị:*
 
