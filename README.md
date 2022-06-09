@@ -5,7 +5,7 @@
 * ***Hoàng Minh Nhật - 20020063***
 * ***Đoàn Duy Tùng - 20020070***
 * ***Nguyễn Ngọc Ninh - 20020263***
-#
+
 ## Mô tả ứng dụng web:
 
 ### Tên ứng dụng: ***Mạng xã hội NTN***
@@ -33,17 +33,17 @@
     - Chức năng nhắn tin
 
 ### Cài đặt
-#### Clone repo:
+### Clone repo:
 
 > `git clone https://github.com/FMLPhongVan/NTN.com`
 
-#### *Frontend:*
+### *Frontend:*
 
-##### **Yêu cầu:**
+#### Yêu cầu:
 
 *Cần cài đặt sẵn Nodejs*
 
-##### **Cài đặt và chạy Frontend**
+#### Cài đặt và chạy Frontend
 
 > `D:\NTN\client> npm i`
 
@@ -89,9 +89,9 @@
        
 Sau khi làm một trong hai cách trên ta có thể truy cập vào trang web qua `http://localhost:3000`
 
-#### *Backend:*
+### *Backend:*
 
-##### **Yêu cầu:**
+#### Yêu cầu:
 
 *Cần cài đặt sẵn Composer*
 
