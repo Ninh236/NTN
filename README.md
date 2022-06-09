@@ -72,6 +72,8 @@
 
 >`D:\NTN\client> npm build` 
 
+*Rồi chạy lệnh:*
+
 >`D:\NTN\client> npm install -g serve`
 
 >`D:\NTN\client> serve -s build`
