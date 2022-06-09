@@ -2,9 +2,9 @@
 
 ## Thành viên:
 
-    ### ***Hoàng Minh Nhật - 20020063***
-    ### ***Đoàn Duy Tùng - 20020070***
-    ### ***Nguyễn Ngọc Ninh - 20020263***
+    ### *Hoàng Minh Nhật - 20020063*
+    ### *Đoàn Duy Tùng - 20020070*
+    ### *Nguyễn Ngọc Ninh - 20020263*
 
 ## Mô tả ứng dụng web:
 
